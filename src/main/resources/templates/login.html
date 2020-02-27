@@ -1,0 +1,156 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>APCOS超级工作站云平台</title>
+    <meta name="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="renderer" content="webkit">
+    <meta name="generator" content="Bigtree"/>
+    <link rel="shortcut icon" href="../../img/jx.png"/>
+    <script type='text/javascript' src='../js/jquery-2.0.3.min.js'></script>
+    <script type='text/javascript' src='../bootstrap/js/bootstrap.js'></script>
+    <script type='text/javascript' src='../bootstrap/js/bootstrap_kz.js'></script>
+    <link rel="stylesheet" type="text/css"  href="../css/login.css"/>
+    <link rel="stylesheet" type="text/css"  href="../bootstrap/css/bootstrap.css"/>
+    <script type='text/javascript' src='../../js/layui/layui.js'></script>
+    <style>
+        .login_div{
+            margin: 80px auto;
+        }
+    </style>
+
+</head>
+<script type="text/javascript">
+
+    layui.use('layer', function () {
+        var layer = layui.layer;
+    });
+
+    $(window).keydown(function(event){
+        if(event.keyCode == 13){
+            event.returnValue=false;
+            event.cancel = true;
+            login();
+        }
+    });
+    function login(){
+
+       var userAccount = $('#user_account').val().trim();
+       var userPassword = $('#user_password').val().trim();
+
+        if(userAccount==undefined || userAccount==null || userAccount==''){
+            layer.msg("请输入账号");
+            return ;
+        }
+        if(userPassword==undefined || userPassword==null || userPassword==''){
+            layer.msg("请输入密码");
+            return ;
+        }
+        $.ajax({
+            url: '/index/login.json',
+            type: "post",
+            dataType: "json",
+            async: false,
+            contentType: 'application/json',
+            data: JSON.stringify({
+                    'data': {
+                        'userAccount':userAccount,
+                        'userPassword':userPassword
+                    }
+                }
+            ),
+            beforeSend: function(xhr) {
+                xhr.withCredentials = true;
+                xhr.setRequestHeader("X-Requested-With","XMLHttpRequest");
+            },
+            crossDomain:true,
+            success: function (res) {
+                if (res.status == 200) {
+                    window.location.href = '/pSysUser/toIndex'
+                } else {
+                    layer.msg(res.msg)
+                }
+            }
+        });
+    }
+    function register() {
+        window.location.href='/html/register/register.html'
+    }
+</script>
+
+<body>
+<div class="login_div" style="">
+    <div class="login_title">
+        <img src="/img/logo_title.png" style="height: 36px;margin-bottom: 40px;">
+    </div>
+    <div class="main">
+        <div class="main_title" style="color: white">
+            账号登录
+        </div>
+        <div class="col-sm-10 col_margin_left" style="margin-top: 10px">
+            <div class="input-group" >
+                <span class="input-group-addon"><img src="/img/login_icon_user_nor.png" id="head"></span>
+            <input style="height:50px;background: #022047;color: white" class="form-control" placeholder="登录账号" value="" type="text" id="user_account" onfocus="set1()" onblur="set2()"/>
+            </div>
+        </div>
+        <div class="col-sm-10 col_margin_left col_margin_top">
+            <div class="input-group" >
+                <span class="input-group-addon"><img src="/img/login_icon_mm_nor.png" id="password"></span>
+            <input style="height:50px;background: #022047;color: white" class="form-control" placeholder="密码" value="" type="password" id="user_password" onfocus="set3()" onblur="set4()"/>
+            </div>
+            </div>
+        <div style="margin-top:20px;height:45px;margin-left: 45px;font-size: 12px;color: #ffffff;" class="col-sm-9">
+            <a href="/html/getBackPassword.html" style="float: right">忘记密码?</a>
+        </div>
+        <div style="margin-top:-16px;" class="col-sm-9 main_button" onclick="login()">
+            登录
+        </div>
+
+    </div>
+
+</div>
+
+<div class="boot_div">
+    <div class="boot_text" style="color: white;">
+        为确保浏览器正常，请使用最新版谷歌浏览器、火狐浏览器
+    </div>
+    <div class="boot_text boot_top" style="color: white;">
+        重庆金鑫智慧科技有限公司 &copy;2020-2021版权所有  BETA V1.0 TEL:400-000-3877
+    </div>
+</div>
+<!-- 提示模板代码 -->
+<div id="com-alert" class="modal" style="z-index:9999;display: none;" >
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <h5 class="modal-title"><i class="fa fa-exclamation-circle"></i> [Title]</h5>
+            </div>
+            <div class="modal-body small">
+                <p>[Message]</p>
+            </div>
+            <div class="modal-footer" >
+                <button type="button" class="btn btn-primary ok" data-dismiss="modal">[BtnOk]</button>
+                <button type="button" class="btn btn-default cancel" data-dismiss="modal">[BtnCancel]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function set1(){
+        $("#head").attr('src','/img/login_icon_user_sel.png')
+    }
+    function set2(){
+        $("#head").attr('src','/img/login_icon_user_nor.png')
+    }
+    function set3(){
+        $("#password").attr('src','/img/login_icon_mm_sel.png')
+    }
+    function set4(){
+        $("#password").attr('src','/img/login_icon_mm_nor.png')
+    }
+
+</script>
+</body>
+
+</html>

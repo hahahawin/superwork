@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.superwork.apcosplatform.mapper.PYktZxjhMapper">
+    <resultMap id="BaseResultMap" type="com.superwork.apcosplatform.domain.PYktZxjh">
+        <id column="ZXJH_ID" jdbcType="VARCHAR" property="zxjhId"/>
+        <result column="YPTJH_ID" jdbcType="VARCHAR" property="yptjhId"/>
+        <result column="ZXJH_MC" jdbcType="VARCHAR" property="zxjhMc"/>
+        <result column="ZXJH_YPTZH" jdbcType="VARCHAR" property="zxjhYptzh"/>
+        <result column="ZXJH_ZT" jdbcType="VARCHAR" property="zxjhZt"/>
+        <result column="ATTR_1" jdbcType="VARCHAR" property="attr1"/>
+        <result column="ATTR_2" jdbcType="VARCHAR" property="attr2"/>
+        <result column="ATTR_3" jdbcType="VARCHAR" property="attr3"/>
+        <result column="ATTR_4" jdbcType="VARCHAR" property="attr4"/>
+        <result column="CREATOR_ID" jdbcType="VARCHAR" property="creatorId"/>
+        <result column="CREATED_TIME" jdbcType="DATE" property="createdTime"/>
+        <result column="EDITOR_ID" jdbcType="VARCHAR" property="editorId"/>
+        <result column="EDITED_TIME" jdbcType="DATE" property="editedTime"/>
+        <result column="BELONG_ORG_ID" jdbcType="VARCHAR" property="belongOrgId"/>
+        <result column="USERNAME" jdbcType="VARCHAR" property="createName"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    ZXJH_ID, YPTJH_ID, ZXJH_MC, ZXJH_YPTZH, ZXJH_ZT, ATTR_1, ATTR_2, ATTR_3, ATTR_4, 
+    CREATOR_ID, CREATED_TIME, EDITOR_ID, EDITED_TIME, BELONG_ORG_ID
+  </sql>
+    <select id="selectByExample" parameterType="com.superwork.apcosplatform.domain.PYktZxjhExample"
+            resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        'true' as QUERYID,
+        <include refid="Base_Column_List"/>
+        from P_YKT_ZXJH
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from P_YKT_ZXJH
+        where ZXJH_ID = #{zxjhId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from P_YKT_ZXJH
+    where ZXJH_ID = #{zxjhId,jdbcType=VARCHAR}
+  </delete>
+    <delete id="deleteByExample" parameterType="com.superwork.apcosplatform.domain.PYktZxjhExample">
+        delete from P_YKT_ZXJH
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.superwork.apcosplatform.domain.PYktZxjh">
+        <selectKey keyProperty="zxjhId" order="BEFORE" resultType="java.lang.String">
+            select P_YKT_ZXJH_SEQ.NEXTVAL from dual
+        </selectKey>
+        insert into P_YKT_ZXJH (ZXJH_ID, YPTJH_ID, ZXJH_MC,
+        ZXJH_YPTZH, ZXJH_ZT, ATTR_1,
+        ATTR_2, ATTR_3, ATTR_4,
+        CREATOR_ID, CREATED_TIME, EDITOR_ID,
+        EDITED_TIME, BELONG_ORG_ID)
+        values (#{zxjhId,jdbcType=VARCHAR}, #{yptjhId,jdbcType=VARCHAR}, #{zxjhMc,jdbcType=VARCHAR},
+        #{zxjhYptzh,jdbcType=VARCHAR}, #{zxjhZt,jdbcType=VARCHAR}, #{attr1,jdbcType=VARCHAR},
+        #{attr2,jdbcType=VARCHAR}, #{attr3,jdbcType=VARCHAR}, #{attr4,jdbcType=VARCHAR},
+        #{creatorId,jdbcType=VARCHAR}, #{createdTime,jdbcType=DATE}, #{editorId,jdbcType=VARCHAR},
+        #{editedTime,jdbcType=DATE}, #{belongOrgId,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.superwork.apcosplatform.domain.PYktZxjh">
+        <selectKey keyProperty="zxjhId" order="BEFORE" resultType="java.lang.String">
+            select P_YKT_ZXJH_SEQ.NEXTVAL from dual
+        </selectKey>
+        insert into P_YKT_ZXJH
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            ZXJH_ID,
+            <if test="yptjhId != null">
+                YPTJH_ID,
+            </if>
+            <if test="zxjhMc != null">
+                ZXJH_MC,
+            </if>
+            <if test="zxjhYptzh != null">
+                ZXJH_YPTZH,
+            </if>
+            <if test="zxjhZt != null">
+                ZXJH_ZT,
+            </if>
+            <if test="attr1 != null">
+                ATTR_1,
+            </if>
+            <if test="attr2 != null">
+                ATTR_2,
+            </if>
+            <if test="attr3 != null">
+                ATTR_3,
+            </if>
+            <if test="attr4 != null">
+                ATTR_4,
+            </if>
+            <if test="creatorId != null">
+                CREATOR_ID,
+            </if>
+            <if test="createdTime != null">
+                CREATED_TIME,
+            </if>
+            <if test="editorId != null">
+                EDITOR_ID,
+            </if>
+            <if test="editedTime != null">
+                EDITED_TIME,
+            </if>
+            <if test="belongOrgId != null">
+                BELONG_ORG_ID,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{zxjhId,jdbcType=VARCHAR},
+            <if test="yptjhId != null">
+                #{yptjhId,jdbcType=VARCHAR},
+            </if>
+            <if test="zxjhMc != null">
+                #{zxjhMc,jdbcType=VARCHAR},
+            </if>
+            <if test="zxjhYptzh != null">
+                #{zxjhYptzh,jdbcType=VARCHAR},
+            </if>
+            <if test="zxjhZt != null">
+                #{zxjhZt,jdbcType=VARCHAR},
+            </if>
+            <if test="attr1 != null">
+                #{attr1,jdbcType=VARCHAR},
+            </if>
+            <if test="attr2 != null">
+                #{attr2,jdbcType=VARCHAR},
+            </if>
+            <if test="attr3 != null">
+                #{attr3,jdbcType=VARCHAR},
+            </if>
+            <if test="attr4 != null">
+                #{attr4,jdbcType=VARCHAR},
+            </if>
+            <if test="creatorId != null">
+                #{creatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="createdTime != null">
+                #{createdTime,jdbcType=DATE},
+            </if>
+            <if test="editorId != null">
+                #{editorId,jdbcType=VARCHAR},
+            </if>
+            <if test="editedTime != null">
+                #{editedTime,jdbcType=DATE},
+            </if>
+            <if test="belongOrgId != null">
+                #{belongOrgId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.superwork.apcosplatform.domain.PYktZxjhExample"
+            resultType="java.lang.Long">
+        select count(*) from P_YKT_ZXJH
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update P_YKT_ZXJH
+        <set>
+            <if test="record.zxjhId != null">
+                ZXJH_ID = #{record.zxjhId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.yptjhId != null">
+                YPTJH_ID = #{record.yptjhId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.zxjhMc != null">
+                ZXJH_MC = #{record.zxjhMc,jdbcType=VARCHAR},
+            </if>
+            <if test="record.zxjhYptzh != null">
+                ZXJH_YPTZH = #{record.zxjhYptzh,jdbcType=VARCHAR},
+            </if>
+            <if test="record.zxjhZt != null">
+                ZXJH_ZT = #{record.zxjhZt,jdbcType=VARCHAR},
+            </if>
+            <if test="record.attr1 != null">
+                ATTR_1 = #{record.attr1,jdbcType=VARCHAR},
+            </if>
+            <if test="record.attr2 != null">
+                ATTR_2 = #{record.attr2,jdbcType=VARCHAR},
+            </if>
+            <if test="record.attr3 != null">
+                ATTR_3 = #{record.attr3,jdbcType=VARCHAR},
+            </if>
+            <if test="record.attr4 != null">
+                ATTR_4 = #{record.attr4,jdbcType=VARCHAR},
+            </if>
+            <if test="record.creatorId != null">
+                CREATOR_ID = #{record.creatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createdTime != null">
+                CREATED_TIME = #{record.createdTime,jdbcType=DATE},
+            </if>
+            <if test="record.editorId != null">
+                EDITOR_ID = #{record.editorId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.editedTime != null">
+                EDITED_TIME = #{record.editedTime,jdbcType=DATE},
+            </if>
+            <if test="record.belongOrgId != null">
+                BELONG_ORG_ID = #{record.belongOrgId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update P_YKT_ZXJH
+        set ZXJH_ID = #{record.zxjhId,jdbcType=VARCHAR},
+        YPTJH_ID = #{record.yptjhId,jdbcType=VARCHAR},
+        ZXJH_MC = #{record.zxjhMc,jdbcType=VARCHAR},
+        ZXJH_YPTZH = #{record.zxjhYptzh,jdbcType=VARCHAR},
+        ZXJH_ZT = #{record.zxjhZt,jdbcType=VARCHAR},
+        ATTR_1 = #{record.attr1,jdbcType=VARCHAR},
+        ATTR_2 = #{record.attr2,jdbcType=VARCHAR},
+        ATTR_3 = #{record.attr3,jdbcType=VARCHAR},
+        ATTR_4 = #{record.attr4,jdbcType=VARCHAR},
+        CREATOR_ID = #{record.creatorId,jdbcType=VARCHAR},
+        CREATED_TIME = #{record.createdTime,jdbcType=DATE},
+        EDITOR_ID = #{record.editorId,jdbcType=VARCHAR},
+        EDITED_TIME = #{record.editedTime,jdbcType=DATE},
+        BELONG_ORG_ID = #{record.belongOrgId,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.superwork.apcosplatform.domain.PYktZxjh">
+        update P_YKT_ZXJH
+        <set>
+            <if test="yptjhId != null">
+                YPTJH_ID = #{yptjhId,jdbcType=VARCHAR},
+            </if>
+            <if test="zxjhMc != null">
+                ZXJH_MC = #{zxjhMc,jdbcType=VARCHAR},
+            </if>
+            <if test="zxjhYptzh != null">
+                ZXJH_YPTZH = #{zxjhYptzh,jdbcType=VARCHAR},
+            </if>
+            <if test="zxjhZt != null">
+                ZXJH_ZT = #{zxjhZt,jdbcType=VARCHAR},
+            </if>
+            <if test="attr1 != null">
+                ATTR_1 = #{attr1,jdbcType=VARCHAR},
+            </if>
+            <if test="attr2 != null">
+                ATTR_2 = #{attr2,jdbcType=VARCHAR},
+            </if>
+            <if test="attr3 != null">
+                ATTR_3 = #{attr3,jdbcType=VARCHAR},
+            </if>
+            <if test="attr4 != null">
+                ATTR_4 = #{attr4,jdbcType=VARCHAR},
+            </if>
+            <if test="creatorId != null">
+                CREATOR_ID = #{creatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="createdTime != null">
+                CREATED_TIME = #{createdTime,jdbcType=DATE},
+            </if>
+            <if test="editorId != null">
+                EDITOR_ID = #{editorId,jdbcType=VARCHAR},
+            </if>
+            <if test="editedTime != null">
+                EDITED_TIME = #{editedTime,jdbcType=DATE},
+            </if>
+            <if test="belongOrgId != null">
+                BELONG_ORG_ID = #{belongOrgId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where ZXJH_ID = #{zxjhId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.superwork.apcosplatform.domain.PYktZxjh">
+    update P_YKT_ZXJH
+    set YPTJH_ID = #{yptjhId,jdbcType=VARCHAR},
+      ZXJH_MC = #{zxjhMc,jdbcType=VARCHAR},
+      ZXJH_YPTZH = #{zxjhYptzh,jdbcType=VARCHAR},
+      ZXJH_ZT = #{zxjhZt,jdbcType=VARCHAR},
+      ATTR_1 = #{attr1,jdbcType=VARCHAR},
+      ATTR_2 = #{attr2,jdbcType=VARCHAR},
+      ATTR_3 = #{attr3,jdbcType=VARCHAR},
+      ATTR_4 = #{attr4,jdbcType=VARCHAR},
+      CREATOR_ID = #{creatorId,jdbcType=VARCHAR},
+      CREATED_TIME = #{createdTime,jdbcType=DATE},
+      EDITOR_ID = #{editorId,jdbcType=VARCHAR},
+      EDITED_TIME = #{editedTime,jdbcType=DATE},
+      BELONG_ORG_ID = #{belongOrgId,jdbcType=VARCHAR}
+    where ZXJH_ID = #{zxjhId,jdbcType=VARCHAR}
+  </update>
+    <select id="listPlan" parameterType="com.superwork.apcosplatform.domain.PYktZxjh" resultMap="BaseResultMap">
+        SELECT A.*,B.USER_ACCOUNT USERNAME FROM P_YKT_ZXJH A LEFT OUTER JOIN P_SYS_USER B
+        ON A.CREATOR_ID = B.USER_ID LEFT OUTER JOIN
+        (
+        SELECT * FROM  P_SMH_SETTING WHERE  CREATOR_ID = #{creatorId}
+        UNION
+        SELECT  PSS.* FROM  P_SMH_SETTING PSS LEFT OUTER JOIN P_ROLE_USER PRU
+        ON PSS.CREATOR_ID = PRU.USER_ID
+        WHERE EXISTS(SELECT 1 FROM  P_ROLE_USER P  WHERE  PRU.ROLE_ID = P.ROLE_ID AND P.USER_ID = #{creatorId})
+        )
+        C
+        ON C.SMARTHOME_ACCOUNT = A.ZXJH_YPTZH
+        WHERE C.SETTING_ID IS NOT NULL
+        <if test="zxjhMc != null and zxjhMc != ''">
+            and A.ZXJH_MC LIKE '%'|| #{zxjhMc} ||'%'
+        </if>
+        <if test="zxjhYptzh != null and zxjhYptzh != ''">
+            and A.ZXJH_YPTZH LIKE '%'|| #{zxjhYptzh} ||'%'
+        </if>
+        <if test="zxjhZt != null and zxjhZt != ''">
+            and A.ZXJH_ZT = #{zxjhZt}
+        </if>
+        order by A.CREATED_TIME DESC
+    </select>
+</mapper>

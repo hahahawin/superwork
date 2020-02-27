@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en" class="x-admin-sm">
+<head>
+    <meta charset="UTF-8">
+    <title>设备列表</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" href="../../css/font.css">
+    <link rel="stylesheet" href="../../css/xadmin.css">
+    <script type="text/javascript" src="../../js/jquery-2.0.3.min.js"></script>
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script>
+
+        $(function () {
+            var familyUrl =window.location.href;
+            if(familyUrl.indexOf("token")!=-1){
+                var familyData =familyUrl.split("=");
+                if(familyData.length>1){
+                    $.ajax({
+                        url: '/index/thirdLogin.json?token='+familyData[1],
+                        dataType: 'json',
+                        type: 'GET',
+                        async:false,
+                        success:function (data) {
+                            if(data.status!=200){
+                                alert(data.msg);
+                            }
+                        }
+                    });
+                }
+            }
+        })
+    </script>
+    <style>
+        .layui-inline {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<div style="padding: 10px">
+    <div>
+        <form class="layui-form" action="">
+            <div class="layui-inline layui-show-xs-block">
+                <input type="text" name="deviceName" id="deviceName" placeholder="请输入产品名称"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <!--<div class="layui-inline layui-show-xs-block">-->
+            <!--<input type="text" id="serialNum" name="serialNum" placeholder="请输入设备序列号"-->
+            <!--autocomplete="off" class="layui-input">-->
+            <!--</div>-->
+            <div class="layui-inline layui-show-xs-block">
+                <input type="text" id="productCode" name="productCode" placeholder="请输入产品类型"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-inline layui-show-xs-block">
+                <input type="text" id="deviceMac" name="deviceMac" placeholder="请输入产品标识"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-inline layui-show-xs-block">
+                <input type="text" id="account" name="account" placeholder="请输入BCCA授权账号"
+                       autocomplete="off" class="layui-input">
+            </div>
+
+            <div class="layui-inline layui-show-xs-block">
+                <button class="layui-btn" lay-submit lay-filter="search"><i class="layui-icon">&#xe615;</i>
+                </button>
+                <button class="layui-btn"><i
+                        class="layui-icon layui-icon-fonts-clear"></i></button>
+                <!-- 返回驾驶舱按钮 -->
+                <button id="backJsc" class="layui-btn" onclick="window.history.back(-1); " style="display: none"><i class="layui-icon">&#xe65a;</i>返回驾驶舱 </button>
+            </div>
+        </form>
+    </div>
+    <div>
+        <table class="layui-table" id="data-table" lay-filter="data-table"></table>
+    </div>
+</div>
+
+
+<script type="text/javascript" src="../../js/myWrite.js"></script>
+<script src="../../js/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="../../js/xadmin.js"></script>
+<script>
+
+    var userInfo;
+    layui.use(['table', 'form'], function () {
+        var table = layui.table;
+        var $ = layui.jquery;
+        var form = layui.form;
+        var dataTable = table.render({
+            title: '用户列表',
+            elem: '#data-table',
+            height: 'full-18',
+            url: '/sbgl/listsb.json', //数据接口
+            method: 'post',
+            // toolbar: '#toolbarDemo',
+            contentType: 'application/json',
+            // size: 'sm',
+            response: {
+                countName: 'total',//规定数据总数的字段名称，默认：count
+                statusCode: 200, //规定成功的状态码，默认：0
+                statusName: 'status'
+            },
+            where: {},
+            page: true, //开启分页
+            limit: 20,
+            limits: [20, 30, 50, 100],
+            defaultToolbar: [],
+            done: function (res, curr, count) {
+                if (res.status == 401) {
+                    top.layer.alert(res.msg, {
+                        end: function () {
+                            top.location.href = '/';
+                        }
+                    })
+
+                }
+            },
+            cols: [[ //表头
+                {
+                    type: 'numbers',
+                    width: '5%',
+                    title: '序号'
+                }
+                , {field: 'deviceName', title: '产品名称', align: 'center', sort: true,}
+                // , {field: 'serialNum',  title: '设备序列号', align: 'center', sort: true}
+                , {field: 'productCode', title: '产品类型', align: 'center', sort: true}
+                , {field: 'deviceMac', title: '产品标识', align: 'center', sort: true}
+                , {field: 'account', title: 'BCCA授权账号', align: 'center', sort: true}
+                , {field: 'userAccount', title: '创建人', align: 'center', sort: true}
+                // , {field: 'createdTime', title: '创建时间', align: 'center', sort: true}
+                , {field: 'attr2', title: '区域', align: 'center', sort: true}
+                , {field: 'attr3', title: '坐标', align: 'center', sort: true}
+                , {
+                    field: 'expressNo', title: '操作', align: 'center', width: 400, sort: true
+                    , templet: function (d) {
+                        var wgOnLine = '<a class="layui-btn layui-btn-xs  layui-btn-warm" lay-event="wgOnLine">网关验证</a>';
+                        var hand = '<a class="layui-btn layui-btn-xs  layui-btn-warm" lay-event="hand">控制</a>';
+                        var cancel = '<a class="layui-btn layui-btn-xs  layui-btn-normal" lay-event="cancel">设备解绑</a>';
+                        // var delmb = '<a class="layui-btn layui-btn-xs  layui-btn-normal" lay-event="delmb">删除设置模板</a>';
+                        var listms = '<a class="layui-btn layui-btn-xs  layui-btn-normal" lay-event="listms">关联模式</a>';
+                        var position = '<a class="layui-btn layui-btn-xs  layui-btn-normal" lay-event="position">区域编辑</a>';
+                        return wgOnLine + hand + listms+cancel+position;
+                    }
+
+                }
+            ]]
+        });
+
+        //监听工具条
+        table.on('tool(data-table)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+            Info = obj.data; //获得当前行数据
+            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            var tr = obj.tr; //获得当前行 tr 的DOM对象
+
+            if (layEvent === 'wgOnLine') { //订阅
+                //出现加载并遮罩
+                var index = layer.load(1, {
+                    shade: [0.5, '#000'] //0.1透明度的背景
+                });
+                $.ajax({
+                    url: '/sbgl/wgOnLine.json',
+                    dataType: 'json',
+                    type: 'post',
+                    contentType: 'application/json',
+                    data: JSON.stringify(Info),
+                    hasShade:index,
+                    mysuccess: function (result) {
+                        if (result.status == 200) {
+                            var register_gateway_mac;
+                            var register_time;
+                            var mac_register_time;
+                            if(result.data.data.register_gateway_mac){
+                                register_gateway_mac = result.data.data.register_gateway_mac;
+                            }else{
+                                register_gateway_mac = '';
+                            }
+
+                            if(result.data.data.register_time){
+                                register_time = result.data.data.register_time;
+                            }else{
+                                register_time = '';
+                            }
+
+                            if(result.data.data.mac_register_time){
+                                mac_register_time = result.data.data.mac_register_time;
+                            }else{
+                                mac_register_time = '';
+                            }
+                            var html = '<div class="layui-card">\n' +
+                                '  <div class="layui-card-body">\n' +
+                                '网关MAC：' + register_gateway_mac+ '<br>\n' +
+                                '设备注册时间：' +register_time+ '<br>\n' +
+                                '网关注册时间：' +mac_register_time+ '<br>\n' +
+                                '  </div>\n' +
+                                '</div>'
+                            //自定页
+                            layer.open({
+                                type: 1,
+                                skin: 'layui-layer-demo', //样式类名
+                                title: '验证结果信息',
+                                closeBtn: 0, //不显示关闭按钮
+                                area: ['420px', '240px'], //宽高
+                                anim: 2,
+                                shadeClose: true, //开启遮罩关闭
+                                content:html
+                            });
+                        }else {
+                            layer.alert(result.msg);
+                        }
+                    }
+                });
+            }
+            if (layEvent === 'hand') { //订阅
+                layer.open({
+                    type: 2,
+                    title: '控制',
+                    content: 'productHand.html',
+                    shadeClose: false,
+                    shade: 0.5,
+                    area: ['60%', '50%'],
+                    maxmin: true
+                });
+            }
+            if (layEvent === 'listms') { //订阅
+                layer.open({
+                    type: 2,
+                    title: '关联模式',
+                    content: 'listMsBySum.html',
+                    shadeClose: false,
+                    shade: 0.5,
+                    area: ['100%', '100%'],
+                    maxmin: true
+                });
+            }
+            if (layEvent === 'cancel') {
+                //询问框
+                layer.confirm('真的要解绑设备吗？', {
+                    btn: ['确定','取消'] //按钮
+                }, function(){
+                    //出现加载并遮罩
+                    var index = layer.load(1, {
+                        shade: [0.5, '#000'] //0.1透明度的背景
+                    });
+                    //向服务端发送指令
+                    $.ajax({
+                        url: '/account_3/sbJiebing',
+                        dataType: 'json',
+                        type: 'post',
+                        data: Info,
+                        hasShade:index,
+                        mysuccess: function (result) {
+                            layer.close(index);
+                            if (result.status == 200) {
+                                layer.msg("操作成功！", {icon: 1, time: 1000, shade: 0.4}, function () {
+                                    dataTable.reload({
+                                        where: {}
+                                    })
+                                });
+                            } else {
+                                layer.alert(result.msg);
+                            }
+                        }
+                    });
+
+                });
+
+
+            }
+
+            if (layEvent === 'delmb') {
+                //出现加载并遮罩
+                var index = layer.load(1, {
+                    shade: [0.5, '#000'] //0.1透明度的背景
+                });
+                //向服务端发送指令
+                $.ajax({
+                    url: '/sbgl/delmb.json',
+                    dataType: 'json',
+                    type: 'post',
+                    data: JSON.stringify(Info),
+                    contentType: 'application/json',
+                    hasShade:index,
+                    success: function (result) {
+                        layer.close(index);
+                        if (result.status == 200) {
+                            layer.msg("删除成功！", {icon: 1, time: 1000, shade: 0.4}, function () {
+                            });
+                        } else {
+                            layer.alert(result.msg);
+                        }
+                    }
+                });
+                return false;
+
+            }
+
+            if (layEvent === 'position') {
+                layer.open({
+                    type: 2,
+                    title: '区域编辑',
+                    content: 'editPosition.html',
+                    shadeClose: false,
+                    shade: 0.5,
+                    area: ['100%', '100%'],
+                    maxmin: true
+                });
+
+            }
+
+        });
+
+
+        form.on('submit(search)', function (data) {
+            var value = data.field;
+            //出现加载并遮罩
+            dataTable.reload({
+                where: { //设定异步数据接口的额外参数，任意设
+                    "data": value
+                }
+            })
+            return false;
+        })
+
+        window.reload = function () {
+            dataTable.reload({
+                where: { //设定异步数据接口的额外参数，任意设
+                    "data": {}
+                }
+            })
+        }
+
+    });
+
+
+</script>
+
+</body>
+</html>
+
+<script>
+    // 驾驶舱跳转过来的处理
+    function fromCockpit2() {
+        let m = localStorage.getItem("muenType");
+        if (m != null && m != '') {
+            $('#backJsc').show();
+        }
+        localStorage.setItem("muenType", "");
+    }
+
+    setTimeout(function () {
+        fromCockpit2();
+    }, 500);
+</script>

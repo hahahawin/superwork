@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en" class="x-admin-sm">
+<head>
+    <meta charset="UTF-8">
+    <title>模式列表</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" href="../../css/font.css">
+    <link rel="stylesheet" href="../../css/xadmin.css">
+    <script src="../../js/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../../js/xadmin.js"></script>
+    <script type="text/javascript" src="../../js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../../js/myWrite.js"></script>
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        .layui-inline {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<div style="padding: 10px">
+    <div>
+        <form class="layui-form" action="">
+            <div class="layui-inline layui-show-xs-block">
+                <input type="text" name="sbmoglName" id="sbmoglName" placeholder="请输入模式名称"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-inline layui-show-xs-block">
+                <input type="text" id="attr2" name="attr2" placeholder="请输入BCCA授权账号"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-inline layui-show-xs-block">
+                <button class="layui-btn" lay-submit lay-filter="search"><i class="layui-icon">&#xe615;</i>
+                </button>
+                
+                <button class="layui-btn" ><i
+                        class="layui-icon layui-icon-fonts-clear"></i></button>
+                
+                <button type="button" class="layui-btn" onclick="add()">添加模式
+                </button>
+                <!-- 返回驾驶舱按钮 -->
+                <button id="backJsc" class="layui-btn" onclick="window.history.back(-1); " style="display: none"><i class="layui-icon">&#xe65a;</i>返回驾驶舱 </button>
+            </div>
+        </form>
+    </div>
+    <div>
+        <table class="layui-table" id="data-table" lay-filter="data-table"></table>
+    </div>
+</div>
+<script type="text/html" id="switchTpl">
+    <input type="checkbox" name="mszhZt" value="{{d.mszhId}}" lay-skin="switch" lay-text="停用|启用"
+           lay-filter="isEnable" {{ d.mszhZt== 2?'checked':''}}>
+</script>
+
+<script>
+    var Info;
+    layui.use(['table', 'form'], function () {
+        var table = layui.table;
+        var $ = layui.jquery;
+        var form = layui.form;
+
+        var dataTable = table.render({
+            title: '用户列表',
+            elem: '#data-table',
+            height: 'full-18',
+            url: '/sbgl/listMs.json', //数据接口
+            method: 'post',
+            // toolbar: '#toolbarDemo',
+            contentType: 'application/json',
+            // size: 'sm',
+            response: {
+                countName: 'total',//规定数据总数的字段名称，默认：count
+                statusCode: 200, //规定成功的状态码，默认：0
+                statusName: 'status'
+            },
+            where: {},
+            page: true, //开启分页
+            limit: 20,
+            limits: [20, 30, 50, 100],
+            defaultToolbar: [],
+            done: function (res, curr, count) {
+                if (res.status == 401) {
+                    top.layer.alert(res.msg,{end:function () {
+                            top.location.href = '/';
+                        }})
+                }
+            },
+            cols: [[ //表头
+                {type: 'numbers', width:'5%', title: '序号'}
+                , {field: 'sbmoglName', title: '模式名称', align: 'center', sort: true,width:'20%'}
+                , {field: 'attr2', title: 'BCCA授权账号', align: 'center', sort: true,width:'20%'}
+                , {field: 'createName',  title: '创建人', align: 'center', sort: true,width:'10%'}
+                , {field: 'createdTime',  title: '创建时间', align: 'center', sort: true,width:'20%'}
+                , {field: 'expressNo', title: '操作', align: 'center'
+                    , templet: function (d) {
+                        var edit = '<a class="layui-btn layui-btn-xs  layui-btn-warm" lay-event="edit">编辑</a>';
+                        var del = '<a class="layui-btn layui-btn-xs  layui-btn-warm" lay-event="del">删除</a>';
+                        var addml = '<a class="layui-btn layui-btn-xs  layui-btn-warm" lay-event="addml">设置命令</a>';
+                        var hand = '<a class="layui-btn layui-btn-xs  layui-btn-warm" lay-event="hand">控制</a>';
+                        return edit+del+addml+hand;
+                    }
+
+                }
+            ]]
+        });
+
+        //监听工具条
+        table.on('tool(data-table)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+            Info = obj.data; //获得当前行数据
+            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            var tr = obj.tr; //获得当前行 tr 的DOM对象
+            if (layEvent === 'edit') { //订阅
+                layer.open({
+                    type: 2,
+                    title: '编辑',
+                    content:'eidtMs.html' ,
+                    shadeClose: false,
+                    shade: 0.5,
+                    area: ['100%', '100%'],
+                    maxmin: true
+                });
+            }else if(layEvent === 'del'){
+                layer.confirm('真的删除此模式么?', function(index){
+                    layer.close(index);
+                    //向服务端发送删除指令
+                    $.ajax({
+                        url:  '/sbgl/delms.json',
+                        dataType: 'json',
+                        type: 'post',
+                        data: JSON.stringify({'data': Info}),
+                        contentType : 'application/json',
+                        mysuccess:function (data) {
+                            if(data.status==200){
+                                layer.msg("删除成功！");
+                                obj.del(tr); //删除对应行（tr）的DOM结构，并更新缓存
+                            }else{
+                                layer.msg(data.msg);
+                            }
+                        }
+                    });
+                });
+
+            }else if(layEvent === 'addml'){
+                layer.open({
+                    type: 2,
+                    title: '添加命令',
+                    content:'addml.html' ,
+                    shadeClose: false,
+                    shade: 0.5,
+                    area: ['80%', '80%'],
+                    maxmin: true
+                });
+            }else if(layEvent === 'hand'){
+                $.ajax({
+                    url: '/sbgl/msControl.json?msId='+Info.sbmoglId,
+                    type: 'GET',
+                    dataType: 'json',
+                    mysuccess: function (data) {
+                        if (data.status == 200) {
+                            layer.msg('控制成功！', {icon: 1, time: 1000, shade: 0.4}, function () {
+                                dataTable.reload();
+                            });
+                        }else {
+                            layer.msg(data.msg, {icon: 2, time: 1000, shade: 0.4}, function () {
+                                dataTable.reload();
+                            });
+                        }
+                    }
+                })
+            }
+
+        });
+
+        window.add = function (){
+            layer.open({
+                type: 2,
+                title: '添加模式',
+                content:'addmyms.html' ,
+                shadeClose: false,
+                shade: 0.5,
+                area: ['100%', '100%'],
+                maxmin: true
+            });
+        }
+        form.on('submit(search)', function (data) {
+            var value = data.field;
+            //出现加载并遮罩
+
+            dataTable.reload({
+                where: { //设定异步数据接口的额外参数，任意设
+                    "data": value
+                }
+            })
+            return false;
+        })
+
+        window.reload = function () {
+            dataTable.reload();
+        }
+
+
+
+    });
+
+</script>
+
+</body>
+</html>
+
+<script>
+    // 驾驶舱跳转过来的处理
+    function fromCockpit2() {
+        let m = localStorage.getItem("muenType");
+        if (m != null && m != '') {
+            $('#backJsc').show();
+        }
+        localStorage.setItem("muenType", "");
+    }
+
+    setTimeout(function () {
+        fromCockpit2();
+    }, 500);
+</script>

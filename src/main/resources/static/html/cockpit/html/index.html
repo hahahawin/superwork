@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>APCOS 标准应用平台-驾驶舱</title>
+    <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <link rel="stylesheet" href="../css/common.css"/>
+    <link rel="stylesheet" href="../css/header.css"/>
+    <link rel="stylesheet" href="../css/selectStyle.css"/>
+    <link rel="stylesheet" href="../css/index.css"/>
+    <link rel="stylesheet" href="../css/font-awesome.min.css">
+    <link rel="stylesheet" href="../plus/layui/css/layui.css">
+
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/echarts.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src='http://api.map.baidu.com/api?v=3.0&ak=WE61IG8RcOw5mUUYNbjZscXn6TvxQgg6'></script>
+    <script src="../js/vue.min.js"></script>
+    <script src="../plus/layer/layer.js"></script>
+    <style>
+        .BMap_pop {
+            display: none;
+            width: 358px;
+            height: 130px;
+            background: url(../img/branch/tip_box1.png) no-repeat;
+            background-size: 358px 130px;
+        }
+        .BMap_bubble_content{
+            font-size: 0.1rem;
+            color: #fff9ec;
+        }
+        .BMap_bottom{
+            display: flex;
+            font-size: 0.1rem;
+            color: #fff9ec;
+        }
+        .BMap_bottom > div {
+            display: flex;
+        }
+        .BMap_bubble_content > span{
+            font-weight: 800;
+        }
+        .layui-layer-title{
+            background-color: rgb(8, 17, 45, 0.4) !important;
+        }
+    </style>
+</head>
+
+<body>
+<div id="mapDiv">
+    <div id="allmap" style="width:19.2rem;height: 10.8rem;min-height: 100vh;display:block;float: left;"></div>
+    <iframe id="iframe" style="width:19.2rem;height: 10.8rem;display: none;float: left;"></iframe>
+    <div id="mask" style="width:19.2rem;height: 10.8rem;min-height: 100vh;display:block;position: absolute;top: 0;left: 0;
+			background: url(../img/mask.png) no-repeat;background-size: 100% 100%;pointer-events: none;opacity: 0.8;"></div>
+</div>
+<div id="main">
+    <div id="header" style="height: 0.62rem;">
+        <script type="text/javascript">
+            $("#header").load("header.html");
+        </script>
+    </div>
+    <div class="section">
+        <div id="left">
+            <div class="left-one">
+                <div class="content-box">
+                    <p id="company_name" v-text="orgInfo.orgName"></p>
+                    <div class="content-item">
+                        <span class="icon-branch icon-position"></span>
+                        <span>地址：</span>
+                        <span v-text="orgInfo.orgAddr"></span>
+                    </div>
+                    <div class="content-item">
+                        <span class="icon-branch icon-tel"></span>
+                        <span>联系：</span>
+                        <span>
+                            <span v-text="orgInfo.userCell"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="box-foot">
+
+                </div>
+            </div>
+            <div class="left-two">
+                <div class="box-content">
+                    <div>
+                        <div style="display: flex;justify-content: space-between;font-size: 0.1rem">
+                            <div>PM2.5</div>
+                            <div><span v-text="weatherList[0].air" style="font-size: 0.2rem"></span>ug/m³</div>
+                        </div>
+                        <div class="left-two-color" style="background: #6bcd07" v-if="weatherList[0].air<=50"></div>
+                        <div class="left-two-color" style="background: #fbd029" v-if="weatherList[0].air>50 && weatherList[0].air<=100"></div>
+                        <div class="left-two-color" style="background: #fe8802" v-if="weatherList[0].air>100 && weatherList[0].air<=150"></div>
+                        <div class="left-two-color" style="background: #fe0000" v-if="weatherList[0].air>150 && weatherList[0].air<=200"></div>
+                        <div class="left-two-color" style="background: #970454" v-if="weatherList[0].air>200 && weatherList[0].air<=300"></div>
+                        <div class="left-two-color" style="background: #62001e" v-if="weatherList[0].air>300"></div>
+                    </div>
+                    <div class="left-two-img"></div>
+                    <div style="margin-top: 0.1rem;">
+                        <div>
+                            <span>空气质量：</span>
+                            <span v-text="weatherList[0].air_level"></span>
+                        </div>
+                        <div v-text="'温馨提示：'+weatherList[0].air_tips" style="height: 0.45rem;overflow: auto" :title="'温馨提示：'+weatherList[0].air_tips"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="left-three">
+                <div class="box-content" style="display: flex">
+                    <div>
+                        <div style="display: flex;justify-content: space-between;align-items: flex-end;">
+                            <div :class="'left-three-icon-' + weatherList[0].wea_img"></div>
+                            <div v-text="city"></div>
+                        </div>
+                        <div style="font-size: 0.6rem;color: #00FDF2" v-text="weatherList[0].tem"></div>
+                        <div style="font-size: 0.1rem;text-align: right" v-text="weatherList[0].wea"></div>
+                    </div>
+                    <div style="display: flex;justify-content: space-between;width: 100%;margin-left: 0.5rem">
+                        <div v-for="(v, k) in weatherList" v-if="k != 0">
+                            <div v-text="v.week"></div>
+                            <div v-text="v.date.substring(5)" style="text-align: center"></div>
+                            <div :class="'left-three-icon-' + v.wea_img" style="margin: 0.1rem 0"></div>
+                            <div v-text="v.tem1"></div>
+                            <div v-text="v.tem2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="left-four">
+                <div class="echart-box">
+                    <div class="item">
+                        <div id="echarts3"></div>
+                        <div class="item-value value-temp">
+                            <span id="wendu" v-text="weatherList[0].tem"></span>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div id="echarts4"></div>
+                        <div class="item-value value-humidity">
+                            <span id="shidu" v-text="weatherList[0].humidity+'%'"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-foot">
+                    <!--<a style="background-color: #000019;cursor: default;"></a>-->
+                </div>
+            </div>
+        </div>
+        <div id="center">
+            <div class="select-box">
+                <div class="select-bar" style="display: flex">
+                    <select id="cd-dropdown" name="cd-dropdown" class="cd-select">
+                        <option value="-1">全部</option>
+                        <option value="0" class="icon-small-sprite"
+                                data-bac-uri="background: url(../img/all.png) no-repeat;background-position: center;"
+                                selected="selected"> 全部设备
+                        </option>
+                        <option value="1" class="icon-small-sprite"
+                                data-bac-uri="width: 0.15rem;height: 0.15rem;border-radius:0.2rem;top: 30%;background: #4afea3"> 在线设备</option>
+                        <option value="2" class="icon-small-sprite"
+                                data-bac-uri="width: 0.15rem;height: 0.15rem;border-radius:0.2rem;top: 30%;background: #e6a600"> 离线设备</option>
+                    </select>
+                    <div style="display: flex;margin-left: 0.2rem">
+                        <div style="display: flex;align-items: center">
+                            <div style="width: 0.15rem;height: 0.15rem;border-radius:0.2rem;background: #4afea3"></div>
+                            <div style="width: 0.8rem;margin-left: 0.1rem">在线设备</div>
+                            <div style="width: 0.15rem;height: 0.15rem;border-radius:0.2rem;background: #e6a600;margin-left: 0.2rem"></div>
+                            <div style="width: 0.8rem;margin-left: 0.1rem">离线设备</div>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="floor-select">
+                    <select id="cd-dropdown2" name="cd-dropdown2" class="cd-select">
+                        <option value="-1">全部</option>
+                        <option value="0" class="icon-small-sprite"
+                                data-bac-uri="background: url(../img/all.png) no-repeat;background-position: center;"
+                                selected="selected"> 全部
+                        </option>
+                    </select>
+                </div>-->
+            </div>
+            <div class="center-one">
+                <div class="content-deviceList" style="display: flex;position: relative;width: 9rem;margin: 0 0.1rem">
+                    <div class="left-btn-icon" @click="left()" style="top: 0.4rem;"></div>
+                    <div class="box-content-content">
+                        <div class="box-content-content-item" :style="'width:'+len+'rem'">
+                            <div v-for="(v, k) in list" class="center-content-item" @click="control(v)">
+                                <div class="center-content-img"></div>
+                                <div class="center-content-text" :title="v.deviceName" v-text="v.deviceName"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="right-btn-icon" @click="right()" style="top: 0.4rem;"></div>
+                </div>
+                <div class="moreBtn" onclick="gotoIndex('productManage')"></div>
+            </div>
+        </div>
+        <div id="right">
+            <div class="right-one">
+                <div class="box-content" style="display: flex;position: relative;width: 4rem;margin: 0 0.1rem">
+                    <div class="left-btn-icon" @click="left()"></div>
+                    <div class="right-one-content">
+                        <div class="right-one-content2">
+                            <div v-for="(v, k) in list" :class="k == 0 ? 'right-one-content-item-margin' : 'right-one-content-item'" @click="control(v)">
+                                <div class="right-one-content-icon"></div>
+                                <div class="right-one-content-text" :title="v.sbmoglName" v-text="v.sbmoglName"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="right-btn-icon" @click="right()"></div>
+                </div>
+                <div class="moreBtn" onclick="gotoIndex('listmyms')"></div>
+            </div>
+            <div class="right-two">
+                <div class="echart-box">
+                    <div class="item">
+                        <div id="echarts5"></div>
+                        <span>总数</span>
+                    </div>
+                    <div class="item">
+                        <div id="echarts6"></div>
+                        <span>在线</span>
+                    </div>
+                    <div class="item">
+                        <div id="echarts7"></div>
+                        <span>离线</span>
+                    </div>
+                </div>
+                <div class="box-foot">
+                    <!--<a style="background-color: #000019;cursor: default;"></a>-->
+                </div>
+            </div>
+            <div class="right-three">
+                <div class="box-content" style="margin: 0 0.2rem;width: 3.8rem;">
+                    <table class="right-three-table">
+                        <tr>
+                            <th>姓名</th>
+                            <th>电话</th>
+                            <th>所属公司</th>
+                            <th>操作</th>
+                        </tr>
+                        <tr v-for="(v, k) in list" :class="k%2==0?'right-three-table-tr-bac':'right-three-table-tr'">
+                            <td :title="v.userName" v-text="v.userName.length > 3 ? v.userName.substring(0,3)+'...' : v.userName" style="text-align: left"></td>
+                            <td :title="v.cellphoneNo" v-text="v.cellphoneNo"></td>
+                            <td :title="v.companyName" v-text="v.companyName.length > 3 ? v.companyName.substring(0,3)+'...' : v.companyName" ></td>
+                            <td>
+                                <div style="width: 0.55rem;background: #00a2ff;border-radius: 0.5rem;display: inline-block;cursor:pointer;" @click='detail(v)'>详情</div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="moreBtn" onclick="gotoIndex('userList')"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--设备信息弹框-->
+<script type="text/html" id="tip_blue">
+    <div class="content-box-blue">
+        <span class="device-url"></span>
+        <div class="device-info-list">
+            <div class="list-item">
+                <span class="item-value">229.0</span>
+                <span>电压(V)</span>
+            </div>
+            <div class="list-item">
+                <span class="item-value">0.4</span>
+                <span>漏电流(mA)</span>
+            </div>
+            <div class="list-item">
+                <span class="item-value">0.0</span>
+                <span>功率(W)</span>
+            </div>
+            <div class="list-item">
+                <span class="item-value">43.4</span>
+                <span>温度(℃)</span>
+            </div>
+            <div class="list-item">
+                <span class="item-value">270.8</span>
+                <span>用电量(kW)</span>
+            </div>
+        </div>
+        <div class="position-info">
+            <div class="info-item">
+                <span class="icon-branch icon-name"></span>
+                <span>智能空开002</span>
+            </div>
+            <div class="info-item">
+                <span class="icon-branch icon-site"></span>
+                <span>现金业务区</span>
+            </div>
+            <div class="info-item">
+                <span class="icon-branch icon-state"></span>
+                <span>合闸</span>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/html" id="tip_red">
+    <div class="content-box-red">
+        <span class="device-url"></span>
+        <p class="warning-info">电量过压！请处理</p>
+        <div class="device-info-list">
+            <div class="list-item">
+                <span class="item-value font-red">699.0</span>
+                <span>电压(V)</span>
+            </div>
+            <div class="list-item">
+                <span class="item-value">0.4</span>
+                <span>漏电流(mA)</span>
+            </div>
+            <div class="list-item">
+                <span class="item-value">0.0</span>
+                <span>功率(W)</span>
+            </div>
+            <div class="list-item">
+                <span class="item-value">43.4</span>
+                <span>温度(℃)</span>
+            </div>
+            <div class="list-item">
+                <span class="item-value">270.8</span>
+                <span>用电量(kW)</span>
+            </div>
+        </div>
+        <div class="position-info">
+            <div class="info-item">
+                <span class="icon-branch icon-name"></span>
+                <span>智能空开001</span>
+            </div>
+            <div class="info-item">
+                <span class="icon-branch icon-site"></span>
+                <span>低柜区</span>
+            </div>
+            <div class="info-item">
+                <span class="icon-branch icon-state"></span>
+                <span>合闸</span>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script src="../js/modernizr.custom.63321.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/jquery.dropdown.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/template-web.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/index.js" type="text/javascript" charset="utf-8"></script>
+</body>
+
+</html>

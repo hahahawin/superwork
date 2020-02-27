@@ -1,0 +1,285 @@
+<html class="x-admin-sm" lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>APCOS超级工作站云平台</title>
+	<link rel="shortcut icon" href="/img/favicon.ico" />
+	<meta name="renderer" content="webkit|ie-comp|ie-stand">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<link rel="stylesheet" href="../css/font.css">
+	<link rel="stylesheet" href="../css/xadmin.css">
+	<script type="text/javascript" src="../../js/jquery-2.0.3.min.js"></script>
+	<script src="../js/layui/layui.js" charset="utf-8"></script>
+	<script type="text/javascript" src="../../js/xadmin.js"></script>
+	<script type="text/javascript" src="../js/qrcode.js"></script>
+	<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+	<!--[if lt IE 9]>
+	<script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+	<script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+
+	<![endif]-->
+	<script>
+		// 是否开启刷新记忆tab功能
+		var is_remember = false;
+		function addTab(obj) {
+			var url = $(obj).attr("url");
+			var rightName = $(obj).attr("rightName");
+			xadmin.add_tab(rightName,url,true);
+		}
+	</script>
+</head>
+<body class="index layui-layout-body" style="background: #0f0f0f">
+<!-- 顶部开始 -->
+<div class="layui-layout layui-layout-admin">
+	<div class="layui-header">
+		<div class="container" id="my-head">
+			<div class="logo">
+				<a href="javascript:void(0)" style="width: 280px"><img th:src="${zzInfo.logo == null ? '/img/head_logo_title.png':zzInfo.logo}" onerror="this.src='/img/head_logo_title.png'" style="height: 30px;width: 326px;margin-top: 15px"></a>
+			</div>
+			<div class="left_open">
+<!--				<a><i title="展开左侧栏" class="iconfont">&#xe699;</i></a>-->
+			</div>
+
+
+			<ul class="layui-nav right" lay-filter="">
+				<li class="layui-nav-item">
+					<img src="/img/head_icon_jsc_nor.png" title="驾驶舱" onclick="window.location = '/html/cockpit/html/index.html'" onmouseover="this.src='/img/head_icon_jsc_hover.png'" onmouseleave="this.src='/img/head_icon_jsc_nor.png'">
+				</li>
+				<li class="layui-nav-item">
+					<a href="javascript:;">
+						<img th:src=" ${user.headportrarit== null ? '/img/mrhead.jpg':user.headportrarit}" class="layui-nav-img" onerror="this.src='/img/mrhead.jpg'">
+						[[${user.userAccount}]]
+					</a>
+					<dl class="layui-nav-child">
+						<!-- 二级菜单 -->
+						<dd>
+							<a onclick="xadmin.open('个人信息','/html/sysUser/userDetail.html','600')">个人信息</a>
+						</dd>
+						<dd>
+							<a onclick="xadmin.open('修改密码','/html/sysUser/editPassword.html','400','300')">修改密码</a>
+						</dd>
+						<dd>
+							<a href="/index/logout">切换帐号</a>
+						</dd>
+						<hr>
+						<dd>
+							<a href="/index/logout">退出</a>
+						</dd>
+					</dl>
+				</li>
+				<li class="layui-nav-item"><a href="javascript:;" >客户端下载</a>
+					<dl class="layui-nav-child">
+						<!-- 二级菜单 -->
+						<dd>
+							<a href="javascript:;" onclick="showURL('Android')">安卓下载</a>
+						</dd>
+						<!--<dd>-->
+						<!--<a href="javascript:;" onclick="showURL('iOS')">苹果下载</a>-->
+						<!--</dd>-->
+					</dl>
+				</li>
+			</ul>
+			<div style="float: right; text-align: center;">
+<!--				<img src="/img/head_icon_jsc_nor.png" title="驾驶舱" onclick="window.location = '/html/cockpit/html/index.html'">-->
+<!--				<a href="/html/cockpit/html/index.html" title="驾驶舱">驾驶舱</a>&ndash;&gt;-->
+<!--				<a onclick="change()">换肤</a>-->
+<!--				<a href="javascript:void(0)">欢迎您！</a>-->
+			</div>
+		</div>
+		<!-- 顶部结束 -->
+	</div>
+
+	<!-- 中部开始 -->
+	<!-- 左侧菜单开始 -->
+	<div class="left-nav" id="my-nav">
+		<div id="side-nav">
+			<ul id="nav" th:each="menu:${menus}">
+				<li>
+					<a href="javascript:;">
+						<i class="iconfont left-nav-li" th:lay-tips="${menu.rightName}">&#xe6b8;</i>
+						<cite>[[${menu.rightName}]]</cite>
+						<i class="iconfont nav_right">&#xe697;</i></a>
+					<ul class="sub-menu" th:each="chlid:${menu.chlidren}">
+						<li th:if="${#lists.isEmpty(chlid.chlidren)}">
+							<a th:attr="rightName=${chlid.rightName},url=${chlid.url}"  onclick="addTab(this)" class="sd4">
+								<i class="iconfont">&#xe6a7;</i>
+								<cite>[[${chlid.rightName}]]</cite></a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<!-- <div class="x-slide_left"></div> -->
+	<!-- 左侧菜单结束 -->
+
+	<div class="layui-body">
+		<!-- 右侧主体开始 -->
+		<div class="page-content">
+			<div class="layui-tab tab" lay-filter="xbs_tab" lay-allowclose="false">
+				<ul class="layui-tab-title">
+					<li class="home"><i class="layui-icon">&#xe68e;</i>我的桌面</li>
+				</ul>
+				<div class="layui-unselect layui-form-select layui-form-selected"
+					 id="tab_right">
+					<dl>
+						<dd data-type="this">关闭当前</dd>
+						<dd data-type="other">关闭其它</dd>
+						<dd data-type="all">关闭全部</dd>
+					</dl>
+				</div>
+				<div class="layui-tab-content">
+					<div class="layui-tab-item layui-show">
+						<iframe th:src="${user.userType == 1 ? '/html/welcome1.html':'/html/welcome.html'}" frameborder="0" scrolling="yes"
+								class="x-iframe"></iframe>
+					</div>
+				</div>
+				<div id="tab_show"></div>
+			</div>
+		</div>
+	</div>
+	<div class="layui-footer">
+		<!-- 底部固定区域 -->
+		<div style="float: right">
+			组织机构名称：[[${{zzInfo.orgName}}]]
+<!--			<a href="http://113.204.9.70:9085/html/productManage/productManage.html">111</a>-->
+<!--			<a href="http://www.baidu.com">222</a>-->
+		</div>
+
+	</div>
+</div>
+
+
+<div class="page-content-bg"></div>
+<div class="layui-hide" id="showEr" style="width: 340px;height: 360px;position: relative;background: white;float: none;padding: 20px 0;">
+	<span style="margin: 22px auto;display: block;font-size: 24px;color: #3d3d3d;text-align: center;line-height: 30px;">公共应用操作平台</span>
+	<div id="qrcode" style="width:200px;margin: 20px auto;"></div>
+	<span style="margin: 40px auto;display: block;font-size: 12px;color: #3d3d3d;text-align: center;line-height: 12px;">建议使用QQ扫描</span>
+</div>
+
+<style id="theme_style">
+
+</style>
+<script type="text/javascript">
+
+    layui.use('element', function() {
+        var element = layui.element;
+        window.change = function(){
+
+            $("#my-head").addClass("theme-head4");
+            $("#my-nav").addClass("them-left-nav4");
+            element.init();
+		}
+
+    });
+
+    function addTab(obj) {
+        var url = $(obj).attr("url");
+        var rightName = $(obj).attr("rightName");
+        xadmin.add_tab(rightName,url,true);
+    }
+    var qrcode = new QRCode(document.getElementById("qrcode"), {
+        render: "canvas", //也可以替换为table
+        // text: encodeURI(path),
+        // text: path,
+        width: 200,
+        height: 200,
+        // iconSrc: "/img/nav_logo.png",
+        // // typeNumber:-1,
+        // //二维码中心图片边框弧度
+        // iconRadius: 10,
+        // //二维码中心图片边框宽度
+        // iconBorderWidth: 1,
+        // //二维码中心图片边框颜色
+        // iconBorderColor: "red",
+    });
+    function showURL(value) {
+        qrcode.clear();
+        $.ajax({
+            url: '/appVersion/getAppPath.json?type=' + value,
+            dataType: 'json',
+            type: 'GET',
+            async: false,
+            success: function (data) {
+                if (data.status == 200) {
+                    qrcode.makeCode(encodeURI(data.data))
+                } else {
+                    qrcode.makeCode(("暂未发布，敬请期待！"))
+                }
+            }
+        });
+
+        $("#showEr").attr("class","layui-show");
+        //页面层-图片
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            area: ['auto'],
+            skin: 'layui-layer-nobg', //没有背景色
+            shadeClose: true,
+			end:function(){
+                qrcode.clear();
+                $("#showEr").attr("class","layui-hide")
+			},
+            content: $("#showEr")
+            // content: '<img src="/img/app.png" style="width: 300px;height: 300px">'
+        });
+    }
+
+</script>
+
+<script th:inline="javascript">
+
+	var theme= [[${zzInfo.theme}]];
+	if(theme === '1'){
+		$("#my-head").addClass("theme-head1");
+		$("#my-nav").addClass("them-left-nav1");
+	}else if(theme === '2'){
+		$("#my-head").addClass("theme-head2");
+		$("#my-nav").addClass("them-left-nav2");
+	}else if(theme === '3'){
+		$("#my-head").addClass("theme-head3");
+		$("#my-nav").addClass("them-left-nav3");
+	}else if(theme === '4'){
+		$("#my-head").addClass("theme-head4");
+		$("#my-nav").addClass("them-left-nav4");
+	}
+
+
+</script>
+<!-- 右侧主体结束 -->
+<!-- 中部结束 -->
+</body>
+</html>
+
+<script>
+	// 驾驶舱跳转过来的处理
+	function fromCockpit() {
+        let m = localStorage.getItem("muenType");
+        if (m != null && m != '') {
+            $("#side-nav").find("a").each(function () {
+                // 获取url
+                let url = $(this).attr("url");
+
+                if (typeof (url) != 'undefined' && url != null && url != '') {
+                    // 截取url只要.html前面那个
+                    url = url.substring(url.lastIndexOf("/") + 1, url.length - 5);
+
+                    // 如果当前url等于驾驶舱传过来的变量 就手动跳转
+                    if(url == m){
+                        // 让菜单下拉
+                        $($(this).parents('ul#nav').find("a")[0]).trigger("click");
+                        // 实现跳转
+                        $(this).trigger("click");
+					}
+                }
+            });
+        }
+    }
+
+    // 好像jquery还没加载出来，所以设个延时执行
+    setTimeout(function () {
+        fromCockpit();
+    }, 500);
+</script>

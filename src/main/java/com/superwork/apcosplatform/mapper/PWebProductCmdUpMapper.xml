@@ -1,0 +1,500 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.superwork.apcosplatform.mapper.PWebProductCmdUpMapper">
+  <resultMap id="BaseResultMap" type="com.superwork.apcosplatform.domain.PWebProductCmdUp">
+    <id column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="PRODUCT_ID" jdbcType="DECIMAL" property="productId" />
+    <result column="ENABLE_REGISTER" jdbcType="VARCHAR" property="enableRegister" />
+    <result column="ENABLE_CMD" jdbcType="VARCHAR" property="enableCmd" />
+    <result column="CMD_TYPE" jdbcType="VARCHAR" property="cmdType" />
+    <result column="CMD_CODE" jdbcType="VARCHAR" property="cmdCode" />
+    <result column="CMD_NAME" jdbcType="VARCHAR" property="cmdName" />
+    <result column="CMD_REGEX" jdbcType="VARCHAR" property="cmdRegex" />
+    <result column="CMD_README" jdbcType="VARCHAR" property="cmdReadme" />
+    <result column="CMD_SUCCESS_ID" jdbcType="VARCHAR" property="cmdSuccessId" />
+    <result column="CMD_ERROR_ID" jdbcType="VARCHAR" property="cmdErrorId" />
+    <result column="PARAM_NUM" jdbcType="DECIMAL" property="paramNum" />
+    <result column="CREATE_TIME" jdbcType="DATE" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="DATE" property="updateTime" />
+    <result column="DOWN_CMD_ID" jdbcType="VARCHAR" property="downCmdId" />
+    <result column="SYNC_STATUS" jdbcType="VARCHAR" property="syncStatus" />
+    <result column="SYNC_STATUS_3" jdbcType="DECIMAL" property="syncStatus3" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.superwork.apcosplatform.domain.PWebProductCmdUp">
+    <result column="CMD_TEXT" jdbcType="BLOB" property="cmdText" />
+    <result column="CMD_JS" jdbcType="CLOB" property="cmdJs" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    ID, PRODUCT_ID, ENABLE_REGISTER, ENABLE_CMD, CMD_TYPE, CMD_CODE, CMD_NAME, CMD_REGEX, 
+    CMD_README, CMD_SUCCESS_ID, CMD_ERROR_ID, PARAM_NUM, CREATE_TIME, UPDATE_TIME, DOWN_CMD_ID, 
+    SYNC_STATUS, SYNC_STATUS_3
+  </sql>
+  <sql id="Blob_Column_List">
+    CMD_TEXT, CMD_JS
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.superwork.apcosplatform.domain.PWebProductCmdUpExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from P_WEB_PRODUCT_CMD_UP
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.superwork.apcosplatform.domain.PWebProductCmdUpExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from P_WEB_PRODUCT_CMD_UP
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.math.BigDecimal" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from P_WEB_PRODUCT_CMD_UP
+    where ID = #{id,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+    delete from P_WEB_PRODUCT_CMD_UP
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.superwork.apcosplatform.domain.PWebProductCmdUpExample">
+    delete from P_WEB_PRODUCT_CMD_UP
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.superwork.apcosplatform.domain.PWebProductCmdUp">
+    insert into P_WEB_PRODUCT_CMD_UP (ID, PRODUCT_ID, ENABLE_REGISTER, 
+      ENABLE_CMD, CMD_TYPE, CMD_CODE, 
+      CMD_NAME, CMD_REGEX, CMD_README, 
+      CMD_SUCCESS_ID, CMD_ERROR_ID, PARAM_NUM, 
+      CREATE_TIME, UPDATE_TIME, DOWN_CMD_ID, 
+      SYNC_STATUS, SYNC_STATUS_3, CMD_TEXT, 
+      CMD_JS)
+    values (#{id,jdbcType=DECIMAL}, #{productId,jdbcType=DECIMAL}, #{enableRegister,jdbcType=VARCHAR},
+      #{enableCmd,jdbcType=VARCHAR}, #{cmdType,jdbcType=VARCHAR}, #{cmdCode,jdbcType=VARCHAR},
+      #{cmdName,jdbcType=VARCHAR}, #{cmdRegex,jdbcType=VARCHAR}, #{cmdReadme,jdbcType=VARCHAR},
+      #{cmdSuccessId,jdbcType=VARCHAR}, #{cmdErrorId,jdbcType=VARCHAR}, #{paramNum,jdbcType=DECIMAL},
+      #{createTime,jdbcType=DATE}, #{updateTime,jdbcType=DATE}, #{downCmdId,jdbcType=VARCHAR},
+      #{syncStatus,jdbcType=VARCHAR}, #{syncStatus3,jdbcType=DECIMAL}, #{cmdText,jdbcType=BLOB}, 
+      #{cmdJs,jdbcType=CLOB})
+  </insert>
+  <insert id="insertSelective" parameterType="com.superwork.apcosplatform.domain.PWebProductCmdUp">
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.math.BigDecimal">
+      select P_WEB_PRODUCT_CMD_UP_SEQ.NEXTVAL from dual
+    </selectKey>
+    insert into P_WEB_PRODUCT_CMD_UP
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      ID,
+      <if test="productId != null">
+        PRODUCT_ID,
+      </if>
+      <if test="enableRegister != null">
+        ENABLE_REGISTER,
+      </if>
+      <if test="enableCmd != null">
+        ENABLE_CMD,
+      </if>
+      <if test="cmdType != null">
+        CMD_TYPE,
+      </if>
+      <if test="cmdCode != null">
+        CMD_CODE,
+      </if>
+      <if test="cmdName != null">
+        CMD_NAME,
+      </if>
+      <if test="cmdRegex != null">
+        CMD_REGEX,
+      </if>
+      <if test="cmdReadme != null">
+        CMD_README,
+      </if>
+      <if test="cmdSuccessId != null">
+        CMD_SUCCESS_ID,
+      </if>
+      <if test="cmdErrorId != null">
+        CMD_ERROR_ID,
+      </if>
+      <if test="paramNum != null">
+        PARAM_NUM,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+      <if test="downCmdId != null">
+        DOWN_CMD_ID,
+      </if>
+      <if test="syncStatus != null">
+        SYNC_STATUS,
+      </if>
+      <if test="syncStatus3 != null">
+        SYNC_STATUS_3,
+      </if>
+      <if test="cmdText != null">
+        CMD_TEXT,
+      </if>
+      <if test="cmdJs != null">
+        CMD_JS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=DECIMAL},
+      <if test="productId != null">
+        #{productId,jdbcType=DECIMAL},
+      </if>
+      <if test="enableRegister != null">
+        #{enableRegister,jdbcType=VARCHAR},
+      </if>
+      <if test="enableCmd != null">
+        #{enableCmd,jdbcType=VARCHAR},
+      </if>
+      <if test="cmdType != null">
+        #{cmdType,jdbcType=VARCHAR},
+      </if>
+      <if test="cmdCode != null">
+        #{cmdCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cmdName != null">
+        #{cmdName,jdbcType=VARCHAR},
+      </if>
+      <if test="cmdRegex != null">
+        #{cmdRegex,jdbcType=VARCHAR},
+      </if>
+      <if test="cmdReadme != null">
+        #{cmdReadme,jdbcType=VARCHAR},
+      </if>
+      <if test="cmdSuccessId != null">
+        #{cmdSuccessId,jdbcType=VARCHAR},
+      </if>
+      <if test="cmdErrorId != null">
+        #{cmdErrorId,jdbcType=VARCHAR},
+      </if>
+      <if test="paramNum != null">
+        #{paramNum,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=DATE},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=DATE},
+      </if>
+      <if test="downCmdId != null">
+        #{downCmdId,jdbcType=VARCHAR},
+      </if>
+      <if test="syncStatus != null">
+        #{syncStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="syncStatus3 != null">
+        #{syncStatus3,jdbcType=DECIMAL},
+      </if>
+      <if test="cmdText != null">
+        #{cmdText,jdbcType=BLOB},
+      </if>
+      <if test="cmdJs != null">
+        #{cmdJs,jdbcType=CLOB},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.superwork.apcosplatform.domain.PWebProductCmdUpExample" resultType="java.lang.Long">
+    select count(*) from P_WEB_PRODUCT_CMD_UP
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update P_WEB_PRODUCT_CMD_UP
+    <set>
+      <if test="record.id != null">
+        ID = #{record.id,jdbcType=DECIMAL},
+      </if>
+      <if test="record.productId != null">
+        PRODUCT_ID = #{record.productId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.enableRegister != null">
+        ENABLE_REGISTER = #{record.enableRegister,jdbcType=VARCHAR},
+      </if>
+      <if test="record.enableCmd != null">
+        ENABLE_CMD = #{record.enableCmd,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cmdType != null">
+        CMD_TYPE = #{record.cmdType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cmdCode != null">
+        CMD_CODE = #{record.cmdCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cmdName != null">
+        CMD_NAME = #{record.cmdName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cmdRegex != null">
+        CMD_REGEX = #{record.cmdRegex,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cmdReadme != null">
+        CMD_README = #{record.cmdReadme,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cmdSuccessId != null">
+        CMD_SUCCESS_ID = #{record.cmdSuccessId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cmdErrorId != null">
+        CMD_ERROR_ID = #{record.cmdErrorId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paramNum != null">
+        PARAM_NUM = #{record.paramNum,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createTime != null">
+        CREATE_TIME = #{record.createTime,jdbcType=DATE},
+      </if>
+      <if test="record.updateTime != null">
+        UPDATE_TIME = #{record.updateTime,jdbcType=DATE},
+      </if>
+      <if test="record.downCmdId != null">
+        DOWN_CMD_ID = #{record.downCmdId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.syncStatus != null">
+        SYNC_STATUS = #{record.syncStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.syncStatus3 != null">
+        SYNC_STATUS_3 = #{record.syncStatus3,jdbcType=DECIMAL},
+      </if>
+      <if test="record.cmdText != null">
+        CMD_TEXT = #{record.cmdText,jdbcType=BLOB},
+      </if>
+      <if test="record.cmdJs != null">
+        CMD_JS = #{record.cmdJs,jdbcType=CLOB},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update P_WEB_PRODUCT_CMD_UP
+    set ID = #{record.id,jdbcType=DECIMAL},
+      PRODUCT_ID = #{record.productId,jdbcType=DECIMAL},
+      ENABLE_REGISTER = #{record.enableRegister,jdbcType=VARCHAR},
+      ENABLE_CMD = #{record.enableCmd,jdbcType=VARCHAR},
+      CMD_TYPE = #{record.cmdType,jdbcType=VARCHAR},
+      CMD_CODE = #{record.cmdCode,jdbcType=VARCHAR},
+      CMD_NAME = #{record.cmdName,jdbcType=VARCHAR},
+      CMD_REGEX = #{record.cmdRegex,jdbcType=VARCHAR},
+      CMD_README = #{record.cmdReadme,jdbcType=VARCHAR},
+      CMD_SUCCESS_ID = #{record.cmdSuccessId,jdbcType=VARCHAR},
+      CMD_ERROR_ID = #{record.cmdErrorId,jdbcType=VARCHAR},
+      PARAM_NUM = #{record.paramNum,jdbcType=DECIMAL},
+      CREATE_TIME = #{record.createTime,jdbcType=DATE},
+      UPDATE_TIME = #{record.updateTime,jdbcType=DATE},
+      DOWN_CMD_ID = #{record.downCmdId,jdbcType=VARCHAR},
+      SYNC_STATUS = #{record.syncStatus,jdbcType=VARCHAR},
+      SYNC_STATUS_3 = #{record.syncStatus3,jdbcType=DECIMAL},
+      CMD_TEXT = #{record.cmdText,jdbcType=BLOB},
+      CMD_JS = #{record.cmdJs,jdbcType=CLOB}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update P_WEB_PRODUCT_CMD_UP
+    set ID = #{record.id,jdbcType=DECIMAL},
+      PRODUCT_ID = #{record.productId,jdbcType=DECIMAL},
+      ENABLE_REGISTER = #{record.enableRegister,jdbcType=VARCHAR},
+      ENABLE_CMD = #{record.enableCmd,jdbcType=VARCHAR},
+      CMD_TYPE = #{record.cmdType,jdbcType=VARCHAR},
+      CMD_CODE = #{record.cmdCode,jdbcType=VARCHAR},
+      CMD_NAME = #{record.cmdName,jdbcType=VARCHAR},
+      CMD_REGEX = #{record.cmdRegex,jdbcType=VARCHAR},
+      CMD_README = #{record.cmdReadme,jdbcType=VARCHAR},
+      CMD_SUCCESS_ID = #{record.cmdSuccessId,jdbcType=VARCHAR},
+      CMD_ERROR_ID = #{record.cmdErrorId,jdbcType=VARCHAR},
+      PARAM_NUM = #{record.paramNum,jdbcType=DECIMAL},
+      CREATE_TIME = #{record.createTime,jdbcType=DATE},
+      UPDATE_TIME = #{record.updateTime,jdbcType=DATE},
+      DOWN_CMD_ID = #{record.downCmdId,jdbcType=VARCHAR},
+      SYNC_STATUS = #{record.syncStatus,jdbcType=VARCHAR},
+      SYNC_STATUS_3 = #{record.syncStatus3,jdbcType=DECIMAL}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.superwork.apcosplatform.domain.PWebProductCmdUp">
+    update P_WEB_PRODUCT_CMD_UP
+    <set>
+      <if test="productId != null">
+        PRODUCT_ID = #{productId,jdbcType=DECIMAL},
+      </if>
+      <if test="enableRegister != null">
+        ENABLE_REGISTER = #{enableRegister,jdbcType=VARCHAR},
+      </if>
+      <if test="enableCmd != null">
+        ENABLE_CMD = #{enableCmd,jdbcType=VARCHAR},
+      </if>
+      <if test="cmdType != null">
+        CMD_TYPE = #{cmdType,jdbcType=VARCHAR},
+      </if>
+      <if test="cmdCode != null">
+        CMD_CODE = #{cmdCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cmdName != null">
+        CMD_NAME = #{cmdName,jdbcType=VARCHAR},
+      </if>
+      <if test="cmdRegex != null">
+        CMD_REGEX = #{cmdRegex,jdbcType=VARCHAR},
+      </if>
+      <if test="cmdReadme != null">
+        CMD_README = #{cmdReadme,jdbcType=VARCHAR},
+      </if>
+      <if test="cmdSuccessId != null">
+        CMD_SUCCESS_ID = #{cmdSuccessId,jdbcType=VARCHAR},
+      </if>
+      <if test="cmdErrorId != null">
+        CMD_ERROR_ID = #{cmdErrorId,jdbcType=VARCHAR},
+      </if>
+      <if test="paramNum != null">
+        PARAM_NUM = #{paramNum,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=DATE},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME = #{updateTime,jdbcType=DATE},
+      </if>
+      <if test="downCmdId != null">
+        DOWN_CMD_ID = #{downCmdId,jdbcType=VARCHAR},
+      </if>
+      <if test="syncStatus != null">
+        SYNC_STATUS = #{syncStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="syncStatus3 != null">
+        SYNC_STATUS_3 = #{syncStatus3,jdbcType=DECIMAL},
+      </if>
+      <if test="cmdText != null">
+        CMD_TEXT = #{cmdText,jdbcType=BLOB},
+      </if>
+      <if test="cmdJs != null">
+        CMD_JS = #{cmdJs,jdbcType=CLOB},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.superwork.apcosplatform.domain.PWebProductCmdUp">
+    update P_WEB_PRODUCT_CMD_UP
+    set PRODUCT_ID = #{productId,jdbcType=DECIMAL},
+      ENABLE_REGISTER = #{enableRegister,jdbcType=VARCHAR},
+      ENABLE_CMD = #{enableCmd,jdbcType=VARCHAR},
+      CMD_TYPE = #{cmdType,jdbcType=VARCHAR},
+      CMD_CODE = #{cmdCode,jdbcType=VARCHAR},
+      CMD_NAME = #{cmdName,jdbcType=VARCHAR},
+      CMD_REGEX = #{cmdRegex,jdbcType=VARCHAR},
+      CMD_README = #{cmdReadme,jdbcType=VARCHAR},
+      CMD_SUCCESS_ID = #{cmdSuccessId,jdbcType=VARCHAR},
+      CMD_ERROR_ID = #{cmdErrorId,jdbcType=VARCHAR},
+      PARAM_NUM = #{paramNum,jdbcType=DECIMAL},
+      CREATE_TIME = #{createTime,jdbcType=DATE},
+      UPDATE_TIME = #{updateTime,jdbcType=DATE},
+      DOWN_CMD_ID = #{downCmdId,jdbcType=VARCHAR},
+      SYNC_STATUS = #{syncStatus,jdbcType=VARCHAR},
+      SYNC_STATUS_3 = #{syncStatus3,jdbcType=DECIMAL},
+      CMD_TEXT = #{cmdText,jdbcType=BLOB},
+      CMD_JS = #{cmdJs,jdbcType=CLOB}
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.superwork.apcosplatform.domain.PWebProductCmdUp">
+    update P_WEB_PRODUCT_CMD_UP
+    set PRODUCT_ID = #{productId,jdbcType=DECIMAL},
+      ENABLE_REGISTER = #{enableRegister,jdbcType=VARCHAR},
+      ENABLE_CMD = #{enableCmd,jdbcType=VARCHAR},
+      CMD_TYPE = #{cmdType,jdbcType=VARCHAR},
+      CMD_CODE = #{cmdCode,jdbcType=VARCHAR},
+      CMD_NAME = #{cmdName,jdbcType=VARCHAR},
+      CMD_REGEX = #{cmdRegex,jdbcType=VARCHAR},
+      CMD_README = #{cmdReadme,jdbcType=VARCHAR},
+      CMD_SUCCESS_ID = #{cmdSuccessId,jdbcType=VARCHAR},
+      CMD_ERROR_ID = #{cmdErrorId,jdbcType=VARCHAR},
+      PARAM_NUM = #{paramNum,jdbcType=DECIMAL},
+      CREATE_TIME = #{createTime,jdbcType=DATE},
+      UPDATE_TIME = #{updateTime,jdbcType=DATE},
+      DOWN_CMD_ID = #{downCmdId,jdbcType=VARCHAR},
+      SYNC_STATUS = #{syncStatus,jdbcType=VARCHAR},
+      SYNC_STATUS_3 = #{syncStatus3,jdbcType=DECIMAL}
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+</mapper>

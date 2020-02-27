@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.superwork.apcosplatform.mapper.PD3orgZcMapper">
+    <resultMap id="BaseResultMap" type="com.superwork.apcosplatform.domain.PD3orgZc">
+        <id column="ID" jdbcType="DECIMAL" property="id" />
+        <result column="ACCOUNT" jdbcType="VARCHAR" property="account" />
+        <result column="SERVICE_ID" jdbcType="VARCHAR" property="serviceId" />
+        <result column="SERVICE_KEY" jdbcType="VARCHAR" property="serviceKey" />
+        <result column="ORG_NAME" jdbcType="VARCHAR" property="orgName" />
+        <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+        <result column="CREATOR_ID" jdbcType="VARCHAR" property="creatorId" />
+        <result column="CREATED_TIME" jdbcType="DATE" property="createdTime" />
+        <result column="EDITOR_ID" jdbcType="VARCHAR" property="editorId" />
+        <result column="EDITED_TIME" jdbcType="DATE" property="editedTime" />
+        <result column="ATTR_1" jdbcType="VARCHAR" property="attr1" />
+        <result column="ATTR_2" jdbcType="VARCHAR" property="attr2" />
+        <result column="ATTR_3" jdbcType="VARCHAR" property="attr3" />
+        <result column="BELONG_ORG_ID" jdbcType="VARCHAR" property="belongOrgId" />
+        <result column="THEME" jdbcType="VARCHAR" property="theme" />
+        <result column="LOGO" jdbcType="VARCHAR" property="logo" />
+        <result column="EFFECTIVE" jdbcType="VARCHAR" property="effective" />
+        <result column="COMPANY_INFO" jdbcType="VARCHAR" property="companyInfo" />
+        <result column="COMPANY_PHONE" jdbcType="VARCHAR" property="companyPhone" />
+        <result column="USUM" jdbcType="VARCHAR" property="count"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    ID, ACCOUNT, SERVICE_ID, SERVICE_KEY, ORG_NAME, ADDRESS, CREATOR_ID, CREATED_TIME,
+    EDITOR_ID, EDITED_TIME, ATTR_1, ATTR_2, ATTR_3, BELONG_ORG_ID, THEME, LOGO, EFFECTIVE,
+    COMPANY_INFO, COMPANY_PHONE
+  </sql>
+    <select id="selectByExample" parameterType="com.superwork.apcosplatform.domain.PD3orgZcExample" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        'true' as QUERYID,
+        <include refid="Base_Column_List" />
+        from P_D3ORG_ZC
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.math.BigDecimal" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from P_D3ORG_ZC
+        where ID = #{id,jdbcType=DECIMAL}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+    delete from P_D3ORG_ZC
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+    <delete id="deleteByExample" parameterType="com.superwork.apcosplatform.domain.PD3orgZcExample">
+        delete from P_D3ORG_ZC
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.superwork.apcosplatform.domain.PD3orgZc">
+        <selectKey keyProperty="id" order="BEFORE" resultType="java.math.BigDecimal">
+            select P_D3ORG_ZC_SEQ.NEXTVAL from dual
+        </selectKey>
+        insert into P_D3ORG_ZC (ID, ACCOUNT, SERVICE_ID,
+        SERVICE_KEY, ORG_NAME, ADDRESS,
+        CREATOR_ID, CREATED_TIME, EDITOR_ID,
+        EDITED_TIME, ATTR_1, ATTR_2,
+        ATTR_3, BELONG_ORG_ID, THEME,
+        LOGO, EFFECTIVE, COMPANY_INFO,
+        COMPANY_PHONE)
+        values (#{id,jdbcType=DECIMAL}, #{account,jdbcType=VARCHAR}, #{serviceId,jdbcType=VARCHAR},
+        #{serviceKey,jdbcType=VARCHAR}, #{orgName,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
+        #{creatorId,jdbcType=VARCHAR}, #{createdTime,jdbcType=DATE}, #{editorId,jdbcType=VARCHAR},
+        #{editedTime,jdbcType=DATE}, #{attr1,jdbcType=VARCHAR}, #{attr2,jdbcType=VARCHAR},
+        #{attr3,jdbcType=VARCHAR}, #{belongOrgId,jdbcType=VARCHAR}, #{theme,jdbcType=VARCHAR},
+        #{logo,jdbcType=VARCHAR}, #{effective,jdbcType=VARCHAR}, #{companyInfo,jdbcType=VARCHAR},
+        #{companyPhone,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.superwork.apcosplatform.domain.PD3orgZc">
+        <selectKey keyProperty="id" order="BEFORE" resultType="java.math.BigDecimal">
+            select P_D3ORG_ZC_SEQ.NEXTVAL from dual
+        </selectKey>
+        insert into P_D3ORG_ZC
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            ID,
+            <if test="account != null">
+                ACCOUNT,
+            </if>
+            <if test="serviceId != null">
+                SERVICE_ID,
+            </if>
+            <if test="serviceKey != null">
+                SERVICE_KEY,
+            </if>
+            <if test="orgName != null">
+                ORG_NAME,
+            </if>
+            <if test="address != null">
+                ADDRESS,
+            </if>
+            <if test="creatorId != null">
+                CREATOR_ID,
+            </if>
+            <if test="createdTime != null">
+                CREATED_TIME,
+            </if>
+            <if test="editorId != null">
+                EDITOR_ID,
+            </if>
+            <if test="editedTime != null">
+                EDITED_TIME,
+            </if>
+            <if test="attr1 != null">
+                ATTR_1,
+            </if>
+            <if test="attr2 != null">
+                ATTR_2,
+            </if>
+            <if test="attr3 != null">
+                ATTR_3,
+            </if>
+            <if test="belongOrgId != null">
+                BELONG_ORG_ID,
+            </if>
+            <if test="theme != null">
+                THEME,
+            </if>
+            <if test="logo != null">
+                LOGO,
+            </if>
+            <if test="effective != null">
+                EFFECTIVE,
+            </if>
+            <if test="companyInfo != null">
+                COMPANY_INFO,
+            </if>
+            <if test="companyPhone != null">
+                COMPANY_PHONE,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{id,jdbcType=DECIMAL},
+            <if test="account != null">
+                #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="serviceId != null">
+                #{serviceId,jdbcType=VARCHAR},
+            </if>
+            <if test="serviceKey != null">
+                #{serviceKey,jdbcType=VARCHAR},
+            </if>
+            <if test="orgName != null">
+                #{orgName,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="creatorId != null">
+                #{creatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="createdTime != null">
+                #{createdTime,jdbcType=DATE},
+            </if>
+            <if test="editorId != null">
+                #{editorId,jdbcType=VARCHAR},
+            </if>
+            <if test="editedTime != null">
+                #{editedTime,jdbcType=DATE},
+            </if>
+            <if test="attr1 != null">
+                #{attr1,jdbcType=VARCHAR},
+            </if>
+            <if test="attr2 != null">
+                #{attr2,jdbcType=VARCHAR},
+            </if>
+            <if test="attr3 != null">
+                #{attr3,jdbcType=VARCHAR},
+            </if>
+            <if test="belongOrgId != null">
+                #{belongOrgId,jdbcType=VARCHAR},
+            </if>
+            <if test="theme != null">
+                #{theme,jdbcType=VARCHAR},
+            </if>
+            <if test="logo != null">
+                #{logo,jdbcType=VARCHAR},
+            </if>
+            <if test="effective != null">
+                #{effective,jdbcType=VARCHAR},
+            </if>
+            <if test="companyInfo != null">
+                #{companyInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="companyPhone != null">
+                #{companyPhone,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.superwork.apcosplatform.domain.PD3orgZcExample" resultType="java.lang.Long">
+        select count(*) from P_D3ORG_ZC
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update P_D3ORG_ZC
+        <set>
+            <if test="record.id != null">
+                ID = #{record.id,jdbcType=DECIMAL},
+            </if>
+            <if test="record.account != null">
+                ACCOUNT = #{record.account,jdbcType=VARCHAR},
+            </if>
+            <if test="record.serviceId != null">
+                SERVICE_ID = #{record.serviceId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.serviceKey != null">
+                SERVICE_KEY = #{record.serviceKey,jdbcType=VARCHAR},
+            </if>
+            <if test="record.orgName != null">
+                ORG_NAME = #{record.orgName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.address != null">
+                ADDRESS = #{record.address,jdbcType=VARCHAR},
+            </if>
+            <if test="record.creatorId != null">
+                CREATOR_ID = #{record.creatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createdTime != null">
+                CREATED_TIME = #{record.createdTime,jdbcType=DATE},
+            </if>
+            <if test="record.editorId != null">
+                EDITOR_ID = #{record.editorId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.editedTime != null">
+                EDITED_TIME = #{record.editedTime,jdbcType=DATE},
+            </if>
+            <if test="record.attr1 != null">
+                ATTR_1 = #{record.attr1,jdbcType=VARCHAR},
+            </if>
+            <if test="record.attr2 != null">
+                ATTR_2 = #{record.attr2,jdbcType=VARCHAR},
+            </if>
+            <if test="record.attr3 != null">
+                ATTR_3 = #{record.attr3,jdbcType=VARCHAR},
+            </if>
+            <if test="record.belongOrgId != null">
+                BELONG_ORG_ID = #{record.belongOrgId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.theme != null">
+                THEME = #{record.theme,jdbcType=VARCHAR},
+            </if>
+            <if test="record.logo != null">
+                LOGO = #{record.logo,jdbcType=VARCHAR},
+            </if>
+            <if test="record.effective != null">
+                EFFECTIVE = #{record.effective,jdbcType=VARCHAR},
+            </if>
+            <if test="record.companyInfo != null">
+                COMPANY_INFO = #{record.companyInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="record.companyPhone != null">
+                COMPANY_PHONE = #{record.companyPhone,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update P_D3ORG_ZC
+        set ID = #{record.id,jdbcType=DECIMAL},
+        ACCOUNT = #{record.account,jdbcType=VARCHAR},
+        SERVICE_ID = #{record.serviceId,jdbcType=VARCHAR},
+        SERVICE_KEY = #{record.serviceKey,jdbcType=VARCHAR},
+        ORG_NAME = #{record.orgName,jdbcType=VARCHAR},
+        ADDRESS = #{record.address,jdbcType=VARCHAR},
+        CREATOR_ID = #{record.creatorId,jdbcType=VARCHAR},
+        CREATED_TIME = #{record.createdTime,jdbcType=DATE},
+        EDITOR_ID = #{record.editorId,jdbcType=VARCHAR},
+        EDITED_TIME = #{record.editedTime,jdbcType=DATE},
+        ATTR_1 = #{record.attr1,jdbcType=VARCHAR},
+        ATTR_2 = #{record.attr2,jdbcType=VARCHAR},
+        ATTR_3 = #{record.attr3,jdbcType=VARCHAR},
+        BELONG_ORG_ID = #{record.belongOrgId,jdbcType=VARCHAR},
+        THEME = #{record.theme,jdbcType=VARCHAR},
+        LOGO = #{record.logo,jdbcType=VARCHAR},
+        EFFECTIVE = #{record.effective,jdbcType=VARCHAR},
+        COMPANY_INFO = #{record.companyInfo,jdbcType=VARCHAR},
+        COMPANY_PHONE = #{record.companyPhone,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.superwork.apcosplatform.domain.PD3orgZc">
+        update P_D3ORG_ZC
+        <set>
+            <if test="account != null">
+                ACCOUNT = #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="serviceId != null">
+                SERVICE_ID = #{serviceId,jdbcType=VARCHAR},
+            </if>
+            <if test="serviceKey != null">
+                SERVICE_KEY = #{serviceKey,jdbcType=VARCHAR},
+            </if>
+            <if test="orgName != null">
+                ORG_NAME = #{orgName,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                ADDRESS = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="creatorId != null">
+                CREATOR_ID = #{creatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="createdTime != null">
+                CREATED_TIME = #{createdTime,jdbcType=DATE},
+            </if>
+            <if test="editorId != null">
+                EDITOR_ID = #{editorId,jdbcType=VARCHAR},
+            </if>
+            <if test="editedTime != null">
+                EDITED_TIME = #{editedTime,jdbcType=DATE},
+            </if>
+            <if test="attr1 != null">
+                ATTR_1 = #{attr1,jdbcType=VARCHAR},
+            </if>
+            <if test="attr2 != null">
+                ATTR_2 = #{attr2,jdbcType=VARCHAR},
+            </if>
+            <if test="attr3 != null">
+                ATTR_3 = #{attr3,jdbcType=VARCHAR},
+            </if>
+            <if test="belongOrgId != null">
+                BELONG_ORG_ID = #{belongOrgId,jdbcType=VARCHAR},
+            </if>
+            <if test="theme != null">
+                THEME = #{theme,jdbcType=VARCHAR},
+            </if>
+            <if test="logo != null">
+                LOGO = #{logo,jdbcType=VARCHAR},
+            </if>
+            <if test="effective != null">
+                EFFECTIVE = #{effective,jdbcType=VARCHAR},
+            </if>
+            <if test="companyInfo != null">
+                COMPANY_INFO = #{companyInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="companyPhone != null">
+                COMPANY_PHONE = #{companyPhone,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where ID = #{id,jdbcType=DECIMAL}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.superwork.apcosplatform.domain.PD3orgZc">
+    update P_D3ORG_ZC
+    set ACCOUNT = #{account,jdbcType=VARCHAR},
+      SERVICE_ID = #{serviceId,jdbcType=VARCHAR},
+      SERVICE_KEY = #{serviceKey,jdbcType=VARCHAR},
+      ORG_NAME = #{orgName,jdbcType=VARCHAR},
+      ADDRESS = #{address,jdbcType=VARCHAR},
+      CREATOR_ID = #{creatorId,jdbcType=VARCHAR},
+      CREATED_TIME = #{createdTime,jdbcType=DATE},
+      EDITOR_ID = #{editorId,jdbcType=VARCHAR},
+      EDITED_TIME = #{editedTime,jdbcType=DATE},
+      ATTR_1 = #{attr1,jdbcType=VARCHAR},
+      ATTR_2 = #{attr2,jdbcType=VARCHAR},
+      ATTR_3 = #{attr3,jdbcType=VARCHAR},
+      BELONG_ORG_ID = #{belongOrgId,jdbcType=VARCHAR},
+      THEME = #{theme,jdbcType=VARCHAR},
+      LOGO = #{logo,jdbcType=VARCHAR},
+      EFFECTIVE = #{effective,jdbcType=VARCHAR},
+      COMPANY_INFO = #{companyInfo,jdbcType=VARCHAR},
+      COMPANY_PHONE = #{companyPhone,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+    <select id="selectServiceInfo" resultMap="BaseResultMap">
+        SELECT A.*
+        FROM p_d3org_zc A
+                 LEFT OUTER JOIN p_zz_user B
+                                 ON A.id = b.zz_id
+        WHERE b.user_id = #{userId}
+    </select>
+
+    <select id="listOrg" parameterType="com.superwork.apcosplatform.domain.PD3orgZc" resultMap="BaseResultMap">
+        SELECT A.*,NVL(B.NUM,0) AS USUM FROM p_d3org_zc A LEFT OUTER JOIN
+        (
+        SELECT count(*) AS NUM, ZZ_ID FROM p_zz_user group by ZZ_ID
+        ) B
+        ON A.ID = B.ZZ_ID
+        WHERE 1=1
+        <if test="serviceId != null and serviceId != ''">
+            AND A.SERVICE_ID LIKE '%'||#{serviceId}||'%'
+        </if>
+        <if test="serviceKey != null and serviceKey != ''">
+            AND A.SERVICE_KEY LIKE '%'||#{serviceKey}||'%'
+        </if>
+        <if test="orgName != null and orgName != ''">
+            AND  A.ORG_NAME LIKE '%'||#{orgName}||'%'
+        </if>
+        order by A.EFFECTIVE ASC, A.CREATED_TIME DESC
+    </select>
+</mapper>

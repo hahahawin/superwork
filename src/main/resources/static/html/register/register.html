@@ -1,0 +1,455 @@
+<html lang="en">
+<head >
+    <title>注册</title>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta name="generator" content="Bigtree"/>
+    <link rel="shortcut icon" href="../../img/jx.png"/>
+    <script type='text/javascript' src='../../js/jquery-2.0.3.min.js'></script>
+    <script type='text/javascript' src='../../bootstrap/js/bootstrap.js'></script>
+    <script type='text/javascript' src='../../bootstrap/js/bootstrap_kz.js'></script>
+    <script type='text/javascript' src='../../js/layui/layui.js'></script>
+    <link rel="stylesheet" type="text/css" media="screen" href="../../bootstrap/css/bootstrap.css"/>
+
+    <style>
+        body {
+            background-color: #F5F5F5;
+            font-family: 黑体;
+        }
+
+        .header {
+            width: 100%;
+            margin-bottom: 24px;
+            color: #757575;
+        }
+
+        .header > div:nth-child(1) {
+            height: 72px;
+            padding-top: 20px;
+            position: absolute;
+            width: 100%;
+            background-color: #fff;
+            opacity: 0.9;
+        }
+
+        .header > div > div:nth-child(1) {
+            width: 980px;
+            margin: 0 auto;
+            height: 32px;
+        }
+
+        .header .left {
+            float: left;
+        }
+
+        .header .left img {
+            vertical-align: bottom;
+            margin-right: 20px;
+        }
+
+        .header .left span {
+            font-size: 18px;
+        }
+
+        .header .right {
+            float: right;
+            height: 32px;
+            line-height: 45px;
+        }
+
+        .header .right a {
+            color: #757575;
+            font-size: 12px;
+        }
+
+        .header > div:nth-child(2) {
+            width: 100%;
+        }
+
+        .header > div:nth-child(2) img {
+            width: 100%;
+        }
+
+        .container {
+            width: 980px;
+            background-color: white;
+            padding-right: 0px;
+            padding-left: 0px;
+            margin-bottom: 88px;
+        }
+
+        .container .hr {
+            height: 3px;
+            background-color: #89c1f9;
+        }
+
+        .container .content {
+            background-color: white;
+            padding-top: 32px;
+            padding-left: 114px;
+            padding-right: 110px;
+        }
+
+        .col-lg-6, .col-lg-3, .col-lg-9, .col-lg-12 {
+            padding: 0;
+        }
+
+        .content {
+            margin-bottom: 110px;
+            border-top: 3px solid rgba(41, 123, 185, 0.75)
+        }
+
+        .content .t_r {
+            line-height: 40px;
+            margin-bottom: 16px;
+        }
+
+        .content .t_b {
+            line-height: 1px;
+            margin-bottom: 16px;
+        }
+
+        .content .t_r > div {
+            height: 40px;
+            color: #757575;
+        }
+
+        .content .t_r .title {
+            font-size: 14px;
+            text-align: right;
+            padding-right: 8px;
+            color: #2f2f2f;
+        }
+
+        .content .t_r .title span {
+            color: #ff3131;
+        }
+
+        .content .t_r select, .content .t_r input {
+            width: 100%;
+            height: 38px;
+            padding-left: 12px;
+            color: #757575;
+        }
+
+        #distpicker select {
+            width: 160px;
+        }
+
+        #distpicker .form-group {
+            display: inline-block;
+        }
+
+
+        #fo {
+            background-color: #353535;
+            height: 88px;
+        }
+
+        #fo div {
+            color: #aaaaaa;
+            line-height: 88px;
+            text-align: center;
+            font-size: 12px;
+            letter-spacing: 2px;
+        }
+
+        .form-control {
+            width: 85%;
+        }
+
+        .control-label {
+            font-weight: normal;
+        }
+
+        input[type='submit'] {
+            /*position: relative;*/
+            left: 380px;
+            background-color: #428bca;
+            border: none;
+            color: white !important;
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="header">
+    <div>
+        <div>
+            <div class="left">
+                <h3 style="color: blue">APCOS公共应用操作平台</h3>
+            </div>
+            <div class="right">
+                <a href="/" >已注册，马上登录 ></a>
+            </div>
+        </div>
+    </div>
+    <!--<div>-->
+    <!--<img th:src="@{/img/page/backstage_bn03.png}" src="/img/page/backstage_bn03.png"/>-->
+    <!--</div>-->
+</div>
+<hr class="hr" style="padding-top: 68px;"/>
+<div class="container">
+    <div style="background: rgba(145,145,145,0.26);height:40px;text-align: center;font-size: 18px;line-height: 40px"><p
+            style="">新用户注册</p></div>
+    <div class="content">
+        <form class="form-horizontal" style="margin-top: 20px" action="">
+            <div class="form-group">
+                <label for="userAccount" class="col-sm-2 control-label">登录账号<span style="color: red">*</span></label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="userAccount" name="userAccount" placeholder="请设置登录账号">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="cellphoneNo" class="col-sm-2 control-label">手机号码<span style="color: red">*</span></label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="cellphoneNo" name="cellphoneNo" placeholder="请输入手机号码">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="code" class="col-sm-2 control-label">验证码<span style="color: red">*</span></label>
+                <div class="col-sm-10">
+                    <div class="col-sm-8" style="padding-left: 0px">
+                        <input type="text" class="form-control" id="code" placeholder="请输入验证码(111111)" name="code">
+                    </div>
+                    <div class="col-sm-2">
+                        <button id="praise" onclick="getCode();" type="button" class=" btn btn-primary"
+                                style="color: white">发送验证码
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="userPassword" class="col-sm-2 control-label">登陆密码<span style="color: red">*</span></label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" id="userPassword" placeholder="请输入登陆密码">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="col-sm-2 control-label">再次确认密码<span style="color: red">*</span></label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" id="password" placeholder="请再次输入登陆密码" name="password1">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" id="isCheck">已阅读并同意《<a href="/html/agreement.html"
+                                                                          target="_blank">用户服务协议</a>》
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="button" class="btn btn-primary" onclick="submitData()">注册</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+<div id="fo">
+    <div>金鑫智慧科技有限公司 ©2019-2020版权所有 <span>BETA V1.3</span> TEL:400-000-3877</div>
+</div>
+
+<script type="text/javascript">
+
+
+    layui.use('layer', function () {
+        var layer = layui.layer;
+    });
+
+    var time = 60;
+    var reSendTime = function () {
+        if (time == 0) {
+            $('#praise').text("发送验证码");
+            $('#praise').removeAttr("disabled");
+            time = 60;
+            return;
+        }
+        window.setTimeout(function () {
+            $('#praise').text("重新发送(" + time + ")");
+            reSendTime();
+            time--;
+        }, 1000);
+    };
+
+    function getCode() {
+        var phone = $('#cellphoneNo').val().trim();//电话
+        if(!phone){
+            layer.msg("请先输入手机号码！")
+            return;
+        }
+        if (Telephone(phone)) {
+            $("#praise").css("pointer-events", "none");
+            $.ajax({
+                url: '/index/getCode.json',
+                type: "POST",
+                dataType: "json",
+                async: false,
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    'data': phone
+                }),
+                success: function (res) {
+                    if (res.status == 200) {
+                        layer.msg(res.msg);
+                        reSendTime();
+                    } else if (res.status == 100) {
+                        layer.msg(res.msg);
+                        $('#praise').css('pointer-events', 'auto');
+                    } else {
+                        layer.msg("短信验证码发送失败!");
+                        $('#praise').css('pointer-events', 'auto');
+                    }
+                }
+            });
+        }
+    }
+
+    /**
+     * 验证登陆账号是否唯一
+     */
+    function checkUserAccount() {
+        var userAccount = $('#userAccount').val().trim();//登陆账号
+
+        var boo = false;
+        if (userAccount.length == 0 || userAccount.length > 28) {
+            boo = true;
+            return boo;
+        }
+        $.ajax({
+            url: '/index/checkUserAccount.json',
+            type: "POST",
+            dataType: "json",
+            async: false,
+            contentType: 'application/json',
+            data: JSON.stringify({
+                'data': userAccount
+            }),
+            success: function (res) {
+                if (res.status == 200) {
+                    boo = false;
+                } else {
+                    boo = true;
+                    layer.msg(res.msg);
+                }
+            }
+        });
+        return boo;
+    }
+
+
+    /**
+     * 简单电话号码（包括：座机电话）验证
+     */
+    function Telephone(obj) {
+        var pattern = /(^[0-9]{3,4}\-[0-9]{3,8}$)|(^[0-9]{3,8}$)|(^\([0-9]{3,4}\)[0-9]{3,8}$)|(^0{0,1}1[3|5|6|7|8|9][0-9]{9}$)/;
+        var f = pattern.test(obj);
+        if (!f) {
+            layer.msg("手机号格式不对！");
+            return false;
+        } else {
+            return true;
+        }
+        ;
+    }
+
+    function submitData() {
+
+
+        var userAccount = $('#userAccount').val().trim();//登陆账号
+        var cellphoneNo = $('#cellphoneNo').val().trim();//电话号码
+        var userPassword = $('#userPassword').val();//密码
+        var password = $('#password').val();//重置密码
+        var code = $('#code').val();//重置密码
+         if(!userAccount||!cellphoneNo||!userPassword||!password){
+             layer.msg("必填项不能为空！");
+             return false;
+         }
+        var checked = $("#isCheck").prop("checked");
+        if (!checked) {
+            layer.msg("请勾选服务协议！");
+            return false;
+        }
+        if (userPassword != password) {
+            layer.msg("两次密码不一致！");
+            return false;
+        }
+
+        if(checkUserAccount(userAccount)){
+            return false;
+        }
+        if(code){
+            var boo =true;
+            $.ajax({
+                url: '/index/checkedCode.json',
+                type: "post",
+                dataType: "json",
+                async: false,
+                contentType: 'application/json',
+                data: JSON.stringify({
+                        'data': code
+                    }
+                ),
+                success: function (res) {
+                    if (res.status == 200) {
+                        boo = false;
+                    } else {
+                        boo = true;
+                        layer.msg(res.msg)
+                    }
+                }
+            });
+            if(boo){
+                return false;
+            }
+        }else{
+            layer.msg("请输入验证码！")
+            return false;
+        }
+
+
+        $.ajax({
+            url: '/index/register.json',
+            type: "post",
+            dataType: "json",
+            async: false,
+            contentType: 'application/json',
+            data: JSON.stringify({
+                    'data': {
+                        'userAccount': userAccount,
+                        'cellphoneNo': cellphoneNo,
+                        'userPassword': userPassword
+                    }
+                }
+            ),
+            success: function (res) {
+                if (res.status == 200) {
+                    layer.msg("注册成功！请登陆！",{ icon:1, time:1000, shade:0.4 },function () {
+                        window.location.href = '/'
+                    });
+                } else {
+                    layer.msg(res.msg)
+                }
+            }
+        });
+
+
+        return false;
+    }
+
+
+</script>
+
+</body>
+
+</html>

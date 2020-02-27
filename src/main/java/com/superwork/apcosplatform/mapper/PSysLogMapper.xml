@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.superwork.apcosplatform.mapper.PSysLogMapper">
+    <resultMap id="BaseResultMap" type="com.superwork.apcosplatform.domain.PSysLog">
+        <id column="ID" jdbcType="DECIMAL" property="id"/>
+        <result column="USERNAME" jdbcType="VARCHAR" property="username"/>
+        <result column="METHOD" jdbcType="VARCHAR" property="method"/>
+        <result column="IP" jdbcType="VARCHAR" property="ip"/>
+        <result column="OPERATION" jdbcType="VARCHAR" property="operation"/>
+        <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="USER_ACCOUNT" jdbcType="TIMESTAMP" property="createName"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.superwork.apcosplatform.domain.PSysLog">
+        <result column="PARAM" jdbcType="CLOB" property="param"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        ID
+        ,
+        USERNAME,
+        METHOD,
+        IP,
+        OPERATION,
+        CREATE_DATE
+    </sql>
+    <sql id="Blob_Column_List">
+        PARAM
+    </sql>
+    <select id="selectByExampleWithBLOBs" parameterType="com.superwork.apcosplatform.domain.PSysLogExample"
+            resultMap="ResultMapWithBLOBs">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        'true' as QUERYID,
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from P_SYS_LOG
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByExample" parameterType="com.superwork.apcosplatform.domain.PSysLogExample"
+            resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        'true' as QUERYID,
+        <include refid="Base_Column_List"/>
+        from P_SYS_LOG
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.math.BigDecimal" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from P_SYS_LOG
+        where ID = #{id,jdbcType=DECIMAL}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+        delete
+        from P_SYS_LOG
+        where ID = #{id,jdbcType=DECIMAL}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.superwork.apcosplatform.domain.PSysLogExample">
+        delete from P_SYS_LOG
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.superwork.apcosplatform.domain.PSysLog">
+        <selectKey keyProperty="id" order="BEFORE" resultType="java.math.BigDecimal">
+            select P_SYS_LOG_SEQ.NEXTVAL from dual
+        </selectKey>
+        insert into P_SYS_LOG (ID, USERNAME, METHOD,
+        IP, OPERATION, CREATE_DATE,
+        PARAM)
+        values (#{id,jdbcType=DECIMAL}, #{username,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR},
+        #{ip,jdbcType=VARCHAR}, #{operation,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
+        #{param,jdbcType=CLOB})
+    </insert>
+    <insert id="insertSelective" parameterType="com.superwork.apcosplatform.domain.PSysLog">
+        <selectKey keyProperty="id" order="BEFORE" resultType="java.math.BigDecimal">
+            select P_SYS_LOG_SEQ.NEXTVAL from dual
+        </selectKey>
+        insert into P_SYS_LOG
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            ID,
+            <if test="username != null">
+                USERNAME,
+            </if>
+            <if test="method != null">
+                METHOD,
+            </if>
+            <if test="ip != null">
+                IP,
+            </if>
+            <if test="operation != null">
+                OPERATION,
+            </if>
+            <if test="createDate != null">
+                CREATE_DATE,
+            </if>
+            <if test="param != null">
+                PARAM,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{id,jdbcType=DECIMAL},
+            <if test="username != null">
+                #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="method != null">
+                #{method,jdbcType=VARCHAR},
+            </if>
+            <if test="ip != null">
+                #{ip,jdbcType=VARCHAR},
+            </if>
+            <if test="operation != null">
+                #{operation,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="param != null">
+                #{param,jdbcType=CLOB},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.superwork.apcosplatform.domain.PSysLogExample"
+            resultType="java.lang.Long">
+        select count(*) from P_SYS_LOG
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update P_SYS_LOG
+        <set>
+            <if test="record.id != null">
+                ID = #{record.id,jdbcType=DECIMAL},
+            </if>
+            <if test="record.username != null">
+                USERNAME = #{record.username,jdbcType=VARCHAR},
+            </if>
+            <if test="record.method != null">
+                METHOD = #{record.method,jdbcType=VARCHAR},
+            </if>
+            <if test="record.ip != null">
+                IP = #{record.ip,jdbcType=VARCHAR},
+            </if>
+            <if test="record.operation != null">
+                OPERATION = #{record.operation,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createDate != null">
+                CREATE_DATE = #{record.createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.param != null">
+                PARAM = #{record.param,jdbcType=CLOB},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExampleWithBLOBs" parameterType="map">
+        update P_SYS_LOG
+        set ID = #{record.id,jdbcType=DECIMAL},
+        USERNAME = #{record.username,jdbcType=VARCHAR},
+        METHOD = #{record.method,jdbcType=VARCHAR},
+        IP = #{record.ip,jdbcType=VARCHAR},
+        OPERATION = #{record.operation,jdbcType=VARCHAR},
+        CREATE_DATE = #{record.createDate,jdbcType=TIMESTAMP},
+        PARAM = #{record.param,jdbcType=CLOB}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update P_SYS_LOG
+        set ID = #{record.id,jdbcType=DECIMAL},
+        USERNAME = #{record.username,jdbcType=VARCHAR},
+        METHOD = #{record.method,jdbcType=VARCHAR},
+        IP = #{record.ip,jdbcType=VARCHAR},
+        OPERATION = #{record.operation,jdbcType=VARCHAR},
+        CREATE_DATE = #{record.createDate,jdbcType=TIMESTAMP}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.superwork.apcosplatform.domain.PSysLog">
+        update P_SYS_LOG
+        <set>
+            <if test="username != null">
+                USERNAME = #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="method != null">
+                METHOD = #{method,jdbcType=VARCHAR},
+            </if>
+            <if test="ip != null">
+                IP = #{ip,jdbcType=VARCHAR},
+            </if>
+            <if test="operation != null">
+                OPERATION = #{operation,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="param != null">
+                PARAM = #{param,jdbcType=CLOB},
+            </if>
+        </set>
+        where ID = #{id,jdbcType=DECIMAL}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.superwork.apcosplatform.domain.PSysLog">
+        update P_SYS_LOG
+        set USERNAME    = #{username,jdbcType=VARCHAR},
+            METHOD      = #{method,jdbcType=VARCHAR},
+            IP          = #{ip,jdbcType=VARCHAR},
+            OPERATION   = #{operation,jdbcType=VARCHAR},
+            CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+            PARAM       = #{param,jdbcType=CLOB}
+        where ID = #{id,jdbcType=DECIMAL}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.superwork.apcosplatform.domain.PSysLog">
+        update P_SYS_LOG
+        set USERNAME    = #{username,jdbcType=VARCHAR},
+            METHOD      = #{method,jdbcType=VARCHAR},
+            IP          = #{ip,jdbcType=VARCHAR},
+            OPERATION   = #{operation,jdbcType=VARCHAR},
+            CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}
+        where ID = #{id,jdbcType=DECIMAL}
+    </update>
+
+    <select id="listLog" parameterType="com.superwork.apcosplatform.domain.PSysLog" resultMap="BaseResultMap">
+        SELECT A.* ,B.USER_ACCOUNT FROM P_SYS_LOG A LEFT OUTER JOIN P_SYS_USER B ON A.USERNAME = B.USER_ID where 1=1
+
+        <if test="createName !=null and createName != ''">
+            and B.USER_ACCOUNT like '%'||#{createName}||'%'
+        </if>
+        <if test="operation !=null and operation != ''">
+            and A.OPERATION like '%'||#{operation}||'%'
+        </if>
+        ORDER BY A.CREATE_DATE DESC
+    </select>
+
+    <select id="getRegisterOnWeek" resultType="java.util.Map">
+        select
+            to_char(T.CREATE_DATE, 'yyyy-mm-dd') data
+                ,
+            COUNT(*)                             counts
+        from P_SYS_LOG T
+        where T.CREATE_DATE between trunc(sysdate) - 8 and trunc(sysdate) + 1
+          AND T.OPERATION = '注册'
+        group by to_char(T.CREATE_DATE,'yyyy-mm-dd'
+        )
+        ORDER BY data
+    </select>
+
+
+    <select id="getLoginOnWeek" resultType="java.util.Map">
+        select A.*,nvl(B.count, 0) A_COUNT,nvl(C.count, 0) W_COUNT
+        from (
+                 select TO_CHAR(SYSDATE,'YYYY-MM-DD') AS DATA from dual
+                 UNION
+                 select TO_CHAR(SYSDATE-1,'YYYY-MM-DD') AS DATA from dual
+                 UNION
+                 select TO_CHAR(SYSDATE-2,'YYYY-MM-DD') AS DATA from dual
+                 UNION
+                 select TO_CHAR(SYSDATE-3,'YYYY-MM-DD') AS DATA from dual
+                 UNION
+                 select TO_CHAR(SYSDATE-4,'YYYY-MM-DD') AS DATA from dual
+                 UNION
+                 select TO_CHAR(SYSDATE-5,'YYYY-MM-DD') AS DATA from dual
+                 UNION
+                 select TO_CHAR(SYSDATE-6,'YYYY-MM-DD') AS DATA  from dual
+             ) a
+                 left OUTER join (
+                select to_char(T.CREATE_DATE, 'yyyy-mm-dd') as DATA, count(*) as count
+                from P_SYS_LOG
+                     T
+                where T.OPERATION = '移动端登陆'
+                group by to_char(T.CREATE_DATE,'yyyy-mm-dd'
+                )
+            ) b on a.DATA = b.DATA
+                 LEFT OUTER JOIN (
+                select to_char(T.CREATE_DATE, 'yyyy-mm-dd') as DATA, count(*) as count
+                from P_SYS_LOG
+                     T
+                where T.OPERATION = '登陆'
+                group by to_char(T.CREATE_DATE,'yyyy-mm-dd'
+                )
+            ) C ON A.DATA = C.DATA
+        ORDER BY A.DATA
+    </select>
+
+    <select id="getCountBySum" resultType="int">
+        SELECT COUNT(*)
+        FROM P_SYS_LOG
+        WHERE OPERATION = #{operation,jdbcType=VARCHAR}
+          AND PARAM LIKE '%' || #{param} || '%'
+    </select>
+
+    <select id="listMyLog" parameterType="com.superwork.apcosplatform.domain.PSysLog" resultMap="BaseResultMap">
+        SELECT  A.OPERATION,A.CREATE_DATE,B.USER_ACCOUNT FROM P_SYS_LOG A LEFT OUTER JOIN P_SYS_USER B ON A.USERNAME = B.USER_ID   WHERE USERNAME = #{username}
+        <if test="operation != null and operation != ''">
+          AND  OPERATION LIKE '%'||#{operation}||'%'
+        </if>
+      ORDER BY A.CREATE_DATE DESC
+    </select>
+
+</mapper>

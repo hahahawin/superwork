@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en" class="x-admin-sm">
+<head>
+    <meta charset="UTF-8">
+    <title>第三方账号管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" href="../../css/font.css">
+    <link rel="stylesheet" href="../../css/xadmin.css">
+    <script src="../../js/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../../js/xadmin.js"></script>
+    <script type="text/javascript" src="../../js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../../js/myWrite.js"></script>
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        .layui-inline {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<div style="padding: 10px">
+    <div>
+        <form class="layui-form" action="">
+            <div class="layui-inline layui-show-xs-block">
+                <input type="text" name="smarthomeAccount" id="smarthomeAccount" placeholder="BCCA授权账号"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-inline layui-show-xs-block">
+                <input type="text" name="attr4" id="attr4" placeholder="申请人姓名"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-inline layui-show-xs-block">
+                <button class="layui-btn" lay-submit lay-filter="search"><i class="layui-icon">&#xe615;</i>
+                </button>
+                <button  class="layui-btn "><i class="layui-icon layui-icon-fonts-clear"></i>
+                </button>
+                <button type="button" class="layui-btn" onclick="add()"><i class="layui-icon">&#xe608;</i>BCCA授权账号申请
+                </button>
+                <button type="button" class="layui-btn" onclick="dyAccount()"><i class="layui-icon">&#xe608;</i>账户订阅
+                </button>
+            </div>
+        </form>
+    </div>
+    <div>
+        <table class="layui-table" id="data-table" lay-filter="data-table"></table>
+    </div>
+</div>
+
+<script type="text/html" id="switchTpl">
+    <input type="checkbox" name="sfkt" value="{{d.settingId}}" lay-skin="switch" lay-text="启用|停用"
+           lay-filter="sfkt" {{ d.sfkt== 2?'checked':''}}>
+</script>
+<script>
+    var Info;
+    layui.use(['table', 'form'], function () {
+        var table = layui.table;
+        var $ = layui.jquery;
+        var form = layui.form;
+        var dataTable = table.render({
+            title: 'BCCA授权账号列表',
+            elem: '#data-table',
+            height: 'full-18',
+            url: '/account_3/listAccount_3.json', //数据接口
+            method: 'post',
+            contentType: 'application/json',
+            // size: 'sm',
+            response: {
+                countName: 'total',//规定数据总数的字段名称，默认：count
+                statusCode: 200, //规定成功的状态码，默认：0
+                statusName: 'status'
+            },
+            where: {},
+            page: true, //开启分页
+            limit: 20,
+            limits: [20, 30, 50, 100],
+            defaultToolbar: [],
+            done: function (res, curr, count) {
+                if (res.status == 401) {
+                    top.layer.alert(res.msg,{end:function () {
+                            top.location.href = '/';
+                        }})
+                }
+            },
+            cols: [[ //表头
+                {type: 'numbers',width:'5%',
+                    title: '序号'
+                }
+                , {field: 'smarthomeAccount', title: 'BCCA授权账号', align: 'center', sort: true}
+                , {field: 'sfkt', title: '账号状态', align: 'center', sort: true, templet: '#switchTpl'}
+                , {field: 'attr4', title: '申请人姓名', align: 'center', sort: true}
+                , {field: 'attr2', title: '订阅状态', align: 'center', sort: true,
+                    templet: function (d) {
+                        if (d.attr2 == 1) {
+                            return '已订阅'
+                        } else if (d.attr2 == 2) {
+                            return '未订阅'
+                        } else if (d.attr2 == 3) {
+                            return '审核中';
+                        }else {
+                            return '未定义';
+                        }
+                    }
+                }
+                , {field: 'userAccount', title: '创建人', align: 'center', sort: true}
+                , {field: 'createdTime', title: '创建时间', align: 'center', sort: true}
+                , {field: 'expressNo', title: '操作', align: 'center', width: 400
+                    , templet: function (d) {
+                        var delBtn = '<a class="layui-btn layui-btn-xs  layui-btn-warm" lay-event="sbdy">账户订阅</a>';
+                        var editBtn = '<a class="layui-btn layui-btn-danger  layui-btn-xs" lay-event="del">删除</a>';
+                        var setUserBtn = '<a class="layui-btn layui-btn-xs" lay-event="aync">同步设备</a>';
+                        var bingP = '<a class="layui-btn layui-btn-xs" lay-event="bing">绑定设备</a>';
+                        var delSbdy = '<a class="layui-btn layui-btn-danger  layui-btn-xs" lay-event="delSbdy">取消订阅</a>';
+                        return delBtn + editBtn + setUserBtn+bingP +delSbdy;
+                    }
+
+                }
+            ]]
+        });
+
+        //监听工具条
+        table.on('tool(data-table)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+            Info = obj.data; //获得当前行数据
+            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            var tr = obj.tr; //获得当前行 tr 的DOM对象
+            if (layEvent === 'sbdy') { //订阅
+                if(Info.attr2 == 1){
+                    layer.msg("已是订阅状态，不可重复订阅！");
+                    return ;
+                }
+                if(Info.sfkt != 2){
+                    layer.msg("请先将账户启用！");
+                    return ;
+                }
+                //出现加载并遮罩
+                var index = layer.load(1, {
+                    shade: [0.5,'#000'] //0.1透明度的背景
+                });
+                    $.ajax({
+                        url: '/account_3/sbdy.json',
+                        dataType: 'json',
+                        type: 'post',
+                        data: JSON.stringify({'data': Info}),
+                        contentType: 'application/json',
+                        hasShade:index,
+                        mysuccess: function (data) {
+                            if (data.status == 200) {
+                                layer.msg("订阅申请成功！",{ icon:1, time:1500, shade:0.4 },function () {
+                                    reload();
+                                });
+                            }else {
+                                layer.alert(data.msg);
+                            }
+                        }
+                    });
+            } else if (layEvent === 'del') { //删除
+
+                if(Info.attr2 == 1 ){
+                    layer.alert("请先取消订阅！")
+                    return ;
+                }
+                if(Info.sfkt != 1){
+                    layer.alert("请先将账户停用！")
+                    return ;
+                }
+                layer.confirm('真的删除这行数据么', function(index){
+                    layer.close(index);
+                    //向服务端发送删除指令
+                    $.ajax({
+                        url:  '/account_3/delAccount.json',
+                        dataType: 'json',
+                        type: 'post',
+                        data: JSON.stringify({'data': Info}),
+                        contentType : 'application/json',
+                        mysuccess:function (data) {
+                            if(data.status==200){
+                                layer.msg("删除成功！",{ icon:1, time:1000, shade:0.4 },function () {
+                                    layer.close(index);
+                                    reload();
+                                });
+                            }else{
+                                layer.alert(data.msg);
+                            }
+                        }
+                    });
+                });
+            } else if (layEvent == 'aync') {
+
+                if(Info.sfkt != 2){
+                    layer.msg("请先将账户启用！");
+                    return ;
+                }
+                //出现加载并遮罩
+                var index = layer.load(1, {
+                    shade: [0.5,'#000'] //0.1透明度的背景
+                });
+                $.ajax({
+                    url:  '/account_3/syncSbxx.json',
+                    dataType: 'json',
+                    type: 'post',
+                    data: JSON.stringify({'data': Info}),
+                    contentType : 'application/json',
+                    hasShade:index,
+                    mysuccess:function (data) {
+                        if(data.status==200){
+                            layer.msg(data.msg,{ icon:1, time:1000, shade:0.4 },function () {
+                                reload();
+                            });
+                        }else{
+                            layer.alert(data.msg);
+                        }
+                    }
+                });
+
+            }else if(layEvent =='bing'){
+                if(Info.sfkt != 2){
+                    layer.msg("请先将账户启用！");
+                    return ;
+                }
+                layer.open({
+                    type: 2,
+                    title: '绑定设备',
+                    content: 'bingProduct.html',
+                    shadeClose: false,
+                    shade: 0.5,
+                    area: ['100%', '100%'],
+                    maxmin: true
+                });
+
+
+            }else if(layEvent =='delSbdy') {
+                if(Info.attr2 ==2){
+                    layer.alert("已是取消状态，不可重复操作！")
+                    return ;
+                }
+                layer.confirm('是否取消订阅', function(index){
+                    layer.close(index);
+                    //向服务端发送删除指令
+                    $.ajax({
+                        url:  '/account_3/delSbdy.json',
+                        dataType: 'json',
+                        type: 'post',
+                        data: JSON.stringify({'data': Info}),
+                        contentType : 'application/json',
+                        mysuccess:function (data) {
+                            if(data.status==200){
+                                layer.msg("取消订阅成功！",{ icon:1, time:1000, shade:0.4 },function () {
+                                    reload();
+                                });
+                            }else{
+                                layer.alert(data.msg);
+                            }
+                        }
+                    });
+                });
+            }
+        });
+
+
+        //监听行双击事件
+        table.on('rowDouble(data-table)', function (obj) {
+            Info = obj.data;
+            layer.open({
+                type: 2,
+                title: 'BCCA授权账号详情',
+                content: 'accountDetail.html',
+                shadeClose: false,
+                shade: 0.5,
+                area: ['100%', '100%'],
+                maxmin: true
+            });
+        });
+
+        window.reload = function reload() {
+            dataTable.reload();
+        }
+
+        //监听
+        form.on('switch(sfkt)', function (obj) {
+            var Info = {};
+            var msgt = '';
+            Info.settingId = this.value;
+            if (obj.elem.checked) {
+                Info.sfkt = 2;
+                msgt = '启用成功！';
+            } else {
+                Info.sfkt = 1;//
+                msgt = '停用成功！';
+            }
+            $.ajax({
+                url: '/account_3/editAccountInfo.json',
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify({'data': Info}),
+                mysuccess: function (data) {
+                    if (data.status == 200) {
+                        layer.msg(msgt, {icon: 1, time: 1000, shade: 0.4}, function () {
+                            dataTable.reload();
+                        });
+                    }else {
+                        layer.msg(data.msg, {icon: 1, time: 1000, shade: 0.4}, function () {
+                            dataTable.reload();
+                        });
+                    }
+                }
+            })
+            return false;
+        });
+
+
+
+
+        form.on('submit(search)', function (data) {
+            var value = data.field;
+            //出现加载并遮罩
+
+            dataTable.reload({
+                where: { //设定异步数据接口的额外参数，任意设
+                    "data": value
+                }
+            })
+            return false;
+        })
+
+        window.add = function add() {
+            layer.open({
+                type: 2,
+                title: ['BCCA授权账号申请', 'font-size:18px;line-height:40px;height:40px'],
+                shadeClose: false,
+                shade: 0.4,
+                area: ['60%', '100%'],
+                content: 'addAccount_3.html',
+            });
+        }
+        window.dyAccount =function () {
+            //prompt层
+            var boo = false;
+            layer.prompt({title: '输入订阅账号', formType: 5}, function(text, index){
+                if(!boo){
+                    boo = true;
+                    $.ajax({
+                        url: '/account_3/dyAccount.json',
+                        type: 'POST',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        data: JSON.stringify({'data': text.trim()}),
+                        mysuccess: function (data) {
+                            layer.close(index);
+                            if (data.status == 200) {
+                                layer.msg('订阅审核中', {icon: 1, time: 1500, shade: 0.4}, function () {
+                                    dataTable.reload();
+                                });
+                            }else {
+                                layer.msg(data.msg, {icon: 1, time: 1000, shade: 0.4}, function () {
+                                    dataTable.reload();
+                                });
+                            }
+                        }
+                    })
+                }
+
+
+
+
+            });
+        }
+
+
+    });
+
+</script>
+
+</body>
+</html>

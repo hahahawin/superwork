@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.superwork.apcosplatform.mapper.PWebPropertyInfoMapper">
+  <resultMap id="BaseResultMap" type="com.superwork.apcosplatform.domain.PWebPropertyInfo">
+    <id column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="PRODUCT_CODE" jdbcType="VARCHAR" property="productCode" />
+    <result column="PROPERTY_NAME" jdbcType="VARCHAR" property="propertyName" />
+    <result column="PROPERTY_MODEL" jdbcType="VARCHAR" property="propertyModel" />
+    <result column="PROPERTY_README" jdbcType="VARCHAR" property="propertyReadme" />
+    <result column="CMD_ID" jdbcType="VARCHAR" property="cmdId" />
+    <result column="PARAM_KEY" jdbcType="VARCHAR" property="paramKey" />
+    <result column="CREATE_TIME" jdbcType="DATE" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="DATE" property="updateTime" />
+    <result column="SYNC_STATUS" jdbcType="DECIMAL" property="syncStatus" />
+    <result column="SYNC_STATUS_3" jdbcType="DECIMAL" property="syncStatus3" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    ID, PRODUCT_CODE, PROPERTY_NAME, PROPERTY_MODEL, PROPERTY_README, CMD_ID, PARAM_KEY, 
+    CREATE_TIME, UPDATE_TIME, SYNC_STATUS, SYNC_STATUS_3
+  </sql>
+  <select id="selectByExample" parameterType="com.superwork.apcosplatform.domain.PWebPropertyInfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from P_WEB_PROPERTY_INFO
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.math.BigDecimal" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from P_WEB_PROPERTY_INFO
+    where ID = #{id,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+    delete from P_WEB_PROPERTY_INFO
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.superwork.apcosplatform.domain.PWebPropertyInfoExample">
+    delete from P_WEB_PROPERTY_INFO
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.superwork.apcosplatform.domain.PWebPropertyInfo">
+    insert into P_WEB_PROPERTY_INFO (ID, PRODUCT_CODE, PROPERTY_NAME, 
+      PROPERTY_MODEL, PROPERTY_README, CMD_ID, 
+      PARAM_KEY, CREATE_TIME, UPDATE_TIME, 
+      SYNC_STATUS, SYNC_STATUS_3)
+    values (#{id,jdbcType=DECIMAL}, #{productCode,jdbcType=VARCHAR}, #{propertyName,jdbcType=VARCHAR}, 
+      #{propertyModel,jdbcType=VARCHAR}, #{propertyReadme,jdbcType=VARCHAR}, #{cmdId,jdbcType=VARCHAR}, 
+      #{paramKey,jdbcType=VARCHAR}, #{createTime,jdbcType=DATE}, #{updateTime,jdbcType=DATE}, 
+      #{syncStatus,jdbcType=DECIMAL}, #{syncStatus3,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.superwork.apcosplatform.domain.PWebPropertyInfo">
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.math.BigDecimal">
+      select P_WEB_PROPERTY_INFO_SEQ.NEXTVAL from dual
+    </selectKey>
+    insert into P_WEB_PROPERTY_INFO
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      ID,
+      <if test="productCode != null">
+        PRODUCT_CODE,
+      </if>
+      <if test="propertyName != null">
+        PROPERTY_NAME,
+      </if>
+      <if test="propertyModel != null">
+        PROPERTY_MODEL,
+      </if>
+      <if test="propertyReadme != null">
+        PROPERTY_README,
+      </if>
+      <if test="cmdId != null">
+        CMD_ID,
+      </if>
+      <if test="paramKey != null">
+        PARAM_KEY,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+      <if test="syncStatus != null">
+        SYNC_STATUS,
+      </if>
+      <if test="syncStatus3 != null">
+        SYNC_STATUS_3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=DECIMAL},
+      <if test="productCode != null">
+        #{productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyName != null">
+        #{propertyName,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyModel != null">
+        #{propertyModel,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyReadme != null">
+        #{propertyReadme,jdbcType=VARCHAR},
+      </if>
+      <if test="cmdId != null">
+        #{cmdId,jdbcType=VARCHAR},
+      </if>
+      <if test="paramKey != null">
+        #{paramKey,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=DATE},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=DATE},
+      </if>
+      <if test="syncStatus != null">
+        #{syncStatus,jdbcType=DECIMAL},
+      </if>
+      <if test="syncStatus3 != null">
+        #{syncStatus3,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.superwork.apcosplatform.domain.PWebPropertyInfoExample" resultType="java.lang.Long">
+    select count(*) from P_WEB_PROPERTY_INFO
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update P_WEB_PROPERTY_INFO
+    <set>
+      <if test="record.id != null">
+        ID = #{record.id,jdbcType=DECIMAL},
+      </if>
+      <if test="record.productCode != null">
+        PRODUCT_CODE = #{record.productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.propertyName != null">
+        PROPERTY_NAME = #{record.propertyName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.propertyModel != null">
+        PROPERTY_MODEL = #{record.propertyModel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.propertyReadme != null">
+        PROPERTY_README = #{record.propertyReadme,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cmdId != null">
+        CMD_ID = #{record.cmdId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paramKey != null">
+        PARAM_KEY = #{record.paramKey,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        CREATE_TIME = #{record.createTime,jdbcType=DATE},
+      </if>
+      <if test="record.updateTime != null">
+        UPDATE_TIME = #{record.updateTime,jdbcType=DATE},
+      </if>
+      <if test="record.syncStatus != null">
+        SYNC_STATUS = #{record.syncStatus,jdbcType=DECIMAL},
+      </if>
+      <if test="record.syncStatus3 != null">
+        SYNC_STATUS_3 = #{record.syncStatus3,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update P_WEB_PROPERTY_INFO
+    set ID = #{record.id,jdbcType=DECIMAL},
+      PRODUCT_CODE = #{record.productCode,jdbcType=VARCHAR},
+      PROPERTY_NAME = #{record.propertyName,jdbcType=VARCHAR},
+      PROPERTY_MODEL = #{record.propertyModel,jdbcType=VARCHAR},
+      PROPERTY_README = #{record.propertyReadme,jdbcType=VARCHAR},
+      CMD_ID = #{record.cmdId,jdbcType=VARCHAR},
+      PARAM_KEY = #{record.paramKey,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=DATE},
+      UPDATE_TIME = #{record.updateTime,jdbcType=DATE},
+      SYNC_STATUS = #{record.syncStatus,jdbcType=DECIMAL},
+      SYNC_STATUS_3 = #{record.syncStatus3,jdbcType=DECIMAL}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.superwork.apcosplatform.domain.PWebPropertyInfo">
+    update P_WEB_PROPERTY_INFO
+    <set>
+      <if test="productCode != null">
+        PRODUCT_CODE = #{productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyName != null">
+        PROPERTY_NAME = #{propertyName,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyModel != null">
+        PROPERTY_MODEL = #{propertyModel,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyReadme != null">
+        PROPERTY_README = #{propertyReadme,jdbcType=VARCHAR},
+      </if>
+      <if test="cmdId != null">
+        CMD_ID = #{cmdId,jdbcType=VARCHAR},
+      </if>
+      <if test="paramKey != null">
+        PARAM_KEY = #{paramKey,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=DATE},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME = #{updateTime,jdbcType=DATE},
+      </if>
+      <if test="syncStatus != null">
+        SYNC_STATUS = #{syncStatus,jdbcType=DECIMAL},
+      </if>
+      <if test="syncStatus3 != null">
+        SYNC_STATUS_3 = #{syncStatus3,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.superwork.apcosplatform.domain.PWebPropertyInfo">
+    update P_WEB_PROPERTY_INFO
+    set PRODUCT_CODE = #{productCode,jdbcType=VARCHAR},
+      PROPERTY_NAME = #{propertyName,jdbcType=VARCHAR},
+      PROPERTY_MODEL = #{propertyModel,jdbcType=VARCHAR},
+      PROPERTY_README = #{propertyReadme,jdbcType=VARCHAR},
+      CMD_ID = #{cmdId,jdbcType=VARCHAR},
+      PARAM_KEY = #{paramKey,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=DATE},
+      UPDATE_TIME = #{updateTime,jdbcType=DATE},
+      SYNC_STATUS = #{syncStatus,jdbcType=DECIMAL},
+      SYNC_STATUS_3 = #{syncStatus3,jdbcType=DECIMAL}
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+</mapper>

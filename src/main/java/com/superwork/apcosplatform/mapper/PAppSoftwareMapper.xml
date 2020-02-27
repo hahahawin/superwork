@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.superwork.apcosplatform.mapper.PAppSoftwareMapper">
+  <resultMap id="BaseResultMap" type="com.superwork.apcosplatform.domain.PAppSoftware">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="CREATEID" jdbcType="VARCHAR" property="createid" />
+    <result column="PATH" jdbcType="VARCHAR" property="path" />
+    <result column="APP_NAME" jdbcType="VARCHAR" property="appName" />
+    <result column="CREATEDATE" jdbcType="DATE" property="createdate" />
+    <result column="VERSION" jdbcType="VARCHAR" property="version" />
+    <result column="EDITID" jdbcType="VARCHAR" property="editid" />
+    <result column="EDITDATE" jdbcType="DATE" property="editdate" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="ATTR1" jdbcType="VARCHAR" property="attr1" />
+    <result column="ATTR2" jdbcType="VARCHAR" property="attr2" />
+    <result column="ATTR3" jdbcType="VARCHAR" property="attr3" />
+    <result column="CREATENAME" jdbcType="VARCHAR" property="createName" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    ID, CREATEID, PATH, APP_NAME, CREATEDATE, VERSION, EDITID, EDITDATE, STATUS, REMARK, 
+    ATTR1, ATTR2, ATTR3
+  </sql>
+  <select id="selectByExample" parameterType="com.superwork.apcosplatform.domain.PAppSoftwareExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from P_APP_SOFTWARE
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from P_APP_SOFTWARE
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from P_APP_SOFTWARE
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.superwork.apcosplatform.domain.PAppSoftwareExample">
+    delete from P_APP_SOFTWARE
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.superwork.apcosplatform.domain.PAppSoftware">
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">
+      select P_APP_SOFTWARE_SEQ.NEXTVAL from dual
+    </selectKey>
+    insert into P_APP_SOFTWARE (ID, CREATEID, PATH, 
+      APP_NAME, CREATEDATE, VERSION, 
+      EDITID, EDITDATE, STATUS, 
+      REMARK, ATTR1, ATTR2, 
+      ATTR3)
+    values (#{id,jdbcType=VARCHAR}, #{createid,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR}, 
+      #{appName,jdbcType=VARCHAR}, #{createdate,jdbcType=DATE}, #{version,jdbcType=VARCHAR}, 
+      #{editid,jdbcType=VARCHAR}, #{editdate,jdbcType=DATE}, #{status,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{attr1,jdbcType=VARCHAR}, #{attr2,jdbcType=VARCHAR}, 
+      #{attr3,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.superwork.apcosplatform.domain.PAppSoftware">
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">
+      select P_APP_SOFTWARE_SEQ.NEXTVAL from dual
+    </selectKey>
+    insert into P_APP_SOFTWARE
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      ID,
+      <if test="createid != null">
+        CREATEID,
+      </if>
+      <if test="path != null">
+        PATH,
+      </if>
+      <if test="appName != null">
+        APP_NAME,
+      </if>
+      <if test="createdate != null">
+        CREATEDATE,
+      </if>
+      <if test="version != null">
+        VERSION,
+      </if>
+      <if test="editid != null">
+        EDITID,
+      </if>
+      <if test="editdate != null">
+        EDITDATE,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="remark != null">
+        REMARK,
+      </if>
+      <if test="attr1 != null">
+        ATTR1,
+      </if>
+      <if test="attr2 != null">
+        ATTR2,
+      </if>
+      <if test="attr3 != null">
+        ATTR3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=VARCHAR},
+      <if test="createid != null">
+        #{createid,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null">
+        #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="appName != null">
+        #{appName,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null">
+        #{createdate,jdbcType=DATE},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="editid != null">
+        #{editid,jdbcType=VARCHAR},
+      </if>
+      <if test="editdate != null">
+        #{editdate,jdbcType=DATE},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="attr1 != null">
+        #{attr1,jdbcType=VARCHAR},
+      </if>
+      <if test="attr2 != null">
+        #{attr2,jdbcType=VARCHAR},
+      </if>
+      <if test="attr3 != null">
+        #{attr3,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.superwork.apcosplatform.domain.PAppSoftwareExample" resultType="java.lang.Long">
+    select count(*) from P_APP_SOFTWARE
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update P_APP_SOFTWARE
+    <set>
+      <if test="record.id != null">
+        ID = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createid != null">
+        CREATEID = #{record.createid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.path != null">
+        PATH = #{record.path,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appName != null">
+        APP_NAME = #{record.appName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdate != null">
+        CREATEDATE = #{record.createdate,jdbcType=DATE},
+      </if>
+      <if test="record.version != null">
+        VERSION = #{record.version,jdbcType=VARCHAR},
+      </if>
+      <if test="record.editid != null">
+        EDITID = #{record.editid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.editdate != null">
+        EDITDATE = #{record.editdate,jdbcType=DATE},
+      </if>
+      <if test="record.status != null">
+        STATUS = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null">
+        REMARK = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attr1 != null">
+        ATTR1 = #{record.attr1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attr2 != null">
+        ATTR2 = #{record.attr2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attr3 != null">
+        ATTR3 = #{record.attr3,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update P_APP_SOFTWARE
+    set ID = #{record.id,jdbcType=VARCHAR},
+      CREATEID = #{record.createid,jdbcType=VARCHAR},
+      PATH = #{record.path,jdbcType=VARCHAR},
+      APP_NAME = #{record.appName,jdbcType=VARCHAR},
+      CREATEDATE = #{record.createdate,jdbcType=DATE},
+      VERSION = #{record.version,jdbcType=VARCHAR},
+      EDITID = #{record.editid,jdbcType=VARCHAR},
+      EDITDATE = #{record.editdate,jdbcType=DATE},
+      STATUS = #{record.status,jdbcType=VARCHAR},
+      REMARK = #{record.remark,jdbcType=VARCHAR},
+      ATTR1 = #{record.attr1,jdbcType=VARCHAR},
+      ATTR2 = #{record.attr2,jdbcType=VARCHAR},
+      ATTR3 = #{record.attr3,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.superwork.apcosplatform.domain.PAppSoftware">
+    update P_APP_SOFTWARE
+    <set>
+      <if test="createid != null">
+        CREATEID = #{createid,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null">
+        PATH = #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="appName != null">
+        APP_NAME = #{appName,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null">
+        CREATEDATE = #{createdate,jdbcType=DATE},
+      </if>
+      <if test="version != null">
+        VERSION = #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="editid != null">
+        EDITID = #{editid,jdbcType=VARCHAR},
+      </if>
+      <if test="editdate != null">
+        EDITDATE = #{editdate,jdbcType=DATE},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="attr1 != null">
+        ATTR1 = #{attr1,jdbcType=VARCHAR},
+      </if>
+      <if test="attr2 != null">
+        ATTR2 = #{attr2,jdbcType=VARCHAR},
+      </if>
+      <if test="attr3 != null">
+        ATTR3 = #{attr3,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.superwork.apcosplatform.domain.PAppSoftware">
+    update P_APP_SOFTWARE
+    set CREATEID = #{createid,jdbcType=VARCHAR},
+      PATH = #{path,jdbcType=VARCHAR},
+      APP_NAME = #{appName,jdbcType=VARCHAR},
+      CREATEDATE = #{createdate,jdbcType=DATE},
+      VERSION = #{version,jdbcType=VARCHAR},
+      EDITID = #{editid,jdbcType=VARCHAR},
+      EDITDATE = #{editdate,jdbcType=DATE},
+      STATUS = #{status,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      ATTR1 = #{attr1,jdbcType=VARCHAR},
+      ATTR2 = #{attr2,jdbcType=VARCHAR},
+      ATTR3 = #{attr3,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <select id="listApp"   parameterType="com.superwork.apcosplatform.domain.PAppSoftware" resultMap="BaseResultMap">
+    SELECT
+      A.*,b.user_account CREATENAME
+    FROM p_app_software A LEFT OUTER JOIN p_sys_user B ON a.createid = b.user_id WHERE 1=1
+
+    <if test="appName !=null and appName != '' ">
+      AND A.APP_NAME LIKE '%'||#{appName}||'%'
+    </if>
+    <if test="version !=null and version != '' ">
+      AND A.VERSION LIKE '%'||#{version}||'%'
+    </if>
+    <if test="status !=null and status != '' ">
+      AND A.STATUS = #{status,jdbcType=VARCHAR}
+    </if>
+    <if test="createName !=null and createName != '' ">
+      AND B.user_account   LIKE '%'||#{createName}||'%'
+    </if>
+ORDER BY A.CREATEDATE DESC
+  </select>
+
+  <select id="getAppPath" resultMap="BaseResultMap">
+    SELECT
+    *
+    FROM p_app_software WHERE STATUS = #{type,jdbcType=VARCHAR} AND
+    ATTR2 = 'yes'
+    ORDER BY CREATEDATE DESC
+  </select>
+</mapper>

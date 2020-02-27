@@ -1,0 +1,468 @@
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">-->
+<!--<mapper namespace="com.superwork.apcosplatform.mapper.PSmhDeviceMapper">-->
+  <!--<resultMap id="BaseResultMap" type="com.superwork.apcosplatform.domain.PSmhDevice">-->
+    <!--<id column="ID" jdbcType="VARCHAR" property="id" />-->
+    <!--<result column="SERVICE_ID" jdbcType="VARCHAR" property="serviceId" />-->
+    <!--<result column="SERVICE_KEY" jdbcType="VARCHAR" property="serviceKey" />-->
+    <!--<result column="SERVICE_BACK_URL" jdbcType="VARCHAR" property="serviceBackUrl" />-->
+    <!--<result column="ATTR_1" jdbcType="VARCHAR" property="attr1" />-->
+    <!--<result column="ATTR_2" jdbcType="VARCHAR" property="attr2" />-->
+    <!--<result column="CREATOR_ID" jdbcType="VARCHAR" property="creatorId" />-->
+    <!--<result column="CREATED_TIME" jdbcType="DATE" property="createdTime" />-->
+    <!--<result column="EDITOR_ID" jdbcType="VARCHAR" property="editorId" />-->
+    <!--<result column="EDITED_TIME" jdbcType="DATE" property="editedTime" />-->
+    <!--<result column="BELONG_ORG_ID" jdbcType="VARCHAR" property="belongOrgId" />-->
+    <!--<result column="BCCA_URL" jdbcType="VARCHAR" property="bccaUrl" />-->
+    <!--<result column="DGJ_URL" jdbcType="VARCHAR" property="dgjUrl" />-->
+    <!--<result column="APPID" jdbcType="VARCHAR" property="appid" />-->
+    <!--<result column="APPKEY" jdbcType="VARCHAR" property="appkey" />-->
+    <!--<result column="APCOS_URL" jdbcType="VARCHAR" property="apcosUrl" />-->
+    <!--<result column="APCOS_SERVICE_ID" jdbcType="VARCHAR" property="apcosServiceId" />-->
+    <!--<result column="APCOS_SERVICE_KEY" jdbcType="VARCHAR" property="apcosServiceKey" />-->
+    <!--<result column="ATTR_3" jdbcType="VARCHAR" property="attr3" />-->
+    <!--<result column="ATTR_4" jdbcType="VARCHAR" property="attr4" />-->
+    <!--<result column="ATTR_5" jdbcType="VARCHAR" property="attr5" />-->
+  <!--</resultMap>-->
+  <!--<sql id="Example_Where_Clause">-->
+    <!--<where>-->
+      <!--<foreach collection="oredCriteria" item="criteria" separator="or">-->
+        <!--<if test="criteria.valid">-->
+          <!--<trim prefix="(" prefixOverrides="and" suffix=")">-->
+            <!--<foreach collection="criteria.criteria" item="criterion">-->
+              <!--<choose>-->
+                <!--<when test="criterion.noValue">-->
+                  <!--and ${criterion.condition}-->
+                <!--</when>-->
+                <!--<when test="criterion.singleValue">-->
+                  <!--and ${criterion.condition} #{criterion.value}-->
+                <!--</when>-->
+                <!--<when test="criterion.betweenValue">-->
+                  <!--and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}-->
+                <!--</when>-->
+                <!--<when test="criterion.listValue">-->
+                  <!--and ${criterion.condition}-->
+                  <!--<foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">-->
+                    <!--#{listItem}-->
+                  <!--</foreach>-->
+                <!--</when>-->
+              <!--</choose>-->
+            <!--</foreach>-->
+          <!--</trim>-->
+        <!--</if>-->
+      <!--</foreach>-->
+    <!--</where>-->
+  <!--</sql>-->
+  <!--<sql id="Update_By_Example_Where_Clause">-->
+    <!--<where>-->
+      <!--<foreach collection="example.oredCriteria" item="criteria" separator="or">-->
+        <!--<if test="criteria.valid">-->
+          <!--<trim prefix="(" prefixOverrides="and" suffix=")">-->
+            <!--<foreach collection="criteria.criteria" item="criterion">-->
+              <!--<choose>-->
+                <!--<when test="criterion.noValue">-->
+                  <!--and ${criterion.condition}-->
+                <!--</when>-->
+                <!--<when test="criterion.singleValue">-->
+                  <!--and ${criterion.condition} #{criterion.value}-->
+                <!--</when>-->
+                <!--<when test="criterion.betweenValue">-->
+                  <!--and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}-->
+                <!--</when>-->
+                <!--<when test="criterion.listValue">-->
+                  <!--and ${criterion.condition}-->
+                  <!--<foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">-->
+                    <!--#{listItem}-->
+                  <!--</foreach>-->
+                <!--</when>-->
+              <!--</choose>-->
+            <!--</foreach>-->
+          <!--</trim>-->
+        <!--</if>-->
+      <!--</foreach>-->
+    <!--</where>-->
+  <!--</sql>-->
+  <!--<sql id="Base_Column_List">-->
+    <!--ID, SERVICE_ID, SERVICE_KEY, SERVICE_BACK_URL, ATTR_1, ATTR_2, CREATOR_ID, CREATED_TIME, -->
+    <!--EDITOR_ID, EDITED_TIME, BELONG_ORG_ID, BCCA_URL, DGJ_URL, APPID, APPKEY, APCOS_URL, -->
+    <!--APCOS_SERVICE_ID, APCOS_SERVICE_KEY, ATTR_3, ATTR_4, ATTR_5-->
+  <!--</sql>-->
+  <!--<select id="selectByExample" parameterType="com.superwork.apcosplatform.domain.PSmhDeviceExample" resultMap="BaseResultMap">-->
+    <!--select-->
+    <!--<if test="distinct">-->
+      <!--distinct-->
+    <!--</if>-->
+    <!--'true' as QUERYID,-->
+    <!--<include refid="Base_Column_List" />-->
+    <!--from P_SMH_DEVICE-->
+    <!--<if test="_parameter != null">-->
+      <!--<include refid="Example_Where_Clause" />-->
+    <!--</if>-->
+    <!--<if test="orderByClause != null">-->
+      <!--order by ${orderByClause}-->
+    <!--</if>-->
+  <!--</select>-->
+  <!--<select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">-->
+    <!--select -->
+    <!--<include refid="Base_Column_List" />-->
+    <!--from P_SMH_DEVICE-->
+    <!--where ID = #{id,jdbcType=VARCHAR}-->
+  <!--</select>-->
+  <!--<delete id="deleteByPrimaryKey" parameterType="java.lang.String">-->
+    <!--delete from P_SMH_DEVICE-->
+    <!--where ID = #{id,jdbcType=VARCHAR}-->
+  <!--</delete>-->
+  <!--<delete id="deleteByExample" parameterType="com.superwork.apcosplatform.domain.PSmhDeviceExample">-->
+    <!--delete from P_SMH_DEVICE-->
+    <!--<if test="_parameter != null">-->
+      <!--<include refid="Example_Where_Clause" />-->
+    <!--</if>-->
+  <!--</delete>-->
+  <!--<insert id="insert" parameterType="com.superwork.apcosplatform.domain.PSmhDevice">-->
+    <!--<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">-->
+      <!--select P_SMH_DEVICE_SEQ.NEXTVAL from dual-->
+    <!--</selectKey>-->
+    <!--insert into P_SMH_DEVICE (ID, SERVICE_ID, SERVICE_KEY, -->
+      <!--SERVICE_BACK_URL, ATTR_1, ATTR_2, -->
+      <!--CREATOR_ID, CREATED_TIME, EDITOR_ID, -->
+      <!--EDITED_TIME, BELONG_ORG_ID, BCCA_URL, -->
+      <!--DGJ_URL, APPID, APPKEY, -->
+      <!--APCOS_URL, APCOS_SERVICE_ID, APCOS_SERVICE_KEY, -->
+      <!--ATTR_3, ATTR_4, ATTR_5-->
+      <!--)-->
+    <!--values (#{id,jdbcType=VARCHAR}, #{serviceId,jdbcType=VARCHAR}, #{serviceKey,jdbcType=VARCHAR}, -->
+      <!--#{serviceBackUrl,jdbcType=VARCHAR}, #{attr1,jdbcType=VARCHAR}, #{attr2,jdbcType=VARCHAR}, -->
+      <!--#{creatorId,jdbcType=VARCHAR}, #{createdTime,jdbcType=DATE}, #{editorId,jdbcType=VARCHAR}, -->
+      <!--#{editedTime,jdbcType=DATE}, #{belongOrgId,jdbcType=VARCHAR}, #{bccaUrl,jdbcType=VARCHAR}, -->
+      <!--#{dgjUrl,jdbcType=VARCHAR}, #{appid,jdbcType=VARCHAR}, #{appkey,jdbcType=VARCHAR}, -->
+      <!--#{apcosUrl,jdbcType=VARCHAR}, #{apcosServiceId,jdbcType=VARCHAR}, #{apcosServiceKey,jdbcType=VARCHAR}, -->
+      <!--#{attr3,jdbcType=VARCHAR}, #{attr4,jdbcType=VARCHAR}, #{attr5,jdbcType=VARCHAR}-->
+      <!--)-->
+  <!--</insert>-->
+  <!--<insert id="insertSelective" parameterType="com.superwork.apcosplatform.domain.PSmhDevice">-->
+    <!--<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">-->
+      <!--select P_SMH_DEVICE_SEQ.NEXTVAL from dual-->
+    <!--</selectKey>-->
+    <!--insert into P_SMH_DEVICE-->
+    <!--<trim prefix="(" suffix=")" suffixOverrides=",">-->
+      <!--ID,-->
+      <!--<if test="serviceId != null">-->
+        <!--SERVICE_ID,-->
+      <!--</if>-->
+      <!--<if test="serviceKey != null">-->
+        <!--SERVICE_KEY,-->
+      <!--</if>-->
+      <!--<if test="serviceBackUrl != null">-->
+        <!--SERVICE_BACK_URL,-->
+      <!--</if>-->
+      <!--<if test="attr1 != null">-->
+        <!--ATTR_1,-->
+      <!--</if>-->
+      <!--<if test="attr2 != null">-->
+        <!--ATTR_2,-->
+      <!--</if>-->
+      <!--<if test="creatorId != null">-->
+        <!--CREATOR_ID,-->
+      <!--</if>-->
+      <!--<if test="createdTime != null">-->
+        <!--CREATED_TIME,-->
+      <!--</if>-->
+      <!--<if test="editorId != null">-->
+        <!--EDITOR_ID,-->
+      <!--</if>-->
+      <!--<if test="editedTime != null">-->
+        <!--EDITED_TIME,-->
+      <!--</if>-->
+      <!--<if test="belongOrgId != null">-->
+        <!--BELONG_ORG_ID,-->
+      <!--</if>-->
+      <!--<if test="bccaUrl != null">-->
+        <!--BCCA_URL,-->
+      <!--</if>-->
+      <!--<if test="dgjUrl != null">-->
+        <!--DGJ_URL,-->
+      <!--</if>-->
+      <!--<if test="appid != null">-->
+        <!--APPID,-->
+      <!--</if>-->
+      <!--<if test="appkey != null">-->
+        <!--APPKEY,-->
+      <!--</if>-->
+      <!--<if test="apcosUrl != null">-->
+        <!--APCOS_URL,-->
+      <!--</if>-->
+      <!--<if test="apcosServiceId != null">-->
+        <!--APCOS_SERVICE_ID,-->
+      <!--</if>-->
+      <!--<if test="apcosServiceKey != null">-->
+        <!--APCOS_SERVICE_KEY,-->
+      <!--</if>-->
+      <!--<if test="attr3 != null">-->
+        <!--ATTR_3,-->
+      <!--</if>-->
+      <!--<if test="attr4 != null">-->
+        <!--ATTR_4,-->
+      <!--</if>-->
+      <!--<if test="attr5 != null">-->
+        <!--ATTR_5,-->
+      <!--</if>-->
+    <!--</trim>-->
+    <!--<trim prefix="values (" suffix=")" suffixOverrides=",">-->
+      <!--#{id,jdbcType=VARCHAR},-->
+      <!--<if test="serviceId != null">-->
+        <!--#{serviceId,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="serviceKey != null">-->
+        <!--#{serviceKey,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="serviceBackUrl != null">-->
+        <!--#{serviceBackUrl,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="attr1 != null">-->
+        <!--#{attr1,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="attr2 != null">-->
+        <!--#{attr2,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="creatorId != null">-->
+        <!--#{creatorId,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="createdTime != null">-->
+        <!--#{createdTime,jdbcType=DATE},-->
+      <!--</if>-->
+      <!--<if test="editorId != null">-->
+        <!--#{editorId,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="editedTime != null">-->
+        <!--#{editedTime,jdbcType=DATE},-->
+      <!--</if>-->
+      <!--<if test="belongOrgId != null">-->
+        <!--#{belongOrgId,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="bccaUrl != null">-->
+        <!--#{bccaUrl,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="dgjUrl != null">-->
+        <!--#{dgjUrl,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="appid != null">-->
+        <!--#{appid,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="appkey != null">-->
+        <!--#{appkey,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="apcosUrl != null">-->
+        <!--#{apcosUrl,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="apcosServiceId != null">-->
+        <!--#{apcosServiceId,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="apcosServiceKey != null">-->
+        <!--#{apcosServiceKey,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="attr3 != null">-->
+        <!--#{attr3,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="attr4 != null">-->
+        <!--#{attr4,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="attr5 != null">-->
+        <!--#{attr5,jdbcType=VARCHAR},-->
+      <!--</if>-->
+    <!--</trim>-->
+  <!--</insert>-->
+  <!--<select id="countByExample" parameterType="com.superwork.apcosplatform.domain.PSmhDeviceExample" resultType="java.lang.Long">-->
+    <!--select count(*) from P_SMH_DEVICE-->
+    <!--<if test="_parameter != null">-->
+      <!--<include refid="Example_Where_Clause" />-->
+    <!--</if>-->
+  <!--</select>-->
+  <!--<update id="updateByExampleSelective" parameterType="map">-->
+    <!--update P_SMH_DEVICE-->
+    <!--<set>-->
+      <!--<if test="record.id != null">-->
+        <!--ID = #{record.id,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="record.serviceId != null">-->
+        <!--SERVICE_ID = #{record.serviceId,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="record.serviceKey != null">-->
+        <!--SERVICE_KEY = #{record.serviceKey,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="record.serviceBackUrl != null">-->
+        <!--SERVICE_BACK_URL = #{record.serviceBackUrl,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="record.attr1 != null">-->
+        <!--ATTR_1 = #{record.attr1,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="record.attr2 != null">-->
+        <!--ATTR_2 = #{record.attr2,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="record.creatorId != null">-->
+        <!--CREATOR_ID = #{record.creatorId,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="record.createdTime != null">-->
+        <!--CREATED_TIME = #{record.createdTime,jdbcType=DATE},-->
+      <!--</if>-->
+      <!--<if test="record.editorId != null">-->
+        <!--EDITOR_ID = #{record.editorId,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="record.editedTime != null">-->
+        <!--EDITED_TIME = #{record.editedTime,jdbcType=DATE},-->
+      <!--</if>-->
+      <!--<if test="record.belongOrgId != null">-->
+        <!--BELONG_ORG_ID = #{record.belongOrgId,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="record.bccaUrl != null">-->
+        <!--BCCA_URL = #{record.bccaUrl,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="record.dgjUrl != null">-->
+        <!--DGJ_URL = #{record.dgjUrl,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="record.appid != null">-->
+        <!--APPID = #{record.appid,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="record.appkey != null">-->
+        <!--APPKEY = #{record.appkey,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="record.apcosUrl != null">-->
+        <!--APCOS_URL = #{record.apcosUrl,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="record.apcosServiceId != null">-->
+        <!--APCOS_SERVICE_ID = #{record.apcosServiceId,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="record.apcosServiceKey != null">-->
+        <!--APCOS_SERVICE_KEY = #{record.apcosServiceKey,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="record.attr3 != null">-->
+        <!--ATTR_3 = #{record.attr3,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="record.attr4 != null">-->
+        <!--ATTR_4 = #{record.attr4,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="record.attr5 != null">-->
+        <!--ATTR_5 = #{record.attr5,jdbcType=VARCHAR},-->
+      <!--</if>-->
+    <!--</set>-->
+    <!--<if test="_parameter != null">-->
+      <!--<include refid="Update_By_Example_Where_Clause" />-->
+    <!--</if>-->
+  <!--</update>-->
+  <!--<update id="updateByExample" parameterType="map">-->
+    <!--update P_SMH_DEVICE-->
+    <!--set ID = #{record.id,jdbcType=VARCHAR},-->
+      <!--SERVICE_ID = #{record.serviceId,jdbcType=VARCHAR},-->
+      <!--SERVICE_KEY = #{record.serviceKey,jdbcType=VARCHAR},-->
+      <!--SERVICE_BACK_URL = #{record.serviceBackUrl,jdbcType=VARCHAR},-->
+      <!--ATTR_1 = #{record.attr1,jdbcType=VARCHAR},-->
+      <!--ATTR_2 = #{record.attr2,jdbcType=VARCHAR},-->
+      <!--CREATOR_ID = #{record.creatorId,jdbcType=VARCHAR},-->
+      <!--CREATED_TIME = #{record.createdTime,jdbcType=DATE},-->
+      <!--EDITOR_ID = #{record.editorId,jdbcType=VARCHAR},-->
+      <!--EDITED_TIME = #{record.editedTime,jdbcType=DATE},-->
+      <!--BELONG_ORG_ID = #{record.belongOrgId,jdbcType=VARCHAR},-->
+      <!--BCCA_URL = #{record.bccaUrl,jdbcType=VARCHAR},-->
+      <!--DGJ_URL = #{record.dgjUrl,jdbcType=VARCHAR},-->
+      <!--APPID = #{record.appid,jdbcType=VARCHAR},-->
+      <!--APPKEY = #{record.appkey,jdbcType=VARCHAR},-->
+      <!--APCOS_URL = #{record.apcosUrl,jdbcType=VARCHAR},-->
+      <!--APCOS_SERVICE_ID = #{record.apcosServiceId,jdbcType=VARCHAR},-->
+      <!--APCOS_SERVICE_KEY = #{record.apcosServiceKey,jdbcType=VARCHAR},-->
+      <!--ATTR_3 = #{record.attr3,jdbcType=VARCHAR},-->
+      <!--ATTR_4 = #{record.attr4,jdbcType=VARCHAR},-->
+      <!--ATTR_5 = #{record.attr5,jdbcType=VARCHAR}-->
+    <!--<if test="_parameter != null">-->
+      <!--<include refid="Update_By_Example_Where_Clause" />-->
+    <!--</if>-->
+  <!--</update>-->
+  <!--<update id="updateByPrimaryKeySelective" parameterType="com.superwork.apcosplatform.domain.PSmhDevice">-->
+    <!--update P_SMH_DEVICE-->
+    <!--<set>-->
+      <!--<if test="serviceId != null">-->
+        <!--SERVICE_ID = #{serviceId,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="serviceKey != null">-->
+        <!--SERVICE_KEY = #{serviceKey,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="serviceBackUrl != null">-->
+        <!--SERVICE_BACK_URL = #{serviceBackUrl,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="attr1 != null">-->
+        <!--ATTR_1 = #{attr1,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="attr2 != null">-->
+        <!--ATTR_2 = #{attr2,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="creatorId != null">-->
+        <!--CREATOR_ID = #{creatorId,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="createdTime != null">-->
+        <!--CREATED_TIME = #{createdTime,jdbcType=DATE},-->
+      <!--</if>-->
+      <!--<if test="editorId != null">-->
+        <!--EDITOR_ID = #{editorId,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="editedTime != null">-->
+        <!--EDITED_TIME = #{editedTime,jdbcType=DATE},-->
+      <!--</if>-->
+      <!--<if test="belongOrgId != null">-->
+        <!--BELONG_ORG_ID = #{belongOrgId,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="bccaUrl != null">-->
+        <!--BCCA_URL = #{bccaUrl,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="dgjUrl != null">-->
+        <!--DGJ_URL = #{dgjUrl,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="appid != null">-->
+        <!--APPID = #{appid,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="appkey != null">-->
+        <!--APPKEY = #{appkey,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="apcosUrl != null">-->
+        <!--APCOS_URL = #{apcosUrl,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="apcosServiceId != null">-->
+        <!--APCOS_SERVICE_ID = #{apcosServiceId,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="apcosServiceKey != null">-->
+        <!--APCOS_SERVICE_KEY = #{apcosServiceKey,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="attr3 != null">-->
+        <!--ATTR_3 = #{attr3,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="attr4 != null">-->
+        <!--ATTR_4 = #{attr4,jdbcType=VARCHAR},-->
+      <!--</if>-->
+      <!--<if test="attr5 != null">-->
+        <!--ATTR_5 = #{attr5,jdbcType=VARCHAR},-->
+      <!--</if>-->
+    <!--</set>-->
+    <!--where ID = #{id,jdbcType=VARCHAR}-->
+  <!--</update>-->
+  <!--<update id="updateByPrimaryKey" parameterType="com.superwork.apcosplatform.domain.PSmhDevice">-->
+    <!--update P_SMH_DEVICE-->
+    <!--set SERVICE_ID = #{serviceId,jdbcType=VARCHAR},-->
+      <!--SERVICE_KEY = #{serviceKey,jdbcType=VARCHAR},-->
+      <!--SERVICE_BACK_URL = #{serviceBackUrl,jdbcType=VARCHAR},-->
+      <!--ATTR_1 = #{attr1,jdbcType=VARCHAR},-->
+      <!--ATTR_2 = #{attr2,jdbcType=VARCHAR},-->
+      <!--CREATOR_ID = #{creatorId,jdbcType=VARCHAR},-->
+      <!--CREATED_TIME = #{createdTime,jdbcType=DATE},-->
+      <!--EDITOR_ID = #{editorId,jdbcType=VARCHAR},-->
+      <!--EDITED_TIME = #{editedTime,jdbcType=DATE},-->
+      <!--BELONG_ORG_ID = #{belongOrgId,jdbcType=VARCHAR},-->
+      <!--BCCA_URL = #{bccaUrl,jdbcType=VARCHAR},-->
+      <!--DGJ_URL = #{dgjUrl,jdbcType=VARCHAR},-->
+      <!--APPID = #{appid,jdbcType=VARCHAR},-->
+      <!--APPKEY = #{appkey,jdbcType=VARCHAR},-->
+      <!--APCOS_URL = #{apcosUrl,jdbcType=VARCHAR},-->
+      <!--APCOS_SERVICE_ID = #{apcosServiceId,jdbcType=VARCHAR},-->
+      <!--APCOS_SERVICE_KEY = #{apcosServiceKey,jdbcType=VARCHAR},-->
+      <!--ATTR_3 = #{attr3,jdbcType=VARCHAR},-->
+      <!--ATTR_4 = #{attr4,jdbcType=VARCHAR},-->
+      <!--ATTR_5 = #{attr5,jdbcType=VARCHAR}-->
+    <!--where ID = #{id,jdbcType=VARCHAR}-->
+  <!--</update>-->
+<!--</mapper>-->

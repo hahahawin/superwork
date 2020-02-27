@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en" class="x-admin-sm">
+<head>
+    <meta charset="UTF-8">
+    <title>公司列表</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" href="../../css/font.css">
+    <link rel="stylesheet" href="../../css/xadmin.css">
+    <script src="../../js/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../../js/xadmin.js"></script>
+    <script type="text/javascript" src="../../js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../../js/myWrite.js"></script>
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        .layui-inline {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<div style="padding: 10px">
+    <div>
+        <form class="layui-form" action="">
+            <div class="layui-inline layui-show-xs-block">
+                <input type="text" name="orgName" id="orgName" placeholder="公司名称"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-inline layui-show-xs-block">
+                <input type="text" name="serviceId" id="serviceId" placeholder="服务ID"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-inline layui-show-xs-block">
+                <input type="text" name="serviceKey" id="serviceKey" placeholder="服务KEY"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-inline layui-show-xs-block">
+                <button class="layui-btn" lay-submit lay-filter="search"><i class="layui-icon">&#xe615;</i>
+                </button>
+                <button class="layui-btn "><i class="layui-icon layui-icon-fonts-clear"></i>
+                </button>
+                <!--<button class="layui-btn layui-btn-normal" type="button" onclick="add()"><i-->
+                        <!--class="layui-icon">&#xe608;</i>新增组织-->
+                <!--</button>-->
+            </div>
+        </form>
+    </div>
+    <div>
+        <script type="text/html" id="toolbarDemo">
+            <div class="layui-btn-container">
+                <button class="layui-btn " onclick="addOrg()"><i class="layui-icon">&#xe608;</i>新增公司
+                </button>
+                <button class="layui-btn layui-btn-danger" onclick="delOrg()"><i class="layui-icon">&#xe640;</i>删除公司
+                </button>
+                <button class="layui-btn layui-btn-danger" onclick="editOrg()"><i class="layui-icon">&#xe642;</i>修改公司
+                </button>
+            </div>
+        </script>
+        <table class="layui-table" id="data-table" lay-filter="data-table"></table>
+    </div>
+</div>
+
+<script type="text/html" id="switchTpl">
+    <input type="checkbox" name="effective" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用"
+           lay-filter="isEnable" {{ d.effective=== '1'? 'checked':''}}>
+</script>
+<script>
+    var Info;
+    layui.use(['table', 'form'], function () {
+        var table = layui.table;
+        var $ = layui.jquery;
+        var form = layui.form;
+        var dataTable = table.render({
+            title: '公司列表',
+            elem: '#data-table',
+            height: 'full-18',
+            url: '/serviceInfo/listOrg.json', //数据接口
+            method: 'post',
+            toolbar: '#toolbarDemo',
+            contentType: 'application/json',
+            response: {
+                countName: 'total',//规定数据总数的字段名称，默认：count
+                statusCode: 200, //规定成功的状态码，默认：0
+                statusName: 'status'
+            },
+            where: {},
+            page: true, //开启分页
+            limit: 20,
+            limits: [20, 30, 50, 100],
+            defaultToolbar: [],
+            done: function (res, curr, count) {
+                if (res.status == 401) {
+                    top.layer.alert(res.msg, {
+                        end: function () {
+                            top.location.href = '/';
+                        }
+                    })
+                }
+            },
+            cols: [[ //表头
+                {type: 'numbers', width:'5%'},
+                ,{type: 'radio', width:'5%', title: '序号'}
+                , {field: 'orgName', title: '公司名称', align: 'center', sort: true,width:'18%'}
+                , {field: 'mainAccount', title: '主账号', align: 'center', sort: true, width:'10%'}
+                , {
+                    title: '服务信息', align: 'center', width:'8%', sort: true,
+                    templet: function (d) {
+                        if (d.serviceId && d.serviceKey) {
+                            return "有";
+                        } else {
+                            return "无";
+                        }
+                    }
+                }
+                , {field: 'companyPhone', title: '联系电话', align: 'center', width:'10%', sort: true}
+                , {field: 'effective', title: '公司状态', align: 'center', width:'8%', sort: true, templet: '#switchTpl'}
+                , {field: 'createdTime', title: '创建时间', align: 'center', sort: true, width:'12%'}
+                , {field: 'count', title: '人员数量', align: 'center', sort: true, width:'8%'}
+                , {
+                    field: 'expressNo', title: '操作', align: 'center', width: 200, fixed: 'right'
+                    , templet: function (d) {
+                        var seeServiceBtn = '<a class="layui-btn layui-btn-danger  layui-btn-xs" lay-event="seeService">服务信息</a>';
+                        var seeBtn = '<a class="layui-btn layui-btn-xs" lay-event="seeUser">查看用户</a>';
+                        return seeServiceBtn + seeBtn;
+                    }
+                }
+            ]]
+        });
+
+        //监听工具条
+        table.on('tool(data-table)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+            Info = obj.data; //获得当前行数据
+            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            var tr = obj.tr; //获得当前行 tr 的DOM对象
+            if (layEvent === 'seeUser') {
+                layer.open({
+                    type: 2,
+                    title: '用户',
+                    content: 'listUserOnOrg.html',
+                    shadeClose: false,
+                    shade: 0.5,
+                    area: ['100%', '100%'],
+                    maxmin: true
+                });
+            } else if (layEvent === 'seeService') {
+                if (!Info.serviceId) {
+                    layer.alert("当前公司未设置服务信息！")
+                    return false;
+                }
+                var html = '<div class="layui-card">\n' +
+                    '  <div class="layui-card-body">\n' +
+                    '服务ID：' + Info.serviceId + '<br>\n' +
+                    '服务KEY：' + Info.serviceKey + '<br>\n' +
+                    '  </div>\n' +
+                    '</div>'
+                //自定页
+                layer.open({
+                    type: 1,
+                    skin: 'layui-layer-demo', //样式类名
+                    title: '服务信息',
+                    closeBtn: 0, //不显示关闭按钮
+                    area: ['360px', '200px'], //宽高
+                    anim: 2,
+                    shadeClose: true, //开启遮罩关闭
+                    content: html
+                });
+            }
+
+        })
+
+        //单元格编辑
+        table.on('edit(data-table)', function (obj) { //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
+            var data = obj.data;
+            //出现加载并遮罩
+            if (data.orgName.trim().length == 0 || data.orgName.length>20) {
+                layer.msg("公司名长度不要超过20且不能为空");
+                return false;
+            }
+            var index = layer.load(1, {
+                shade: [0.5, '#000'] //0.1透明度的背景
+            });
+            $.ajax({
+                url: '/serviceInfo/editOrg.json',
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                hasShade: index,
+                mysuccess: function (data) {
+                    layer.close(index);
+                    if (data.status == 200) {
+                        layer.msg("修改成功！", {icon: 1, time: 1000, shade: 0.4}, function () {
+                            dataTable.reload();
+                        });
+                    } else {
+                        layer.msg(data.msg, {icon: 2, time: 1000, shade: 0.4}, function () {
+                            dataTable.reload();
+                        });
+                    }
+                }
+            })
+        });
+
+        //监听
+        form.on('switch(isEnable)', function (obj) {
+            // console.log(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis)
+            Info = {};
+            var msgt = '';
+            Info.id = this.value;
+            if (obj.elem.checked) {
+                Info.effective = 1;//启用成功
+                msgt = '启用成功！';
+            } else {
+                Info.effective = 2;//禁用
+                msgt = '禁用成功！';
+            }
+            $.ajax({
+                url: '/serviceInfo/editOrg.json',
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify(Info),
+                mysuccess: function (data) {
+                    if (data.status == 200) {
+                        layer.msg(msgt, {icon: 1, time: 1000, shade: 0.4}, function () {
+                            dataTable.reload();
+                        });
+                    } else {
+                        layer.msg(data.msg, {icon: 1, time: 1000, shade: 0.4}, function () {
+                            dataTable.reload();
+                        });
+                    }
+                }
+            })
+            return false;
+        });
+
+
+        window.reload = function reload() {
+            dataTable.reload();
+        };
+
+        window.addOrg = function () {
+            layer.open({
+                type: 2,
+                title: '新增公司',
+                content: 'addOrg.html',
+                shadeClose: false,
+                shade: 0.5,
+                area: ['100%', '100%'],
+                maxmin: true
+            });
+        }
+
+        window.delOrg = function () {
+            var checkStatus = table.checkStatus("data-table");
+            if(checkStatus.data.length==0){
+                layer.msg("请选择一条数据！")
+                return;
+            }else if(checkStatus.data[0].effective === '1'){
+                layer.msg("请先将该公司禁用！")
+                return;
+            }else{
+                //询问框
+                layer.confirm('删除该公司将一并删除该公司下的账号，并且服务信息将无法重新使用！请慎重选择！', {
+                    btn: ['确定删除','取消删除'] //按钮
+                }, function(){
+                    $.ajax({
+                        url: '/serviceInfo/delOrg.json',
+                        type: 'POST',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        data: JSON.stringify(checkStatus.data[0]),
+                        mysuccess: function (data) {
+                            if (data.status == 200) {
+                                layer.msg("公司删除成功！");
+                                dataTable.reload();
+                            }else {
+                                layer.alert(data.msg);
+                            }
+                        }
+                    })
+                });
+
+            }
+        }
+
+        window.editOrg = function () {
+            var checkStatus = table.checkStatus("data-table");
+            if(checkStatus.data.length==0){
+                layer.msg("请选择一条数据！")
+                return;}
+            Info = checkStatus.data[0];
+            layer.open({
+                type: 2,
+                title: '编辑公司',
+                content: 'eidtOrg.html',
+                shadeClose: false,
+                shade: 0.5,
+                area: ['100%', '100%'],
+                maxmin: true
+            });
+        }
+
+
+        form.on('submit(search)', function (data) {
+            var value = data.field;
+            //出现加载并遮罩
+
+            dataTable.reload({
+                where: { //设定异步数据接口的额外参数，任意设
+                    "data": value
+                }
+            })
+            return false;
+        })
+
+
+    });
+
+</script>
+
+</body>
+</html>

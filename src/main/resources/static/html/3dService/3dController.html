@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../css/font.css">
+    <link rel="stylesheet" href="../../css/xadmin.css">
+    <script src="../../js/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../../js/xadmin.js"></script>
+    <script type="text/javascript" src="../../js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../../js/myWrite.js"></script>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+</head>
+<body>
+
+<iframe id="Example2" class="card" title="Example2" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" srcdoc='' style="width: 100%;height:800px "></iframe>
+
+
+<script type="text/javascript">
+
+    layui.use(['table', 'form', 'laytpl'], function () {
+        var layer = layui.layer;
+        $(function () {
+            $.ajax({
+                url: '/sbgl/selmodle.json',
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify({'data': parent.Info1.deviceMac}),
+                mysuccess: function (data) {
+                    if (data.status == 200) {
+                        if(data.data){
+                            document.getElementById("Example2").srcdoc = data.data;
+                            show();
+                        }else{
+                            layer.msg("无控制模板，此功能暂无法开放！")
+                        }
+                    }else {
+                        layer.msg(data.msg, {icon: 2, time: 1000, shade: 0.4}, function () {
+
+                        });
+                    }
+                }
+
+            })
+        })
+
+        function show(){
+            $("#Example2").load(function() {
+                $("#Example2").contents().find(".sendControlBtn").unbind();
+                $("#Example2").contents().find(".sendControlBtn").on("click", function(e) {
+                    //出现加载并遮罩
+                    var datas = $("#Example2")[0].contentWindow.getCmdParams($(this));
+                    if(datas.controlParams) {
+                        datas.controlParams = JSON.stringify(datas.controlParams);
+                    }
+                    var pone = {};
+                    pone.code = datas.operation;
+                    pone.params = datas.controlParams;
+                    pone.memo = datas.title;
+                    // pone.account =parent.Info1.account;
+                    pone.whid = parent.Info1.serialNum;
+                    pone.productCode = parent.Info1.productCode;
+                    pone.memo1 = parent.Info1.deviceName;
+                    console.log(pone);
+                    parent.addList(pone);
+                })
+            });
+        }
+
+
+    })
+
+
+</script>
+</body>
+</html>

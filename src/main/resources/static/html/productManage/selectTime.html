@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en" class="x-admin-sm">
+<head>
+    <meta charset="UTF-8">
+    <title>选择时间</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" href="../../css/font.css">
+    <link rel="stylesheet" href="../../css/xadmin.css">
+    <script src="../../js/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../../js/xadmin.js"></script>
+    <script type="text/javascript" src="../../js/jquery-2.0.3.min.js"></script>
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div style="width: 90%">
+    <form class="layui-form" action="" style="padding-top: 20px">
+        <div class="layui-form-item">
+            <label class="layui-form-label">时间段<i style="color: red">&nbsp;*</i></label>
+            <div class="layui-input-block">
+                <select name="sjdType" lay-verify="required" lay-filter="sjdType">
+                    <option value=""></option>
+                    <option value="datetime" selected>日期</option>
+                    <option value="time">时间</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">开始时间<i style="color: red">&nbsp;*</i></label>
+            <div class="layui-input-block" id="start">
+                <input type="text" class="layui-input" id="test1" name="startTime">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">结束时间<i style="color: red">&nbsp;*</i></label>
+            <div class="layui-input-block" id="end">
+                <input type="text" class="layui-input" id="test2" name="endTime">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="add">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary" style="background: #FF6877;color: #FFFFFF">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    layui.use(['jquery','layer','form','laydate'],function () {
+            var form = layui.form;
+            var $ = layui.jquery;
+            var layer=layui.layer;
+            var laydate =layui.laydate;
+            //自定义验证规则
+            form.verify({
+                checkName: function(value){
+                    if(value.length>20){
+                        return '长度超过20'
+                    }
+                    var msg = '';
+                    $.ajax({
+                        url:  '/department/checkName.json',
+                        dataType: 'json',
+                        type: 'post',
+                        async: false,
+                        data: JSON.stringify({'data':value}),
+                        contentType : 'application/json',
+                        success:function (result) {
+                            if(result.status!=200){
+                                msg=result.msg
+                            }
+                        }
+                    });
+                    if(msg){
+                        return msg;
+                    }
+                },
+                checkLength100:function (data) {
+                    if(data.length>100){
+                        return '长度超过100'
+                    }
+                }
+            });
+
+        //执行一个laydate实例
+        var time1 = laydate.render({
+            elem: '#test1' //指定元素
+            ,type: 'datetime'
+            ,done: function(value, date, endDate) {
+                time2.config.min = {
+                    year: date.year,
+                    month: date.month - 1,
+                    date: date.date,
+                    hours:date.hours,
+                    minutes:date.minutes,
+                    seconds:date.seconds
+                }; //重置结束日期最小值
+        }
+        });
+
+        //执行一个laydate实例
+        var time2=laydate.render({
+            elem: '#test2' //指定元素
+            ,type: 'datetime'
+            ,done: function(value, date, endDate) {
+                time1.config.max = {
+                    year: date.year,
+                    month: date.month - 1,
+                    date: date.date,
+                    hours:date.hours,
+                    minutes:date.minutes,
+                    seconds:date.seconds
+                }; //重置开始日期最大值
+            }
+        });
+
+        form.on('select(sjdType)', function(data){
+            if(data.value == 'time'){
+                $("#test1").remove();
+                $("#start").html('<input type="text" class="layui-input" id="test1" name="startTime">');
+                $("#test2").remove();
+                $("#end").html(' <input type="text" class="layui-input" id="test2" name="endTime">');
+                time1 = laydate.render({
+                    elem: '#test1' //指定元素
+                    ,type: 'time'
+                    ,done: function(value, date, endDate) {
+                        time2.config.min = {
+                            year: date.year,
+                            month: date.month - 1,
+                            date: date.date,
+                            hours:date.hours,
+                            minutes:date.minutes,
+                            seconds:date.seconds
+                        }; //重置结束日期最小值
+                    }
+            })
+
+                time2 = laydate.render({
+                    elem: '#test2' //指定元素
+                    ,type: 'time'
+                    ,done: function(value, date, endDate) {
+                        time2.config.min = {
+                            year: date.year,
+                            month: date.month - 1,
+                            date: date.date,
+                            hours:date.hours,
+                            minutes:date.minutes,
+                            seconds:date.seconds
+                        }; //重置结束日期最小值
+                    }
+                });
+            }else{
+
+                $("#test1").remove();
+                $("#start").html('<input type="text" class="layui-input" id="test1" name="startTime">');
+                $("#test2").remove();
+                $("#end").html(' <input type="text" class="layui-input" id="test2" name="endTime">');
+                time1 = laydate.render({
+                    elem: '#test1' //指定元素
+                    ,type: 'datetime'
+                    ,done: function(value, date, endDate) {
+                        time2.config.min = {
+                            year: date.year,
+                            month: date.month - 1,
+                            date: date.date,
+                            hours:date.hours,
+                            minutes:date.minutes,
+                            seconds:date.seconds
+                        }; //重置结束日期最小值
+                    }
+                })
+
+                time2 = laydate.render({
+                    elem: '#test2' //指定元素
+                    ,type: 'datetime'
+                    ,done: function(value, date, endDate) {
+                        time2.config.min = {
+                            year: date.year,
+                            month: date.month - 1,
+                            date: date.date,
+                            hours:date.hours,
+                            minutes:date.minutes,
+                            seconds:date.seconds
+                        }; //重置结束日期最小值
+                    }
+                });
+            }
+        });
+
+        //监听提交
+            form.on('submit(add)', function(data){
+                parent.addDate(data.field);
+                var index=parent.layer.getFrameIndex(window.name);
+                parent.layer.close(index);
+                return false;
+            });
+        }
+
+    );
+
+
+
+
+</script>
+
+</body>
+</html>

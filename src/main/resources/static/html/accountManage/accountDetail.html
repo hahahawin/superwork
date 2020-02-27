@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" class="x-admin-sm">
+<head>
+    <meta charset="UTF-8">
+    <title>BCCA授权账号详情</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" href="../../css/font.css">
+    <link rel="stylesheet" href="../../css/xadmin.css">
+    <script src="../../js/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../../js/xadmin.js"></script>
+    <script type="text/javascript" src="../../js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../../js/myWrite.js"></script>
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        .item{
+            text-align: right;
+            font-weight: bolder;
+        }
+    </style>
+</head>
+<body>
+<div id="Info" style="margin: 40px 20px"></div>
+
+<script type="text/html" id="Infotemplet">
+    <table class="layui-table" style="border:2px solid black;border-collapse:collapse;" >
+        <caption align="top"><h2>BCCA授权账号详情</h2></caption>
+        <colgroup>
+            <col width="150">
+            <col>
+            <col width="150">
+            <col>
+        </colgroup>
+        <tbody>
+        <tr>
+            <td class="item">BCCA授权账号</td>
+            <td  colspan="3">{{d.smarthomeAccount|| ''}}</td>
+        </tr>
+        <tr>
+            <td class="item">账号状态</td>
+            <td>{{change(d.sfkt)}}</td>
+            <td class="item">订阅状态</td>
+            <td>{{takeState(d.attr2)}}</td>
+
+        </tr>
+        <tr>
+            <td class="item">申请人姓名</td>
+            <td>{{d.attr4 || ''}}</td>
+            <td class="item">申请人电话</td>
+            <td>{{d.attr7 || ''}}</td>
+        </tr>
+        <tr>
+            <td class="item">创建人</td>
+            <td>{{d.userAccount || ''}}</td>
+            <td class="item">创建时间</td>
+            <td>{{d.createdTime || ''}}</td>
+        </tr>
+        </tbody>
+    </table>
+
+</script>
+<script>
+    layui.use(['upload','laytpl'], function() {
+        var laytpl = layui.laytpl;
+        var $ = layui.jquery;
+
+
+        laytpl($('#Infotemplet').html()).render(parent.Info, function (html) {
+            $("#Info").html(html);
+        }, 'json');
+
+
+    })
+    function change(data) {
+        if (data == 1)
+            return '停用'
+        if (data == 2)
+            return '启用'
+
+    }
+     function  takeState(data){
+         if (data == 1) {
+             return '已订阅'
+         } else if (data == 2) {
+             return '未通过'
+         } else {
+             return '未订阅';
+         }
+     }
+
+
+</script>
+
+</body>
+</html>

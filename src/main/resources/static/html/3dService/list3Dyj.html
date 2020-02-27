@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" class="x-admin-sm">
+<head>
+    <meta charset="UTF-8">
+    <title>3D元件</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" href="../../css/font.css">
+    <link rel="stylesheet" href="../../css/xadmin.css">
+    <script src="../../js/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../../js/xadmin.js"></script>
+    <script type="text/javascript" src="../../js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../../js/myWrite.js"></script>
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        .layui-inline {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<form class="layui-form" action="" style="margin:20px 0-10px 20px">
+    <div class="layui-inline layui-show-xs-block">
+        <input type="text" name="yj_mc" id="yj_mc" placeholder="请输入元件的名字"
+               autocomplete="off" class="layui-input">
+    </div>
+    <div class="layui-inline layui-show-xs-block">
+        <select name="yjlx_id" id="yjlx_id">
+            <option value="">请选择元件类型</option>
+        </select>
+    </div>
+    <div class="layui-inline layui-show-xs-block">
+        <select name="only_bond" id="only_bond">
+            <option value="">是否绑定</option>
+            <option value="1">绑定</option>
+            <option value="2">未绑定</option>
+        </select>
+    </div>
+
+    <div class="layui-inline layui-show-xs-block">
+        <button class="layui-btn" lay-submit lay-filter="search"><i class="layui-icon">&#xe615;</i>
+        </button>
+        <button class="layui-btn "><i class="layui-icon layui-icon-fonts-clear"></i>
+        </button>
+    </div>
+</form>
+<div id="Info" style="margin: 0px 20px;min-height: 400px;background: rgba(218,236,252,0)"></div>
+<div id="test1"></div>
+<script type="text/html" id="Infotemplet">
+    <div class="layui-row" style="text-align: center">
+        {{# layui.each(d,function(index,item){ }}
+        <div class="layui-col-xs3" style="background: #c9dae9">
+            <div class="grid-demo grid-demo-bg1" title="预览"
+                 style="width:100% ;height: 250px ;line-height: 250px;background-color: #ECECEC;position:relative;text-align:center;margin-top: 20px;"
+                 onclick='yjView("{{item.fjdz}}")'>
+                <img style="max-height: 250px;position:absolute;top:50%;left:50%;transform: translate(-50%,-50%);"
+                     src="{{item.fjtp}}"/>
+            </div>
+            <div style="float:left;margin:20px 0px 0px 40px;font-size:16px;color: #333333;text-align: center">{{
+                item.yj_mc}}
+            </div>
+            <div style="float:right;margin:20px 40px 0px 0px;font-size:16px;text-align: center">
+                <button type="button" class="layui-btn layui-btn-normal" onclick='bing("{{ item.yj_id}}")'>绑定/解绑</button>
+                <!--<button type="button" class="layui-btn layui-btn-warm">解绑</button>-->
+            </div>
+        </div>
+        {{# }); }}
+        {{# if(d.length === 0){ }}
+        无数据
+        {{# } }}
+    </div>
+</script>
+
+<script>
+    var totalRecords;
+    var yj_id;
+    var durl;//元件视图地址
+    var d3url;//3d平台的地址
+    layui.use(['jquery', 'layer', 'form', 'laytpl', 'laypage'], function () {
+        var form = layui.form;
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var laytpl = layui.laytpl;
+        var laypage = layui.laypage;
+
+        $(function () {
+            //查询元件类型
+            $.ajax({
+                url: '/d3/getsbyjlx.json',
+                dataType: 'json',
+                type: 'post',
+                async: false,
+                mysuccess: function (data) {
+                    if (data.status == 200) {
+                        var value = JSON.parse(data.data);
+                        d3url = data.token;//3D的地址
+                        for (var i = 0; i < value.length; i++) {
+                            $("#yjlx_id").append('<option value="' + value[i].yjlx_id + '">' + value[i].yjlx_mc + '</option>')
+                        }
+                        form.render();
+                    }else {
+                        layer.msg(data.msg);
+                    }
+                }
+            });
+        })
+
+        var obj = {
+            pageNo: 1,
+            pageSize: 8,
+            yj_mc: '',
+            yjlx_id: '',
+            only_bond: ''
+        }
+
+        getSbyjByTj(obj);
+
+
+        function getSbyjByTj(obj) {
+            //查询元件
+            $.ajax({
+                url: '/d3/sbyjlist.json',
+                dataType: 'json',
+                type: 'post',
+                async: false,
+                data: JSON.stringify(obj),
+                contentType: 'application/json',
+                mysuccess: function (data) {
+                    if (data.status == 200) {
+                        totalRecords = data.data.totalRecords;
+                        var value = JSON.parse(data.data.list);
+                        laytpl($('#Infotemplet').html()).render(value, function (html) {
+                            $("#Info").html(html);
+                        }, 'json');
+                    } else {
+                        layer.msg(data.msg);
+                    }
+                }
+            });
+        }
+
+
+        //执行一个laypage实例
+        laypage.render({
+            elem: 'test1' //注意，这里的 test1 是 ID，不用加 # 号
+            , count: totalRecords //数据总数，从服务端得到
+            , limit: 8
+            , layout: ['prev', 'page', 'next', 'count']
+            , jump: function (data, first) {
+                //obj包含了当前分页的所有参数，比如：
+                obj.pageNo = data.curr;
+                obj.pageSize = data.limit;
+
+                obj.yj_mc = $("#yj_mc").val().trim();
+                obj.yjlx_id = $("#yjlx_id").val().trim();
+                obj.only_bond = $("#only_bond").val().trim();
+                //首次不执行
+                if (!first) {
+                    getSbyjByTj(obj);
+                }
+            }
+        });
+
+        form.on('submit(search)', function (data) {
+            var value = data.field;
+            obj.yj_mc = value.yj_mc.trim();
+            obj.only_bond = value.only_bond.trim();
+            obj.yjlx_id = value.yjlx_id.trim();
+            getSbyjByTj(obj);
+            return false;
+
+        })
+
+        window.bing = function (data) {
+
+            yj_id = data;
+            console.log(yj_id);
+            layer.open({
+                type: 2,
+                title: '绑定产品',
+                content: 'listMySb.html',
+                shadeClose: false,
+                shade: 0.5,
+                // offset: 'r',
+                area: ['90%', '100%'],
+            });
+        }
+
+        window.yjView = function (data) {
+
+            $.ajax({
+                // url: '/d3/seeYJview.json',
+                url:d3url+'/otheAPI/viewYJ',
+                dataType: 'json',
+                type: 'post',
+                data: JSON.stringify({'url':encodeURI(encodeURI(JSON.stringify(data)))}),
+                contentType: 'application/json',
+                mysuccess: function (data) {
+                    if (data.status == 200) {
+                       // var url =  JSON.parse(data.data);
+                       var url = data.data;
+                       // url = JSON.parse(url);
+                        durl = d3url+url.viewurl;
+                       var index = layer.open({
+                            type: 2,
+                            title: '元件预览',
+                            content: 'seeYJview.html',
+                            shadeClose: false,
+                            shade: 0.5,
+                            // offset: 'r',
+                            area: ['90%', '100%'],
+                        });
+                    } else {
+                        layer.msg(data.msg);
+                    }
+                }
+            });
+
+
+
+        }
+
+
+    })
+
+    function toNonExponential(num) {
+        return num.toString();
+    }
+</script>
+
+</body>
+</html>

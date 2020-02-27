@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" class="x-admin-sm">
+<head>
+    <meta charset="UTF-8">
+    <title>执行计划列表</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" href="../../css/font.css">
+    <link rel="stylesheet" href="../../css/xadmin.css">
+    <script src="../../js/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../../js/xadmin.js"></script>
+    <script type="text/javascript" src="../../js/jquery-2.0.3.min.js"></script>
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        .layui-inline {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<div style="padding: 10px">
+    <div>
+        <form class="layui-form" action="">
+            <div class="layui-inline layui-show-xs-block">
+                <input type="text" name="zxjhMc" id="zxjhMc" placeholder="请输入执行计划名称"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-inline layui-show-xs-block">
+                <input type="text" id="zxjhYptzh" name="zxjhYptzh" placeholder="请输入BCCA授权账号"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-inline layui-show-xs-block">
+                <select name="zxjhZt" id="zxjhZt">
+                    <option value="">选择计划状态</option>
+                    <option value="2">激活</option>
+                    <option value="1">未激活</option>
+                </select>
+            </div>
+
+            <div class="layui-inline layui-show-xs-block">
+                <button class="layui-btn" lay-submit lay-filter="search"><i class="layui-icon">&#xe615;</i>
+                </button>
+                <button class="layui-btn "><i class="layui-icon layui-icon-fonts-clear"></i>
+                </button>
+                <!--<button type="button" class="layui-btn" onclick="add()">执行计划录入-->
+                <!--</button>-->
+            </div>
+        </form>
+    </div>
+    <div>
+        <table class="layui-table" id="data-table" lay-filter="data-table"></table>
+    </div>
+</div>
+<script>
+    var Info;
+    layui.use(['table', 'form'], function () {
+        var table = layui.table;
+        var $ = layui.jquery;
+        var form = layui.form;
+
+        var dataTable = table.render({
+            title: '用户列表',
+            elem: '#data-table',
+            height: 'full-18',
+            url: '/sbgl/listPlan.json', //数据接口
+            method: 'post',
+            // toolbar: '#toolbarDemo',
+            contentType: 'application/json',
+            // size: 'sm',
+            response: {
+                countName: 'total',//规定数据总数的字段名称，默认：count
+                statusCode: 200, //规定成功的状态码，默认：0
+                statusName: 'status'
+            },
+            where: {},
+            page: true, //开启分页
+            limit: 20,
+            limits: [20, 30, 50, 100],
+            defaultToolbar: [],
+            done: function (res, curr, count) {
+                if (res.status == 401) {
+                    top.layer.alert(res.msg,{end:function () {
+                            top.location.href = '/';
+                        }})
+                }
+            },
+            cols: [[ //表头
+                {type: 'numbers', title: '序号'}
+                , {field: 'zxjhMc', title: '执行计划名称', align: 'center', sort: true}
+                , {field: 'zxjhYptzh', title: '所属BCCA账号', align: 'center', sort: true}
+                , {field: 'zxjhZt',  title: '计划状态', align: 'center', sort: true,templet: function (d) {
+                        if(d.zxjhZt == 1)
+                            return "未激活"
+                        if(d.zxjhZt == 2)
+                            return "已激活"
+                    }}
+                , {field: 'createName',  title: '创建人', align: 'center', sort: true}
+                , {field: 'createdTime',  title: '创建时间', align: 'center', sort: true}
+                , {field: 'expressNo', title: '操作', align: 'center', width: 100, fixed: 'right'
+                    , templet: function (d) {
+                        // var edit = '<a class="layui-btn layui-btn-xs  layui-btn-warm" lay-event="edit">编辑</a>';
+                        // var del = '<a class="layui-btn layui-btn-xs  layui-btn-warm" lay-event="del">删除</a>';
+                        var hand = '<a class="layui-btn layui-btn-xs  layui-btn-warm" lay-event="hand">详情</a>';
+                        // return edit+del+hand;
+                        return hand;
+                    }
+
+                }
+            ]]
+        });
+
+        //监听工具条
+        table.on('tool(data-table)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+            Info = obj.data; //获得当前行数据
+            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            var tr = obj.tr; //获得当前行 tr 的DOM对象
+            if (layEvent === 'edit') { //订阅
+                layer.open({
+                    type: 2,
+                    title: '编辑',
+                    content:'editPlan.html' ,
+                    shadeClose: false,
+                    shade: 0.5,
+                    area: ['60%', '60%'],
+                    maxmin: true
+                });
+            }else if(layEvent === 'del'){
+                layer.confirm('真的删除此执行计划么?', function(index){
+                    layer.close(index);
+                    //向服务端发送删除指令
+                    $.ajax({
+                        url:  '/sbgl/delPlan.json',
+                        dataType: 'json',
+                        type: 'post',
+                        data: JSON.stringify({'data': Info}),
+                        contentType : 'application/json',
+                        mysuccess:function (data) {
+                            if(data.status==200){
+                                layer.msg("删除成功！");
+                                obj.del(tr); //删除对应行（tr）的DOM结构，并更新缓存
+                            }else{
+                                layer.msg(data.msg);
+                            }
+                        }
+                    });
+                });
+
+            }else if(layEvent === 'hand'){
+                layer.open({
+                    type: 2,
+                    title: '详情',
+                    content:'addJc.html' ,
+                    shadeClose: false,
+                    shade: 0.5,
+                    // offset: 'r',
+                    area: ['100%', '100%'],
+                });
+
+            }
+
+        });
+
+        window.add = function (){
+            layer.open({
+                type: 2,
+                title: '添加执行计划',
+                content:'addPlan.html' ,
+                shadeClose: false,
+                shade: 0.5,
+                area: ['60%', '60%'],
+                maxmin: true
+            });
+        }
+        form.on('submit(search)', function (data) {
+            var value = data.field;
+            //出现加载并遮罩
+
+            dataTable.reload({
+                where: { //设定异步数据接口的额外参数，任意设
+                    "data": value
+                }
+            })
+            return false;
+        })
+        window.reload = function () {
+            dataTable.reload();
+        }
+
+
+
+    });
+
+</script>
+
+</body>
+</html>

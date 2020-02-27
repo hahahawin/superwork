@@ -1,0 +1,656 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.superwork.apcosplatform.mapper.PSbzcLxMapper">
+  <resultMap id="BaseResultMap" type="com.superwork.apcosplatform.domain.PSbzcLx">
+    <id column="SBZC_LX_ID" jdbcType="VARCHAR" property="sbzcLxId" />
+    <result column="P_LX_ID" jdbcType="VARCHAR" property="pLxId" />
+    <result column="YTLX" jdbcType="VARCHAR" property="ytlx" />
+    <result column="MLMC" jdbcType="VARCHAR" property="mlmc" />
+    <result column="MLDM" jdbcType="VARCHAR" property="mldm" />
+    <result column="SFTY" jdbcType="DECIMAL" property="sfty" />
+    <result column="BZ" jdbcType="VARCHAR" property="bz" />
+    <result column="ATTR_1" jdbcType="VARCHAR" property="attr1" />
+    <result column="ATTR_2" jdbcType="VARCHAR" property="attr2" />
+    <result column="ATTR_3" jdbcType="VARCHAR" property="attr3" />
+    <result column="CREATOR_ID" jdbcType="VARCHAR" property="creatorId" />
+    <result column="CREATED_TIME" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="EDITOR_ID" jdbcType="VARCHAR" property="editorId" />
+    <result column="EDITED_TIME" jdbcType="TIMESTAMP" property="editedTime" />
+    <result column="BELONG_ORG_ID" jdbcType="VARCHAR" property="belongOrgId" />
+    <result column="ICON_FILE_JSON" jdbcType="VARCHAR" property="iconFileJson" />
+    <result column="ICON_FILE_JSON_CLOSE" jdbcType="VARCHAR" property="iconFileJsonClose" />
+    <result column="SBZCLX_SFZW" jdbcType="VARCHAR" property="sbzclxSfzw" />
+    <result column="SBZCLX_SFCJMS" jdbcType="VARCHAR" property="sbzclxSfcjms" />
+    <result column="SBZCLX_SFBMS" jdbcType="VARCHAR" property="sbzclxSfbms" />
+    <result column="SBZCLX_SFWX" jdbcType="VARCHAR" property="sbzclxSfwx" />
+    <result column="SBZCLX_XZFS" jdbcType="VARCHAR" property="sbzclxXzfs" />
+    <result column="SBZCLX_JGCS" jdbcType="VARCHAR" property="sbzclxJgcs" />
+    <result column="SFYXHWP" jdbcType="VARCHAR" property="sfyxhwp" />
+    <result column="ACCOUNT" jdbcType="VARCHAR" property="account" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.superwork.apcosplatform.domain.PSbzcLx">
+    <result column="HTMLMODLE" jdbcType="CLOB" property="htmlmodle" />
+    <result column="HTMLMOBILE" jdbcType="CLOB" property="htmlmobile" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    SBZC_LX_ID, P_LX_ID, YTLX, MLMC, MLDM, SFTY, BZ, ATTR_1, ATTR_2, ATTR_3, CREATOR_ID, 
+    CREATED_TIME, EDITOR_ID, EDITED_TIME, BELONG_ORG_ID, ICON_FILE_JSON, ICON_FILE_JSON_CLOSE, 
+    SBZCLX_SFZW, SBZCLX_SFCJMS, SBZCLX_SFBMS, SBZCLX_SFWX, SBZCLX_XZFS, SBZCLX_JGCS, 
+    SFYXHWP
+  </sql>
+  <sql id="Blob_Column_List">
+    HTMLMODLE, HTMLMOBILE
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.superwork.apcosplatform.domain.PSbzcLxExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from P_SBZC_LX
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.superwork.apcosplatform.domain.PSbzcLxExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from P_SBZC_LX
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from P_SBZC_LX
+    where SBZC_LX_ID = #{sbzcLxId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from P_SBZC_LX
+    where SBZC_LX_ID = #{sbzcLxId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.superwork.apcosplatform.domain.PSbzcLxExample">
+    delete from P_SBZC_LX
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.superwork.apcosplatform.domain.PSbzcLx">
+    <selectKey keyProperty="sbzcLxId" order="BEFORE" resultType="java.lang.String">
+      select P_SBZC_LX_SEQ.NEXTVAL from dual
+    </selectKey>
+    insert into P_SBZC_LX (SBZC_LX_ID, P_LX_ID, YTLX, 
+      MLMC, MLDM, SFTY, BZ, 
+      ATTR_1, ATTR_2, ATTR_3, CREATOR_ID, 
+      CREATED_TIME, EDITOR_ID, EDITED_TIME, 
+      BELONG_ORG_ID, ICON_FILE_JSON, ICON_FILE_JSON_CLOSE, 
+      SBZCLX_SFZW, SBZCLX_SFCJMS, SBZCLX_SFBMS, 
+      SBZCLX_SFWX, SBZCLX_XZFS, SBZCLX_JGCS, 
+      SFYXHWP, HTMLMODLE, HTMLMOBILE
+      )
+    values (#{sbzcLxId,jdbcType=VARCHAR}, #{pLxId,jdbcType=VARCHAR}, #{ytlx,jdbcType=VARCHAR}, 
+      #{mlmc,jdbcType=VARCHAR}, #{mldm,jdbcType=VARCHAR}, #{sfty,jdbcType=DECIMAL}, #{bz,jdbcType=VARCHAR}, 
+      #{attr1,jdbcType=VARCHAR}, #{attr2,jdbcType=VARCHAR}, #{attr3,jdbcType=VARCHAR}, #{creatorId,jdbcType=VARCHAR}, 
+      #{createdTime,jdbcType=TIMESTAMP}, #{editorId,jdbcType=VARCHAR}, #{editedTime,jdbcType=TIMESTAMP},
+      #{belongOrgId,jdbcType=VARCHAR}, #{iconFileJson,jdbcType=VARCHAR}, #{iconFileJsonClose,jdbcType=VARCHAR}, 
+      #{sbzclxSfzw,jdbcType=VARCHAR}, #{sbzclxSfcjms,jdbcType=VARCHAR}, #{sbzclxSfbms,jdbcType=VARCHAR}, 
+      #{sbzclxSfwx,jdbcType=VARCHAR}, #{sbzclxXzfs,jdbcType=VARCHAR}, #{sbzclxJgcs,jdbcType=VARCHAR}, 
+      #{sfyxhwp,jdbcType=VARCHAR}, #{htmlmodle,jdbcType=CLOB}, #{htmlmobile,jdbcType=CLOB}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.superwork.apcosplatform.domain.PSbzcLx">
+    <selectKey keyProperty="sbzcLxId" order="BEFORE" resultType="java.lang.String">
+      select P_SBZC_LX_SEQ.NEXTVAL from dual
+    </selectKey>
+    insert into P_SBZC_LX
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      SBZC_LX_ID,
+      <if test="pLxId != null">
+        P_LX_ID,
+      </if>
+      <if test="ytlx != null">
+        YTLX,
+      </if>
+      <if test="mlmc != null">
+        MLMC,
+      </if>
+      <if test="mldm != null">
+        MLDM,
+      </if>
+      <if test="sfty != null">
+        SFTY,
+      </if>
+      <if test="bz != null">
+        BZ,
+      </if>
+      <if test="attr1 != null">
+        ATTR_1,
+      </if>
+      <if test="attr2 != null">
+        ATTR_2,
+      </if>
+      <if test="attr3 != null">
+        ATTR_3,
+      </if>
+      <if test="creatorId != null">
+        CREATOR_ID,
+      </if>
+      <if test="createdTime != null">
+        CREATED_TIME,
+      </if>
+      <if test="editorId != null">
+        EDITOR_ID,
+      </if>
+      <if test="editedTime != null">
+        EDITED_TIME,
+      </if>
+      <if test="belongOrgId != null">
+        BELONG_ORG_ID,
+      </if>
+      <if test="iconFileJson != null">
+        ICON_FILE_JSON,
+      </if>
+      <if test="iconFileJsonClose != null">
+        ICON_FILE_JSON_CLOSE,
+      </if>
+      <if test="sbzclxSfzw != null">
+        SBZCLX_SFZW,
+      </if>
+      <if test="sbzclxSfcjms != null">
+        SBZCLX_SFCJMS,
+      </if>
+      <if test="sbzclxSfbms != null">
+        SBZCLX_SFBMS,
+      </if>
+      <if test="sbzclxSfwx != null">
+        SBZCLX_SFWX,
+      </if>
+      <if test="sbzclxXzfs != null">
+        SBZCLX_XZFS,
+      </if>
+      <if test="sbzclxJgcs != null">
+        SBZCLX_JGCS,
+      </if>
+      <if test="sfyxhwp != null">
+        SFYXHWP,
+      </if>
+      <if test="htmlmodle != null">
+        HTMLMODLE,
+      </if>
+      <if test="htmlmobile != null">
+        HTMLMOBILE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{sbzcLxId,jdbcType=VARCHAR},
+      <if test="pLxId != null">
+        #{pLxId,jdbcType=VARCHAR},
+      </if>
+      <if test="ytlx != null">
+        #{ytlx,jdbcType=VARCHAR},
+      </if>
+      <if test="mlmc != null">
+        #{mlmc,jdbcType=VARCHAR},
+      </if>
+      <if test="mldm != null">
+        #{mldm,jdbcType=VARCHAR},
+      </if>
+      <if test="sfty != null">
+        #{sfty,jdbcType=DECIMAL},
+      </if>
+      <if test="bz != null">
+        #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="attr1 != null">
+        #{attr1,jdbcType=VARCHAR},
+      </if>
+      <if test="attr2 != null">
+        #{attr2,jdbcType=VARCHAR},
+      </if>
+      <if test="attr3 != null">
+        #{attr3,jdbcType=VARCHAR},
+      </if>
+      <if test="creatorId != null">
+        #{creatorId,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null">
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="editorId != null">
+        #{editorId,jdbcType=VARCHAR},
+      </if>
+      <if test="editedTime != null">
+        #{editedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="belongOrgId != null">
+        #{belongOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="iconFileJson != null">
+        #{iconFileJson,jdbcType=VARCHAR},
+      </if>
+      <if test="iconFileJsonClose != null">
+        #{iconFileJsonClose,jdbcType=VARCHAR},
+      </if>
+      <if test="sbzclxSfzw != null">
+        #{sbzclxSfzw,jdbcType=VARCHAR},
+      </if>
+      <if test="sbzclxSfcjms != null">
+        #{sbzclxSfcjms,jdbcType=VARCHAR},
+      </if>
+      <if test="sbzclxSfbms != null">
+        #{sbzclxSfbms,jdbcType=VARCHAR},
+      </if>
+      <if test="sbzclxSfwx != null">
+        #{sbzclxSfwx,jdbcType=VARCHAR},
+      </if>
+      <if test="sbzclxXzfs != null">
+        #{sbzclxXzfs,jdbcType=VARCHAR},
+      </if>
+      <if test="sbzclxJgcs != null">
+        #{sbzclxJgcs,jdbcType=VARCHAR},
+      </if>
+      <if test="sfyxhwp != null">
+        #{sfyxhwp,jdbcType=VARCHAR},
+      </if>
+      <if test="htmlmodle != null">
+        #{htmlmodle,jdbcType=CLOB},
+      </if>
+      <if test="htmlmobile != null">
+        #{htmlmobile,jdbcType=CLOB},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.superwork.apcosplatform.domain.PSbzcLxExample" resultType="java.lang.Long">
+    select count(*) from P_SBZC_LX
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update P_SBZC_LX
+    <set>
+      <if test="record.sbzcLxId != null">
+        SBZC_LX_ID = #{record.sbzcLxId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pLxId != null">
+        P_LX_ID = #{record.pLxId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ytlx != null">
+        YTLX = #{record.ytlx,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mlmc != null">
+        MLMC = #{record.mlmc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mldm != null">
+        MLDM = #{record.mldm,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sfty != null">
+        SFTY = #{record.sfty,jdbcType=DECIMAL},
+      </if>
+      <if test="record.bz != null">
+        BZ = #{record.bz,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attr1 != null">
+        ATTR_1 = #{record.attr1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attr2 != null">
+        ATTR_2 = #{record.attr2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attr3 != null">
+        ATTR_3 = #{record.attr3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creatorId != null">
+        CREATOR_ID = #{record.creatorId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdTime != null">
+        CREATED_TIME = #{record.createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.editorId != null">
+        EDITOR_ID = #{record.editorId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.editedTime != null">
+        EDITED_TIME = #{record.editedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.belongOrgId != null">
+        BELONG_ORG_ID = #{record.belongOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.iconFileJson != null">
+        ICON_FILE_JSON = #{record.iconFileJson,jdbcType=VARCHAR},
+      </if>
+      <if test="record.iconFileJsonClose != null">
+        ICON_FILE_JSON_CLOSE = #{record.iconFileJsonClose,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sbzclxSfzw != null">
+        SBZCLX_SFZW = #{record.sbzclxSfzw,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sbzclxSfcjms != null">
+        SBZCLX_SFCJMS = #{record.sbzclxSfcjms,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sbzclxSfbms != null">
+        SBZCLX_SFBMS = #{record.sbzclxSfbms,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sbzclxSfwx != null">
+        SBZCLX_SFWX = #{record.sbzclxSfwx,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sbzclxXzfs != null">
+        SBZCLX_XZFS = #{record.sbzclxXzfs,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sbzclxJgcs != null">
+        SBZCLX_JGCS = #{record.sbzclxJgcs,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sfyxhwp != null">
+        SFYXHWP = #{record.sfyxhwp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.htmlmodle != null">
+        HTMLMODLE = #{record.htmlmodle,jdbcType=CLOB},
+      </if>
+      <if test="record.htmlmobile != null">
+        HTMLMOBILE = #{record.htmlmobile,jdbcType=CLOB},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update P_SBZC_LX
+    set SBZC_LX_ID = #{record.sbzcLxId,jdbcType=VARCHAR},
+      P_LX_ID = #{record.pLxId,jdbcType=VARCHAR},
+      YTLX = #{record.ytlx,jdbcType=VARCHAR},
+      MLMC = #{record.mlmc,jdbcType=VARCHAR},
+      MLDM = #{record.mldm,jdbcType=VARCHAR},
+      SFTY = #{record.sfty,jdbcType=DECIMAL},
+      BZ = #{record.bz,jdbcType=VARCHAR},
+      ATTR_1 = #{record.attr1,jdbcType=VARCHAR},
+      ATTR_2 = #{record.attr2,jdbcType=VARCHAR},
+      ATTR_3 = #{record.attr3,jdbcType=VARCHAR},
+      CREATOR_ID = #{record.creatorId,jdbcType=VARCHAR},
+      CREATED_TIME = #{record.createdTime,jdbcType=TIMESTAMP},
+      EDITOR_ID = #{record.editorId,jdbcType=VARCHAR},
+      EDITED_TIME = #{record.editedTime,jdbcType=TIMESTAMP},
+      BELONG_ORG_ID = #{record.belongOrgId,jdbcType=VARCHAR},
+      ICON_FILE_JSON = #{record.iconFileJson,jdbcType=VARCHAR},
+      ICON_FILE_JSON_CLOSE = #{record.iconFileJsonClose,jdbcType=VARCHAR},
+      SBZCLX_SFZW = #{record.sbzclxSfzw,jdbcType=VARCHAR},
+      SBZCLX_SFCJMS = #{record.sbzclxSfcjms,jdbcType=VARCHAR},
+      SBZCLX_SFBMS = #{record.sbzclxSfbms,jdbcType=VARCHAR},
+      SBZCLX_SFWX = #{record.sbzclxSfwx,jdbcType=VARCHAR},
+      SBZCLX_XZFS = #{record.sbzclxXzfs,jdbcType=VARCHAR},
+      SBZCLX_JGCS = #{record.sbzclxJgcs,jdbcType=VARCHAR},
+      SFYXHWP = #{record.sfyxhwp,jdbcType=VARCHAR},
+      HTMLMODLE = #{record.htmlmodle,jdbcType=CLOB},
+      HTMLMOBILE = #{record.htmlmobile,jdbcType=CLOB}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update P_SBZC_LX
+    set SBZC_LX_ID = #{record.sbzcLxId,jdbcType=VARCHAR},
+      P_LX_ID = #{record.pLxId,jdbcType=VARCHAR},
+      YTLX = #{record.ytlx,jdbcType=VARCHAR},
+      MLMC = #{record.mlmc,jdbcType=VARCHAR},
+      MLDM = #{record.mldm,jdbcType=VARCHAR},
+      SFTY = #{record.sfty,jdbcType=DECIMAL},
+      BZ = #{record.bz,jdbcType=VARCHAR},
+      ATTR_1 = #{record.attr1,jdbcType=VARCHAR},
+      ATTR_2 = #{record.attr2,jdbcType=VARCHAR},
+      ATTR_3 = #{record.attr3,jdbcType=VARCHAR},
+      CREATOR_ID = #{record.creatorId,jdbcType=VARCHAR},
+      CREATED_TIME = #{record.createdTime,jdbcType=TIMESTAMP},
+      EDITOR_ID = #{record.editorId,jdbcType=VARCHAR},
+      EDITED_TIME = #{record.editedTime,jdbcType=TIMESTAMP},
+      BELONG_ORG_ID = #{record.belongOrgId,jdbcType=VARCHAR},
+      ICON_FILE_JSON = #{record.iconFileJson,jdbcType=VARCHAR},
+      ICON_FILE_JSON_CLOSE = #{record.iconFileJsonClose,jdbcType=VARCHAR},
+      SBZCLX_SFZW = #{record.sbzclxSfzw,jdbcType=VARCHAR},
+      SBZCLX_SFCJMS = #{record.sbzclxSfcjms,jdbcType=VARCHAR},
+      SBZCLX_SFBMS = #{record.sbzclxSfbms,jdbcType=VARCHAR},
+      SBZCLX_SFWX = #{record.sbzclxSfwx,jdbcType=VARCHAR},
+      SBZCLX_XZFS = #{record.sbzclxXzfs,jdbcType=VARCHAR},
+      SBZCLX_JGCS = #{record.sbzclxJgcs,jdbcType=VARCHAR},
+      SFYXHWP = #{record.sfyxhwp,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.superwork.apcosplatform.domain.PSbzcLx">
+    update P_SBZC_LX
+    <set>
+      <if test="pLxId != null">
+        P_LX_ID = #{pLxId,jdbcType=VARCHAR},
+      </if>
+      <if test="ytlx != null">
+        YTLX = #{ytlx,jdbcType=VARCHAR},
+      </if>
+      <if test="mlmc != null">
+        MLMC = #{mlmc,jdbcType=VARCHAR},
+      </if>
+      <if test="mldm != null">
+        MLDM = #{mldm,jdbcType=VARCHAR},
+      </if>
+      <if test="sfty != null">
+        SFTY = #{sfty,jdbcType=DECIMAL},
+      </if>
+      <if test="bz != null">
+        BZ = #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="attr1 != null">
+        ATTR_1 = #{attr1,jdbcType=VARCHAR},
+      </if>
+      <if test="attr2 != null">
+        ATTR_2 = #{attr2,jdbcType=VARCHAR},
+      </if>
+      <if test="attr3 != null">
+        ATTR_3 = #{attr3,jdbcType=VARCHAR},
+      </if>
+      <if test="creatorId != null">
+        CREATOR_ID = #{creatorId,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null">
+        CREATED_TIME = #{createdTime,jdbcType=DATIMESTAMPTE},
+      </if>
+      <if test="editorId != null">
+        EDITOR_ID = #{editorId,jdbcType=VARCHAR},
+      </if>
+      <if test="editedTime != null">
+        EDITED_TIME = #{editedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="belongOrgId != null">
+        BELONG_ORG_ID = #{belongOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="iconFileJson != null">
+        ICON_FILE_JSON = #{iconFileJson,jdbcType=VARCHAR},
+      </if>
+      <if test="iconFileJsonClose != null">
+        ICON_FILE_JSON_CLOSE = #{iconFileJsonClose,jdbcType=VARCHAR},
+      </if>
+      <if test="sbzclxSfzw != null">
+        SBZCLX_SFZW = #{sbzclxSfzw,jdbcType=VARCHAR},
+      </if>
+      <if test="sbzclxSfcjms != null">
+        SBZCLX_SFCJMS = #{sbzclxSfcjms,jdbcType=VARCHAR},
+      </if>
+      <if test="sbzclxSfbms != null">
+        SBZCLX_SFBMS = #{sbzclxSfbms,jdbcType=VARCHAR},
+      </if>
+      <if test="sbzclxSfwx != null">
+        SBZCLX_SFWX = #{sbzclxSfwx,jdbcType=VARCHAR},
+      </if>
+      <if test="sbzclxXzfs != null">
+        SBZCLX_XZFS = #{sbzclxXzfs,jdbcType=VARCHAR},
+      </if>
+      <if test="sbzclxJgcs != null">
+        SBZCLX_JGCS = #{sbzclxJgcs,jdbcType=VARCHAR},
+      </if>
+      <if test="sfyxhwp != null">
+        SFYXHWP = #{sfyxhwp,jdbcType=VARCHAR},
+      </if>
+      <if test="htmlmodle != null">
+        HTMLMODLE = #{htmlmodle,jdbcType=CLOB},
+      </if>
+      <if test="htmlmobile != null">
+        HTMLMOBILE = #{htmlmobile,jdbcType=CLOB},
+      </if>
+    </set>
+    where SBZC_LX_ID = #{sbzcLxId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.superwork.apcosplatform.domain.PSbzcLx">
+    update P_SBZC_LX
+    set P_LX_ID = #{pLxId,jdbcType=VARCHAR},
+      YTLX = #{ytlx,jdbcType=VARCHAR},
+      MLMC = #{mlmc,jdbcType=VARCHAR},
+      MLDM = #{mldm,jdbcType=VARCHAR},
+      SFTY = #{sfty,jdbcType=DECIMAL},
+      BZ = #{bz,jdbcType=VARCHAR},
+      ATTR_1 = #{attr1,jdbcType=VARCHAR},
+      ATTR_2 = #{attr2,jdbcType=VARCHAR},
+      ATTR_3 = #{attr3,jdbcType=VARCHAR},
+      CREATOR_ID = #{creatorId,jdbcType=VARCHAR},
+      CREATED_TIME = #{createdTime,jdbcType=TIMESTAMP},
+      EDITOR_ID = #{editorId,jdbcType=VARCHAR},
+      EDITED_TIME = #{editedTime,jdbcType=TIMESTAMP},
+      BELONG_ORG_ID = #{belongOrgId,jdbcType=VARCHAR},
+      ICON_FILE_JSON = #{iconFileJson,jdbcType=VARCHAR},
+      ICON_FILE_JSON_CLOSE = #{iconFileJsonClose,jdbcType=VARCHAR},
+      SBZCLX_SFZW = #{sbzclxSfzw,jdbcType=VARCHAR},
+      SBZCLX_SFCJMS = #{sbzclxSfcjms,jdbcType=VARCHAR},
+      SBZCLX_SFBMS = #{sbzclxSfbms,jdbcType=VARCHAR},
+      SBZCLX_SFWX = #{sbzclxSfwx,jdbcType=VARCHAR},
+      SBZCLX_XZFS = #{sbzclxXzfs,jdbcType=VARCHAR},
+      SBZCLX_JGCS = #{sbzclxJgcs,jdbcType=VARCHAR},
+      SFYXHWP = #{sfyxhwp,jdbcType=VARCHAR},
+      HTMLMODLE = #{htmlmodle,jdbcType=CLOB},
+      HTMLMOBILE = #{htmlmobile,jdbcType=CLOB}
+    where SBZC_LX_ID = #{sbzcLxId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.superwork.apcosplatform.domain.PSbzcLx">
+    update P_SBZC_LX
+    set P_LX_ID = #{pLxId,jdbcType=VARCHAR},
+      YTLX = #{ytlx,jdbcType=VARCHAR},
+      MLMC = #{mlmc,jdbcType=VARCHAR},
+      MLDM = #{mldm,jdbcType=VARCHAR},
+      SFTY = #{sfty,jdbcType=DECIMAL},
+      BZ = #{bz,jdbcType=VARCHAR},
+      ATTR_1 = #{attr1,jdbcType=VARCHAR},
+      ATTR_2 = #{attr2,jdbcType=VARCHAR},
+      ATTR_3 = #{attr3,jdbcType=VARCHAR},
+      CREATOR_ID = #{creatorId,jdbcType=VARCHAR},
+      CREATED_TIME = #{createdTime,jdbcType=TIMESTAMP},
+      EDITOR_ID = #{editorId,jdbcType=VARCHAR},
+      EDITED_TIME = #{editedTime,jdbcType=TIMESTAMP},
+      BELONG_ORG_ID = #{belongOrgId,jdbcType=VARCHAR},
+      ICON_FILE_JSON = #{iconFileJson,jdbcType=VARCHAR},
+      ICON_FILE_JSON_CLOSE = #{iconFileJsonClose,jdbcType=VARCHAR},
+      SBZCLX_SFZW = #{sbzclxSfzw,jdbcType=VARCHAR},
+      SBZCLX_SFCJMS = #{sbzclxSfcjms,jdbcType=VARCHAR},
+      SBZCLX_SFBMS = #{sbzclxSfbms,jdbcType=VARCHAR},
+      SBZCLX_SFWX = #{sbzclxSfwx,jdbcType=VARCHAR},
+      SBZCLX_XZFS = #{sbzclxXzfs,jdbcType=VARCHAR},
+      SBZCLX_JGCS = #{sbzclxJgcs,jdbcType=VARCHAR},
+      SFYXHWP = #{sfyxhwp,jdbcType=VARCHAR}
+    where SBZC_LX_ID = #{sbzcLxId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="listsblx" parameterType="com.superwork.apcosplatform.domain.PSbzcLx" resultMap="BaseResultMap">
+    SELECT A.* ,B.USER_ACCOUNT ACCOUNT FROM P_SBZC_LX A LEFT OUTER JOIN P_SYS_USER B
+    ON A.CREATOR_ID = B.USER_ID WHERE 1=1
+    <if test="mlmc !=null and  mlmc != ''">
+      AND A.MLMC LIKE '%'|| #{mlmc} || '%'
+    </if>
+    <if test="mldm !=null and  mldm != ''">
+      AND A.MLDM LIKE '%'|| #{mldm} || '%'
+    </if>
+    ORDER BY A.CREATED_TIME DESC
+  </select>
+
+  <update id="myupdateByPrimaryKey" parameterType="com.superwork.apcosplatform.domain.PSbzcLx">
+    update P_SBZC_LX
+    set  HTMLMODLE = #{htmlmodle,jdbcType=CLOB}
+    where SBZC_LX_ID = #{sbzcLxId,jdbcType=VARCHAR}
+  </update>
+  <select id="getSbLxlist" resultMap="BaseResultMap">
+    SELECT
+      A.*
+    FROM p_sbzc_lx A LEFT OUTER JOIN p_sbgl B ON A.MLDM = B.PRODUCT_CODE WHERE B.ACCOUNT = #{account}
+
+  </select>
+
+  <select id="selectHtmlWithMac" resultMap="BaseResultMap">
+    SELECT A.* FROM p_sbzc_lx A LEFT OUTER JOIN p_sbgl B ON A.MLDM = b.product_code WHERE b.device_mac = #{mac}
+  </select>
+</mapper>

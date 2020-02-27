@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en" class="x-admin-sm">
+<head>
+    <meta charset="UTF-8">
+    <title>用户列表</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" href="../../css/font.css">
+    <link rel="stylesheet" href="../../css/xadmin.css">
+    <script src="../../js/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../../js/xadmin.js"></script>
+    <script type="text/javascript" src="../../js/jquery-2.0.3.min.js"></script>
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        .layui-inline {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<div style="padding: 10px">
+    <div>
+        <form class="layui-form" action="">
+            <div class="layui-inline layui-show-xs-block">
+                <input type="text" name="userAccount" id="userAccount" placeholder="请输入登陆账户"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-inline layui-show-xs-block">
+                <input type="text" id="userName" name="userName" placeholder="请输入用户姓名"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-inline layui-show-xs-block">
+                <input type="text" id="cellphoneNo" name="cellphoneNo" placeholder="请输入关联手机号"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-inline layui-show-xs-block">
+                <input type="text" id="companyName" name="companyName" placeholder="请输入公司"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-inline layui-show-xs-block">
+                <select name="enable" id="enable">
+                    <option value="">选择账号状态</option>
+                    <option value="2">启用</option>
+                    <option value="1">禁用</option>
+                </select>
+            </div>
+            <div class="layui-inline layui-show-xs-block">
+                <select id="userType" name="userType">
+                    <option value="">账号类型</option>
+                    <option value="2">普通账号</option>
+                    <option value="1">系统账号</option>
+                </select>
+            </div>
+            <!--<div class="layui-inline layui-show-xs-block">-->
+                <!--<input type="text" id="email" name="email" placeholder="请输入邮箱"-->
+                       <!--autocomplete="off" class="layui-input">-->
+            <!--</div>-->
+
+            <div class="layui-inline layui-show-xs-block">
+                <button class="layui-btn" lay-submit lay-filter="search"><i class="layui-icon">&#xe615;</i>
+                </button>
+                <button class="layui-btn "><i class="layui-icon layui-icon-fonts-clear"></i>
+                </button>
+
+                <!-- 返回驾驶舱按钮 -->
+                <button id="backJsc" class="layui-btn" onclick="window.history.back(-1); " style="display: none"><i class="layui-icon">&#xe65a;</i>返回驾驶舱 </button>
+            </div>
+        </form>
+        <script type="text/html" id="toolbarDemo">
+            <div class="layui-btn-container">
+                <button class="layui-btn " onclick="addUser()"><i class="layui-icon">&#xe608;</i>添加账号
+                </button>
+                <button class="layui-btn layui-btn-normal" onclick="setPassWord()"><i class="layui-icon"> &#xe673;</i>重置密码
+                </button>
+                <button class="layui-btn layui-btn-danger" onclick="delUser()"><i class="layui-icon">&#xe640;</i>删除账号
+                </button>
+                <button class="layui-btn layui-btn-danger" onclick="editUser()"><i class="layui-icon">&#xe642;</i>修改账号信息
+                </button>
+            </div>
+        </script>
+    </div>
+    <div>
+        <table class="layui-table" id="data-table" lay-filter="data-table"></table>
+    </div>
+
+</div>
+
+
+<script type="text/html" id="switchTpl">
+    <input type="checkbox" name="enable" value="{{d.userId}}" lay-skin="switch" lay-text="启用|禁用"
+           lay-filter="isEnable" {{ d.enable== 2?'checked':''}}>
+</script>
+<script>
+    var userInfo;
+    layui.use(['table', 'form'], function () {
+        var table = layui.table;
+        var $ = layui.jquery;
+        var form = layui.form;
+
+        var dataTable = table.render({
+            title: '用户列表',
+            elem: '#data-table',
+            height: 'full-18',
+            url: '/pSysUser/listUser.json', //数据接口
+            method: 'post',
+            toolbar: '#toolbarDemo',
+            contentType: 'application/json',
+            // size: 'sm',
+            response: {
+                countName: 'total',//规定数据总数的字段名称，默认：count
+                statusCode: 200, //规定成功的状态码，默认：0
+                statusName: 'status'
+            },
+            where: {},
+            page: true, //开启分页
+            limit: 20,
+            limits: [20, 30, 50, 100],
+            defaultToolbar: [],
+            done: function (res, curr, count) {
+                if (res.status == 401) {
+                    top.layer.alert(res.msg,{end:function () {
+                            top.location.href = '/';
+                        }})
+                }
+            },
+            cols: [[ //表头
+                {type: 'radio',  width:'5%'},
+                {type: 'numbers',  width:'5%',
+                    title: '序号'}
+                , {field: 'userAccount', title: '登录账户', align: 'center', sort: true}
+                , {field: 'userName',  title: '姓名', align: 'center', sort: true}
+                , {field: 'companyName',  title: '所属公司', align: 'center', sort: true}
+                , {field: 'orgName',  title: '组织', align: 'center', sort: true}
+                , {field: 'userLevel',  title: '账号类型', align: 'center', sort: true,
+                    templet: function (d) {
+                        if (d.userLevel == 1) {
+                            return "<strong style=\"color: red\">主账号</strong>";
+                        }
+                        if (d.userLevel == 2) {
+                            return "子账号";
+                        }
+                    }
+                }
+                , {
+                    field: 'userType', width: '10%', title: '账号类型', align: 'center', sort: true,
+                    templet: function (d) {
+                        if (d.userType == 1) {
+                            return "系统账号";
+                        }
+                        if (d.userType == 2) {
+                            return "普通账号";
+                        }
+                    }
+                }
+                , {field: 'enable', title: '账号状态', align: 'center', sort: true, templet: '#switchTpl'}
+                , {
+                    field: 'gender',  title: '性别', align: 'center', sort: true,
+                    templet: function (d) {
+                        if (d.gender == 1) {
+                            return "女";
+                        }
+                        if (d.gender == 2) {
+                            return "男";
+                        }
+                        return '';
+                    }
+                }
+                , {field: 'cellphoneNo', width: '10%', title: '电话', align: 'center', sort: true}
+            ]]
+        });
+
+        //监听行双击事件
+        table.on('rowDouble(data-table)', function(obj){
+            userInfo = obj.data;
+            console.log(userInfo);
+            layer.open({
+                type: 2,
+                title: '账号详情',
+                content: './sysUserDetial.html',
+                shadeClose: false,
+                shade: 0.5,
+                area: ['100%', '100%'],
+                maxmin: true
+            });
+        });
+
+
+        form.on('submit(search)', function (data) {
+            var value = data.field;
+            //出现加载并遮罩
+            dataTable.reload({
+                where: { //设定异步数据接口的额外参数，任意设
+                    "data": value
+                }
+            })
+            return false;
+        })
+
+        window.reload = function(){
+            dataTable.reload();
+        }
+
+
+        //监听
+        form.on('switch(isEnable)', function (obj) {
+            // console.log(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis)
+            var userInfo = {};
+            var msgt = '';
+            userInfo.userId = this.value;
+            if (obj.elem.checked) {
+                userInfo.enable = 2;//启用成功
+                msgt = '启用成功！';
+            } else {
+                userInfo.enable = 1;//禁用
+                msgt = '禁用成功！';
+            }
+            $.ajax({
+                url: '/pSysUser/editUserInfo.json',
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify({'data': userInfo}),
+                success: function (data) {
+                    if (data.status == 200) {
+                        layer.msg(msgt, {icon: 1, time: 1000, shade: 0.4}, function () {
+                            dataTable.reload();
+                        });
+                    }else if(data.status == 401){
+                        top.layer.alert(data.msg,{end:function () {
+                                top.location.href = '/';
+                            }})
+                    } else {
+                        layer.msg(data.msg, {icon: 1, time: 1000, shade: 0.4}, function () {
+                            dataTable.reload();
+                        });
+                    }
+                }
+            })
+            return false;
+        });
+
+        window.setPassWord = function setPassWord() {
+            var checkStatus = table.checkStatus("data-table");
+            if(checkStatus.data.length==0){
+                layer.msg("请选择一条数据！")
+                return;
+            }else{
+                $.ajax({
+                    url: '/pSysUser/setPassWord.json',
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({'data': checkStatus.data[0]}),
+                    success: function (data) {
+                        if (data.status == 200) {
+                            layer.msg("重置后密码为:"+data.data, {icon: 1, time: 2000, shade: 0.4}, function () {
+                                dataTable.reload();
+                            });
+                        }else if(data.status == 401){
+                            top.layer.alert(data.msg,{end:function () {
+                                    top.location.href = '/';
+                                }})
+                        } else {
+                            layer.msg(data.msg);
+                        }
+                    }
+                })
+            }
+        }
+
+        window.delUser = function () {
+            var checkStatus = table.checkStatus("data-table");
+            if(checkStatus.data.length==0){
+                layer.msg("请选择一条数据！")
+                return;
+            }else if(checkStatus.data[0].enable == 2){
+                layer.msg("请先将该账号禁用！")
+                return;
+            }else{
+
+                //询问框
+
+                layer.confirm('你确定删除此账号？', {
+                    btn: ['确定','取消'] //按钮
+                }, function(){
+                    $.ajax({
+                        url: '/pSysUser/delUser.json',
+                        type: 'POST',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        data: JSON.stringify({'data': checkStatus.data[0]}),
+                        success: function (data) {
+                            if (data.status == 200) {
+                                layer.msg("用户删除成功！");
+                                dataTable.reload();
+                            }else if(data.status == 401){
+                                top.layer.alert(data.msg,{end:function () {
+                                        top.location.href = '/';
+                                    }})
+                            } else {
+                                layer.alert(data.msg);
+                            }
+                        }
+                    })
+                });
+
+            }
+        }
+
+        window.addUser = function () {
+            layer.open({
+                type: 2,
+                title: '添加账号',
+                content: 'addUser.html',
+                shadeClose: false,
+                shade: 0.5,
+                area: ['80%', '80%'],
+                maxmin: true
+            });
+        }
+
+        window.editUser = function () {
+            var checkStatus = table.checkStatus("data-table");
+            if(checkStatus.data.length==0){
+                layer.msg("请选择一条数据！")
+                return;
+            }
+            userInfo = checkStatus.data[0];
+            layer.open({
+                type: 2,
+                title: '修改账号',
+                content: 'editUserInfo.html',
+                shadeClose: false,
+                shade: 0.5,
+                area: ['100%', '100%'],
+                maxmin: true
+            });
+        }
+
+
+    });
+
+</script>
+
+</body>
+</html>
+
+<script>
+    // 驾驶舱跳转过来的处理
+    function fromCockpit() {
+        let json = localStorage.getItem("_paramet");
+        // console.log(json);
+        if (typeof (json) != 'undefined' && json != 'undefined' && json != null && json != '') {
+            userInfo = JSON.parse(json);
+            console.log(userInfo);
+            layer.open({
+                type: 2,
+                title: '用户详情',
+                content: './sysUserDetial.html',
+                shadeClose: false,
+                shade: 0.5,
+                area: ['100%', '100%'],
+                maxmin: true
+            });
+            // localStorage.setItem("_paramet", "");
+        }
+    }
+
+    function fromCockpit2() {
+        let m = localStorage.getItem("muenType");
+        if (m != null && m != '') {
+            $('#backJsc').show();
+        }
+        localStorage.setItem("muenType", "");
+    }
+
+    setTimeout(function () {
+        fromCockpit();
+        fromCockpit2();
+    }, 500);
+</script>

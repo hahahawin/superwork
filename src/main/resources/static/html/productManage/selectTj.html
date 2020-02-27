@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en" class="x-admin-sm">
+<head>
+    <meta charset="UTF-8">
+    <title>添加条件</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" href="../../css/font.css">
+    <link rel="stylesheet" href="../../css/xadmin.css">
+    <script src="../../js/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../../js/xadmin.js"></script>
+    <script type="text/javascript" src="../../js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../../js/myWrite.js"></script>
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+
+
+<div id="dataInfo">
+</div>
+
+<script type="text/html" id="infotemplet">
+    <form class="layui-form " action="" style="margin-top: 40px">
+        <div class="layui-form-item">
+            <div class="layui-inline ">
+                <label class="layui-form-label">设备类型<i style="color: red">&nbsp;* </i></label>
+                <div class="layui-input-inline">
+                    <select id="has_condition" name="product_code" lay-filter="company" lay-verify="required">
+                        <option value="">请选择</option>
+                        {{# layui.each(d,function(index,item){ }}
+                        <option value="{{item.serialNum }}" data-idx="{{ item.productCode}}" data-idx1="{{item.deviceName}}">{{item.deviceName+'--'+item.serialNum}}
+                        </option>
+                        {{# }); }}
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline ">
+                <label class="layui-form-label">条件类型<i style="color: red">&nbsp;* </i></label>
+                <div class="layui-input-inline">
+                    <select id="has_condition1" name="has_condition" lay-verify="required" lay-filter="company1">
+                        <option value="">请选择</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline ">
+                <label class="layui-form-label">触发值<i style="color: red">&nbsp;* </i></label>
+                <div class="layui-input-inline">
+                    <div id="parrm11">
+                        <select id="has_condition2" name="has_condition" >
+                            <option value="">请选择</option>
+                        </select>
+                    </div>
+
+                    <input type="text" id="parm_value" placeholder="请输入值" autocomplete="off" class="layui-input layui-hide">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="editDataCenter">保存</button>
+                <button type="reset" class="layui-btn layui-btn-primary" style="background: #FF6877;color: #FFFFFF">重置
+                </button>
+            </div>
+        </div>
+
+    </form>
+
+</script>
+
+<script>
+    layui.use(['upload', 'form', 'laytpl'], function () {
+        var laytpl = layui.laytpl;
+        var $ = layui.jquery;
+        var form = layui.form;
+
+
+        $(function () {
+            $.ajax({
+                url: '/sbgl/getSbLxlist.json',
+                dataType: 'json',
+                type: 'post',
+                data: JSON.stringify({'data': parent.account}),
+                contentType: 'application/json',
+                async: false,
+                mysuccess: function (data) {
+                    if (data.status == 200) {
+                        laytpl($('#infotemplet').html()).render(data.data, function (html) {
+                            $("#dataInfo").html(html);
+                        }, 'json');
+                        form.render();
+                    } else {
+                        layer.msg(data.msg)
+                    }
+                }
+            });
+        })
+
+
+        form.on('select(company)', function (data) {
+            // var productCode = data.value;
+            var serialNum = data.value;
+            // var serialNum = data.elem[data.elem.selectedIndex].dataset.idx;
+            var productCode = data.elem[data.elem.selectedIndex].dataset.idx;
+            var param = {
+                account: parent.account,
+                code: productCode
+            }
+            $.ajax({
+                url: '/sbgl/selTjlxList.json',
+                dataType: 'json',
+                type: 'post',
+                data: JSON.stringify(param),
+                contentType: 'application/json',
+                async: false,
+                mysuccess: function (data) {
+                    if (data.status == 200) {
+                        for (var i = 0; i < data.data.length; i++) {
+                            $('#has_condition1').append('<option value="' + data.data[i].id + '" data-idx="' + data.data[i].propertyModel + '">' + data.data[i].propertyName + '</option>')
+                        }
+                        form.render();
+                    }else {
+                        layer.msg("数据加载失败");
+                    }
+                }
+            });
+        });
+        form.on('select(company1)', function (data) {
+            var property_id = data.value;
+            var bind_type = data.elem[data.elem.selectedIndex].dataset.idx;
+
+            var param = {
+                property_id: property_id,
+                bind_type: bind_type
+            }
+
+            if(bind_type == 1){
+                $("#parm_value").attr('class','layui-input');
+                $("#parrm11").attr('class','layui-hide');
+                form.render();
+            }else{
+                $.ajax({
+                    url: '/sbgl/selCfzByTjlx.json',
+                    dataType: 'json',
+                    type: 'post',
+                    data: JSON.stringify(param),
+                    contentType: 'application/json',
+                    async: false,
+                    mysuccess: function (data) {
+                        if (data.status == 200) {
+                            for (var i = 0; i < data.data.length; i++) {
+                                $('#has_condition2').append('<option value="' + data.data[i].ID + '" data-ids="'+data.data[i].PARAM_VAL+'">' + data.data[i].CMD_NAME + '</option>')
+                            }
+                            form.render();
+                        }else {
+                            layer.msg("数据加载失败");
+                        }
+                    }
+                });
+            }
+
+        });
+        form.on('submit(editDataCenter)', function (data) {
+
+            // var product_code = $("#has_condition").val();
+            var serial_num = $("#has_condition").val();
+            // var product_typename = $("#has_condition option:checked").text();
+            var product_typename = $("#has_condition option:checked").attr("data-idx1");
+            // var serial_num = $("#has_condition option:checked").attr("data-idx");
+            var product_code = $("#has_condition option:checked").attr("data-idx");
+            var property_id = $("#has_condition1").val();
+            var property_name = $("#has_condition1 option:checked").text();
+            var bind_type = $("#has_condition1 option:checked").attr("data-idx");
+            var cmd_id = $("#has_condition2").val();
+            var cmd_name = $("#has_condition2 option:checked").text();
+            var param_value = $("#parm_value").val();
+            console.log(product_code + ',' + product_typename + ',' + serial_num + ',' + property_id + ',' + property_name + ',' + bind_type + ',' + cmd_id + ',' + cmd_name)
+            if(bind_type == 1){
+                if(!param_value){
+                    layer.alert("值不能为空！")
+                    return false;
+                }
+                // var sz = '^[0-9]*$';
+                // var no= new RegExp(sz);
+                // if(!no.test(param_value)){
+                //     layer.alert("值请输入数字！")
+                //     return false;
+                // }
+                cmd_id = '';
+                cmd_name = '';
+            }else{
+                param_value = '';
+                if(!cmd_id){
+                    layer.alert("请选择触发值！")
+                    return false;
+                }
+            }
+
+            var obj = {
+                'checked': false,
+                'product_code': product_code,
+                'product_typename': product_typename,
+                'serial_num': serial_num,
+                'property_id': property_id,
+                'property_name': property_name,
+                'bind_type': bind_type,
+                'cmd_id': cmd_id,
+                'cmd_name': cmd_name,
+                'param_value':param_value
+            }
+            parent.addTjData(obj);
+
+            var index = parent.layer.getFrameIndex(window.name);
+            parent.layer.close(index);
+            return false;
+
+
+        });
+
+
+    });
+</script>
+
+</body>
+</html>

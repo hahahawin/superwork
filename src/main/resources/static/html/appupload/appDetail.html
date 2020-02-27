@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" class="x-admin-sm">
+<head>
+    <meta charset="UTF-8">
+    <title>APP详情</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" href="../../css/font.css">
+    <link rel="stylesheet" href="../../css/xadmin.css">
+    <script src="../../js/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../../js/xadmin.js"></script>
+    <script type="text/javascript" src="../../js/jquery-2.0.3.min.js"></script>
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        .item{
+            text-align: right;
+            font-weight: bolder;
+        }
+    </style>
+</head>
+<body>
+<div id="dataCenterInfo" style="margin: 40px 20px">
+
+</div>
+
+<script type="text/html" id="dataCenterInfo_templet">
+
+    <table class="layui-table" style="border:2px solid rgba(76,62,55,0.93);border-collapse:collapse;" >
+        <caption align="top"><h2>详情</h2></caption>
+        <colgroup>
+            <col width="150">
+            <col>
+            <col width="150">
+            <col>
+        </colgroup>
+        <tbody>
+        <tr>
+            <td class="item">软件名</td>
+            <td>{{d.appName || ''}}</td>
+            <td class="item">版本号</td>
+            <td>{{d.version || ''}}</td>
+        </tr>
+        <tr>
+            <td class="item">系统类型</td>
+            <td>{{d.status || ''}}</td>
+            <td class="item">发布者</td>
+            <td>{{d.createName || ''}}</td>
+        </tr>
+        <tr>
+            <td class="item">发布时间</td>
+            <td >{{d.createdate || ''}}</td>
+            <td class="item">下载量</td>
+            <td>{{d.attr1 || ''}}</td>
+        </tr>
+        <tr>
+            <td class="item">描述</td>
+            <td colspan="3">{{d.remark || ''}}</td>
+        </tr>
+        </tbody>
+    </table>
+
+</script>
+
+<script>
+    layui.use(['form','laytpl'], function(){
+        var laytpl = layui.laytpl;
+        var $ = layui.jquery;
+        var form = layui.form;
+
+
+        laytpl($('#dataCenterInfo_templet').html()).render(parent.Info, function (html) {
+            $("#dataCenterInfo").html(html);
+            form.render();
+        }, 'json');
+
+
+
+    });
+
+
+</script>
+
+</body>
+</html>

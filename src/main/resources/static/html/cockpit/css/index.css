@@ -1,0 +1,952 @@
+#main {
+    width: 19.2rem;
+    height: 10.8rem;
+    min-height: 100vh;
+    font-size: 0.14rem;
+    overflow: hidden;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    pointer-events: none;
+}
+
+.box-content {
+    margin: 0 0.3rem;
+    margin-top: 0.1rem;
+    width: 3.6rem;
+}
+
+.info-box {
+    width: 100%;
+    padding: 0.2rem 0.2rem 0 0.2rem;
+}
+
+.info-box .info-list {
+    width: 100%;
+}
+
+.info-box .info-list li {
+    width: 50%;
+    float: left;
+    margin-bottom: 0.2rem;
+}
+
+.section {
+    display: flex;
+    /*height: 9.38rem;*/
+    margin: 0 0.6rem;
+    justify-content: space-between;
+    position: relative;
+}
+
+.section .box-foot {
+    width: 0.8rem;
+    height: 0.23rem;
+    display: flex;
+    justify-content: flex-end;
+    position: absolute;
+    bottom: -0.04rem;
+    right: 0;
+    z-index: 10;
+}
+
+.section .box-foot a {
+    width: 100%;
+    cursor: pointer;
+}
+
+.Switch {
+    display: flex;
+    align-items: center;
+    margin-left: 0.17rem;
+    position: absolute;
+}
+
+.section #left {
+    width: 4.21rem;
+    display: flex;
+    flex-direction: column;
+    margin-right: 0.16rem;
+}
+
+#left > div {
+    margin-bottom: 0.15rem;
+}
+
+#left .left-one {
+    width: 4.21rem;
+    height: 1.62rem;
+    background: url('../img/branch/bac01.png') no-repeat;
+    background-size: 4.21rem 1.62rem;
+    background-position: 0 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding-top: 0.3rem;
+    pointer-events: auto;
+}
+
+.left-one .box-foot {
+    position: absolute;
+    bottom: -0.04rem;
+    right: 0;
+    width: 0.8rem;
+}
+
+.left-one .content-box {
+    width: 3.58rem;
+    margin-left: 0.34rem;
+}
+
+.left-two {
+    width: 4.21rem;
+    height: 2.32rem;
+    background: url('../img/branch/bac02.png') no-repeat;
+    background-size: 4.21rem 2.32rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding-top: 0.38rem;
+    pointer-events: auto;
+}
+
+.left-two-color {
+    display: none;
+    width: 100%;
+    height: 0.1rem;
+    border-radius: 0.1rem;
+}
+
+.left-two-img {
+    width: 3.64rem;
+    height: 0.37rem;
+    background: url('../img/branch/bac02_1.png') no-repeat;
+    background-size: 3.64rem 0.37rem;
+    margin-top: 0.1rem;
+}
+
+.left-three {
+    width: 4.21rem;
+    height: 2.4rem;
+    background: url('../img/branch/bac03.png') no-repeat;
+    background-size: 4.21rem 2.4rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding-top: 0.38rem;
+    pointer-events: auto;
+}
+
+.left-three-icon-bingbao {
+    width: 0.4rem;
+    height: 0.4rem;
+    background: url('../img/weather/bingbao.png') no-repeat;
+    background-size: 0.4rem 0.4rem;
+}
+
+.left-three-icon-lei {
+    width: 0.4rem;
+    height: 0.4rem;
+    background: url('../img/weather/lei.png') no-repeat;
+    background-size: 0.4rem 0.4rem;
+}
+
+.left-three-icon-qing {
+    width: 0.4rem;
+    height: 0.4rem;
+    background: url('../img/weather/qing.png') no-repeat;
+    background-size: 0.4rem 0.4rem;
+}
+
+.left-three-icon-shachen {
+    width: 0.4rem;
+    height: 0.4rem;
+    background: url('../img/weather/shachen.png') no-repeat;
+    background-size: 0.4rem 0.4rem;
+}
+
+.left-three-icon-wu {
+    width: 0.4rem;
+    height: 0.4rem;
+    background: url('../img/weather/wu.png') no-repeat;
+    background-size: 0.4rem 0.4rem;
+}
+
+.left-three-icon-xue {
+    width: 0.4rem;
+    height: 0.4rem;
+    background: url('../img/weather/xue.png') no-repeat;
+    background-size: 0.4rem 0.4rem;
+}
+
+.left-three-icon-yin {
+    width: 0.4rem;
+    height: 0.4rem;
+    background: url('../img/weather/yin.png') no-repeat;
+    background-size: 0.4rem 0.4rem;
+}
+
+.left-three-icon-yu {
+    width: 0.4rem;
+    height: 0.4rem;
+    background: url('../img/weather/yu.png') no-repeat;
+    background-size: 0.4rem 0.4rem;
+}
+
+.left-three-icon-yun {
+    width: 0.4rem;
+    height: 0.4rem;
+    background: url('../img/weather/yun.png') no-repeat;
+    background-size: 0.4rem 0.4rem;
+}
+
+.left-four {
+    width: 4.21rem;
+    height: 2.62rem;
+    background: url('../img/branch/bac04.png') no-repeat;
+    background-size: 4.21rem 2.62rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding-top: 0.38rem;
+    pointer-events: auto;
+}
+
+.left-four .echart-box {
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+
+.left-four .echart-box .item {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.left-four .echart-box .item > div:first-child {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.left-four .echart-box .item .value-temp {
+    width: 1.19rem;
+    height: 0.43rem;
+    background: url('../img/branch/temperature_box.png') no-repeat;
+    background-size: 1.19rem 0.43rem;
+    background-position: 0 0;
+    padding-top: 0.04rem;
+}
+
+.left-four .echart-box .item .value-humidity {
+    width: 1.09rem;
+    height: 0.43rem;
+    background: url('../img/branch/humidity_box.png') no-repeat;
+    background-size: 1.09rem 0.43rem;
+    background-position: 0 0;
+    padding-top: 0.04rem;
+}
+
+.echart-box .item .item-value span {
+    height: 0.43rem;
+    line-height: 0.43rem;
+    font-size: 0.2rem;
+    color: #00A2FF;
+    font-family: orbitronBold;
+    margin-left: 0.35rem;
+}
+
+.section #center {
+    width: 9.2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.content-box > p {
+    width: 100%;
+    text-align: center;
+    font-size: 0.26rem;
+    font-family: MFLIHEIFont;
+    color: #E6A600;
+    margin-top: 0.1rem;
+    margin-bottom: 0.1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.content-box .content-item {
+    display: flex;
+    align-items: center;
+    font-size: 0.14rem;
+    margin-bottom: 0.1rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.content-box .content-item:last-child {
+    margin-bottom: 0;
+}
+
+.content-box .content-item > span:first-child {
+    margin-right: 0.05rem;
+}
+
+.content-box .content-item > span:nth-child(2) {
+    width: 0.6rem;
+}
+
+.content-box .content-item > span:last-child {
+    color: #00A2FF;
+    width: 2.6rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.right-one-content {
+    position: relative;
+    width: 3.4rem;
+    height: 0.85rem;
+    overflow: hidden;
+    margin-left: 0.27rem;
+}
+
+.right-one-content2 {
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    left: 0;
+    transition: left 0.2s;
+}
+
+.right-one-content-icon {
+    background: url(../img/branch/icon_plan_sprite.png) no-repeat 0 0;
+    background-size: 3.47rem 0.56rem;
+    width: 0.57rem;
+    height: 0.57rem;
+}
+
+.right-one-content-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.right-one-content-item {
+    width: 0.57rem;
+    margin-left: 0.13rem;
+    cursor: pointer;
+}
+
+.right-one-content-item-margin {
+    width: 0.57rem;
+    margin-left: 0;
+    cursor: pointer;
+}
+
+.left-btn-icon {
+    cursor: pointer;
+    position: absolute;
+    top: 0.2rem;
+    width: 0.2rem;
+    height: 0.21rem;
+    background: url(../img/branch/branch_sprite.png) no-repeat 0 -1.73rem;
+    background-size: 1.19rem 3.86rem;
+}
+
+.right-btn-icon {
+    cursor: pointer;
+    position: absolute;
+    top: 0.2rem;
+    right: 0.1rem;
+    width: 0.2rem;
+    height: 0.21rem;
+    background: url(../img/branch/branch_sprite.png) no-repeat -0.45rem -1.73rem;
+    background-size: 1.19rem 3.86rem;
+}
+
+.icon-branch {
+    display: inline-block;
+    background: url('../img/branch/branch_sprite.png') no-repeat;
+    background-size: 1.19rem 3.86rem;
+    background-position: 0 0;
+}
+
+.icon-position {
+    width: 0.18rem;
+    height: 0.18rem;
+}
+
+.icon-tel {
+    width: 0.19rem;
+    height: 0.19rem;
+    background-position: -0.24rem 0;
+}
+
+#center .select-bar, #center .floor-select {
+    position: relative;
+    width: 1.38rem;
+    pointer-events: auto;
+}
+
+#center .center-one {
+    width: 9.19rem;
+    height: 1.62rem;
+    background: url('../img/branch/box_bac5.png') no-repeat;
+    background-size: 9.19rem 1.62rem;
+    background-position: 0 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding-top: 0.28rem;
+    margin-bottom: 0.11rem;
+    pointer-events: auto;
+}
+
+.center-one .device-box {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    padding: 0 0.63rem;
+}
+
+.center-one .device-box .device-list-box {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    overflow: hidden;
+}
+
+.center-one .device-box .device-list {
+    display: flex;
+}
+
+.center-one .device-box .device-list li {
+    display: flex;
+    flex-direction: column;
+    margin-right: 0.2rem;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+}
+
+.center-one .device-list li > div {
+    width: 0.53rem;
+    height: 0.68rem;
+    margin-bottom: 0.05rem;
+    /*display: flex;
+    align-items: center;
+    justify-content: center;*/
+}
+
+.center-one .device-list li > span {
+    width: 0.7rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+.box-content-content {
+    position: relative;
+    left: 0.23rem;
+    top: 0.15rem;
+    overflow: hidden;
+    width: 8.5rem;
+}
+
+.box-content-content-item {
+    width: 100%;
+    height: 1rem;
+    display: flex;
+    transition: margin-left 0.2s;
+}
+
+.center-content-item-01 {
+    width: 0.85rem;
+    text-align: center;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.center-content-item {
+    width: 0.85rem;
+    text-align: center;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.center-content-img {
+    width: 0.53rem;
+    height: 0.68rem;
+    margin-bottom: 0.05rem;
+    background: url(../img/branch/icon_big_sprite.png) no-repeat;
+    background-size: 5.37rem 0.66rem;
+    margin: 0 auto
+}
+
+.center-content-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/*.icon-device-box {
+	width: 0.52rem;
+	height: 0.53rem;
+	background: url(../img/branch/icon_device_box.png) no-repeat;
+	background-size: 2.03rem 0.66rem;
+}
+
+.icon-device-box>img {
+	width: 0.25rem;
+	height: 0.25rem;
+	margin-bottom: 0.05rem;
+}
+
+.device-box-green {
+	background-position: 0 0;
+}
+
+.device-box-blue {
+	background-position: -0.74rem 0;
+}
+
+.device-box-yellow {
+	background-position: -1.5rem 0;
+}*/
+
+.icon-device {
+    width: 0.52rem;
+    height: 0.53rem;
+    background: url('../img/branch/icon_big_sprite.png') no-repeat;
+    background-size: 5.37rem 0.66rem;
+}
+
+.icon-bulb-big {
+    background-position: 0 0;
+}
+
+.icon-air-big {
+    background-position: -0.71rem 0;
+}
+
+.icon-LED-big {
+    background-position: -1.42rem 0;
+}
+
+.icon-flash-big {
+    background-position: -2.13rem 0;
+}
+
+.icon-switch-big {
+    background-position: -3.55rem 0;
+}
+
+.icon-camera-big {
+    background-position: -2.84rem 0;
+}
+
+.icon-flooding-big {
+    background-position: -4.18rem 0;
+}
+
+.icon-smoke-big {
+    background-position: -4.84rem 0;
+}
+
+.center-one .device-box .left-btn {
+    position: absolute;
+    top: 50%;
+    left: 0.2rem;
+    width: 0.2rem;
+    height: 0.21rem;
+    margin-top: -0.1rem;
+    background-position: 0 -1.73rem;
+    cursor: pointer;
+}
+
+.center-one .device-box .right-btn {
+    position: absolute;
+    top: 50%;
+    right: 0.2rem;
+    width: 0.2rem;
+    height: 0.21rem;
+    margin-top: -0.1rem;
+    background-position: -0.45rem -1.73rem;
+    cursor: pointer;
+}
+
+.section #right {
+    width: 4.21rem;
+    display: flex;
+    flex-direction: column;
+    margin-left: 0.27rem;
+}
+
+#right > div {
+    margin-bottom: 0.12rem;
+}
+
+.right-box .energy-detail .detail-item > span:first-child {
+    width: 0.13rem;
+    height: 0.13rem;
+    border-radius: 50%;
+    background: -webkit-linear-gradient(285deg, rgb(0, 64, 132), rgb(0, 103, 198));
+    /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(285deg, rgb(0, 64, 132), rgb(0, 103, 198));
+    /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(285deg, rgb(0, 64, 132), rgb(0, 103, 198));
+    /* Firefox 3.6 - 15 */
+    background: linear-gradient(285deg, rgb(0, 64, 132), rgb(0, 103, 198));
+    /* 标准的语法 */
+}
+
+/*#right .right-four {
+	width: 4.21rem;
+	height: 2.82rem;
+	background: url(../img/branch/box_bac90.png) no-repeat;
+	background-size: 4.21rem 2.8rem;
+	background-position: 0 0;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	padding-top: 0.38rem;
+}
+
+.right-four .video-box {
+	width: 100%;
+	height: 100%;
+	padding: 0 0.2rem;
+	background-color: transparent !important;
+}
+
+.info-list-box{
+	display: flex;flex-direction: row;align-items: center;
+	width: 100%;
+}
+.info-list-title{
+	margin-right: 0.2rem;
+	border-right: #7f7f7f solid 1px;
+	width: 1.2rem;
+	color: #00A2FF;
+}
+
+.info-list-item{
+	display: flex;flex-direction: column;
+	justify-content: center;
+	margin-right: 0.2rem;
+	margin-top: 0.1rem;
+}
+.info-list-item > span{
+	text-align: center;
+}
+
+.info-list-item-value {
+	font-size: 0.16rem;
+	font-family: orbitronBold;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+.info-list-content{
+	margin-top: 0.1rem;
+	margin-bottom: 0.1rem;
+	display: flex;flex-direction: row;
+	justify-content: center;
+}*/
+
+.content-box-blue {
+    width: 3.58rem;
+    height: 1.3rem;
+    background: url(../img/branch/tip_box1.png) no-repeat;
+    background-size: 3.58rem 1.3rem;
+    background-position: 0 0;
+    position: absolute;
+    padding: 0.3rem 0.12rem 0.1rem 0.12rem;
+}
+
+.content-box-blue .device-url,
+.content-box-red .device-url {
+    position: absolute;
+    width: 0.5rem;
+    height: 0.2rem;
+    top: 0;
+    right: 0.08rem;
+    cursor: pointer;
+}
+
+.device-info-list {
+    display: flex;
+    margin-bottom: 0.27rem;
+}
+
+.device-info-list .list-item {
+    display: flex;
+    flex-direction: column;
+    width: 0.65rem;
+    align-items: center;
+    position: relative;
+}
+
+.device-info-list .list-item:after {
+    content: '';
+    height: 0.21rem;
+    width: 0.01rem;
+    background-color: #3D4054;
+    position: absolute;
+    top: 0.07rem;
+    right: 0;
+}
+
+.device-info-list .list-item:last-child:after {
+    display: none;
+}
+
+.device-info-list .list-item span {
+    width: 0.65rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+    font-size: 0.1rem;
+}
+
+.device-info-list .list-item .item-value {
+    font-size: 0.16rem;
+    color: #00A2FF;
+    font-family: orbitronBold;
+}
+
+.position-info {
+    display: flex;
+    justify-content: center;
+}
+
+.position-info .info-item {
+    display: flex;
+    align-items: center;
+    margin-right: 0.2rem;
+    font-size: 0.12rem;
+}
+
+.position-info .info-item span {
+    margin-right: 0.05rem;
+}
+
+.position-info .info-item span:last-child {
+    color: #00A2FF;
+}
+
+.icon-name {
+    width: 0.16rem;
+    height: 0.16rem;
+    background-position: -0.77rem -0.03rem;
+}
+
+.icon-site {
+    width: 0.15rem;
+    height: 0.18rem;
+    background-position: -1.03rem -0.03rem;
+}
+
+.icon-state {
+    width: 0.15rem;
+    height: 0.16rem;
+    background-position: -0.54rem -0.03rem;
+}
+
+.content-box-red {
+    width: 3.59rem;
+    height: 2.24rem;
+    background: url(../img/branch/tip_box2.png) no-repeat;
+    background-size: 3.59rem 2.24rem;
+    background-position: 0 0;
+    position: absolute;
+    padding: 0.3rem 0.12rem 0.1rem 0.12rem;
+}
+
+.warning-info {
+    font-size: 0.2rem;
+    color: #E60012;
+    text-align: center;
+    margin-bottom: 0.65rem;
+}
+
+.select-box {
+    display: flex;
+    justify-content: space-between;
+}
+
+.airClass {
+    position: absolute;
+    top: 0.15rem;
+    right: 0rem;
+}
+
+.airClass select {
+    margin-right: 0.2rem;
+    width: 1.5rem;
+    height: 0.25rem;
+    line-height: 0.20rem;
+    color: #0082FD;
+    font-weight: 700;
+    font-size: 0.14rem;
+    display: block;
+    position: relative;
+    border-radius: 0.2rem;
+    border-color: #0082FD;
+    cursor: pointer;
+    background: rgb(9, 18, 47);
+}
+
+.device-info-list .list-item span {
+    width: 0.65rem;
+    /*overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;*/
+    text-align: center;
+    font-size: 0.1rem;
+}
+
+@media only screen and (max-width: 1920px) {
+    .left-three .box-body .box-item {
+        padding-top: 0;
+    }
+
+    .left-three .box-item .item .item-text {
+        line-height: 0.18rem;
+        margin-top: -0.02rem;
+    }
+}
+
+.right-one {
+    width: 4.21rem;
+    height: 1.52rem;
+    background: url('../img/branch/bac06.png') no-repeat;
+    background-size: 4.21rem 1.52rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding-top: 0.38rem;
+    pointer-events: auto;
+}
+
+.right-two {
+    width: 4.21rem;
+    height: 1.62rem;
+    background: url('../img/branch/bac07.png') no-repeat;
+    background-size: 4.21rem 1.62rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding-top: 0.38rem;
+    pointer-events: auto;
+}
+
+.right-two .echart-box {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.right-two .echart-box .item {
+    width: 0.59rem;
+    text-align: center;
+}
+
+.right-two .echart-box .item > div {
+    width: 0.59rem;
+    height: 0.59rem;
+}
+
+.right-two .echart-box .item > span {
+    display: inline-block;
+    font-size: 0.12rem;
+    margin-top: 0.1rem;
+}
+
+.right-three {
+    width: 4.21rem;
+    height: 6.02rem;
+    background: url('../img/branch/bac08.png') no-repeat;
+    background-size: 4.21rem 6.02rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding-top: 0.38rem;
+    pointer-events: auto;
+}
+
+.right-three-table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.right-three-table-tr {
+    height: 0.33rem;
+}
+
+.right-three-table-tr-bac {
+    height: 0.33rem;
+    background: url(../img/branch/bac08-1.png) no-repeat;
+    background-size: 3.83rem 0.33rem;
+}
+
+.right-three-table-tr > td {
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.right-three-table-tr-bac > td {
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.mapDeviceImg1{
+    width: 20px;
+    height: 20px;
+    background: url(../img/branch/branch_sprite.png) no-repeat 0 0;
+    background-size: 119px 386px;
+}
+.mapDeviceImg2{
+    width: 20px;
+    height: 20px;
+    background: url(../img/branch/branch_sprite.png) no-repeat -75px -3px;
+    background-size: 119px 386px;
+}
+.mapDeviceText1{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 135px;
+    margin-left: 0.05rem;
+}
+.mapDeviceText2{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 85px;
+    margin-left: 0.1rem;
+}
+.mapContentTitle{
+    color: #00a2ff;
+    font-weight: 800;
+}
+.moreBtn {
+    width: 0.7rem;
+    height: 0.2rem;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    cursor: pointer;
+}

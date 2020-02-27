@@ -1,0 +1,67 @@
+<div class="header">
+    <div id="systemTime"></div>
+    <p class="header-title">APCOS 标准应用平台-驾驶舱</p>
+    <div class="tool-bar">
+        <input type="hidden" id="UserId" value="1233">
+        <span class="icon-view-modal" title="打开3D" onclick="show3D()"></span>
+        <span class="icon-head icon-user-setting" onclick="accountSet()" title="退出"></span>
+        <span class="icon-head icon-floor" onclick="window.location.href = '/pSysUser/toIndex'" title="后台管理"></span>
+    </div>
+</div>
+<ul class="account-set" style="z-index: 2;">
+    <!--<li onclick="showUpdatePwd('修改密码', 1)">修改密码</li>-->
+    <li onclick="loginOut()" style="cursor: pointer">退出</li>
+</ul>
+
+<script>
+
+    $(function () {
+        //查询工作空间地址
+        $.ajax({
+            url: '/d3/getWorkSpaceUrl.json',
+            dataType: 'json',
+            type: 'post',
+            // async: false,
+            mysuccess: function (data) {
+                if (data.status == 200) {
+                    if (!window.localStorage) {
+                        alert("浏览器支不持localstorage");
+                    } else {
+                        var storage = window.localStorage;
+                        storage.setItem("url_3D", data.data)
+
+                    }
+                } else {
+                    layer.msg(data.msg);
+                }
+            }
+        });
+    })
+
+    function show3D() {
+        $.ajax({
+            url: serviceUrl + "d3/getWorkSpaceUrl.json",
+            type: "get",
+            async: false,
+            success: function (res) {
+                // console.log(res);
+                if (res.status == 200) {
+                    let url_3D = res.data;
+                    if (typeof (url_3D) != 'undefined' && url_3D != null && url_3D != '') {
+                        let myLayer = layer.open({
+                            type: 2,
+                            title: "3D",
+                            content: url_3D
+                        });
+
+                        layer.full(myLayer);    // 全屏
+                    } else {
+                        layer.msg("暂无3D信息！", {icon: 2});
+                    }
+                } else {
+                    layer.msg("获取3D信息失败，请联系管理员！", {icon: 2});
+                }
+            }
+        });
+    }
+</script>

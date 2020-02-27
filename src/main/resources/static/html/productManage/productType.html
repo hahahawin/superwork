@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" class="x-admin-sm">
+<head>
+    <meta charset="UTF-8">
+    <title>用户列表</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" href="../../css/font.css">
+    <link rel="stylesheet" href="../../css/xadmin.css">
+    <script src="../../js/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../../js/xadmin.js"></script>
+    <script type="text/javascript" src="../../js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../../js/myWrite.js"></script>
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        .layui-inline {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <form class="layui-form" action="">
+            <div class="layui-inline layui-show-xs-block">
+                <input type="text" name="mlmc" id="mlmc" placeholder="请输入产品名字"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-inline layui-show-xs-block">
+                <input type="text" id="mldm" name="mldm" placeholder="请输入产品编码"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-inline layui-show-xs-block">
+                <button class="layui-btn" lay-submit lay-filter="search"><i class="layui-icon">&#xe615;</i>
+                </button>
+                <button class="layui-btn"><i
+                        class="layui-icon layui-icon-fonts-clear"></i></button>
+                <button class="layui-btn layui-btn-normal" type="button" onclick="syncSbLx()"><i class="layui-icon">
+                    &#xe673;</i>同步产品类型
+                </button>
+            </div>
+        </form>
+        <div>
+            <table class="layui-table" id="data-table" lay-filter="data-table"></table>
+        </div>
+    </div>
+
+    <script>
+        var Info, dataTable;
+        layui.use(['table', 'form'], function () {
+
+            var table = layui.table;
+            var $ = layui.jquery;
+            var form = layui.form;
+
+            dataTable = table.render({
+                title: '用户列表',
+                elem: '#data-table',
+                height: 'full-18',
+                url: '/sbgl/listsblx.json', //数据接口
+                method: 'post',
+                // toolbar: '#toolbarDemo',
+                contentType: 'application/json',
+                // size: 'sm',
+                response: {
+                    countName: 'total',//规定数据总数的字段名称，默认：count
+                    statusCode: 200, //规定成功的状态码，默认：0
+                    statusName: 'status'
+                },
+                where: {},
+                page: true, //开启分页
+                limit: 20,
+                limits: [20, 30, 50, 100],
+                defaultToolbar: [],
+                done: function (res, curr, count) {
+                    if (res.status == 401) {
+                        top.layer.alert(res.msg, {
+                            end: function () {
+                                top.location.href = '/';
+                            }
+                        })
+                    }
+                },
+                cols: [[ //表头
+                    {
+                        type: 'numbers', width: '5%',
+                        title: '序号'
+                    }
+                    , {field: 'mlmc', title: '产品名称', align: 'center', sort: true, width: '15%'}
+                    , {field: 'mldm', title: '产品编码', align: 'center', sort: true, width: '20%'}
+                    , {field: 'account', title: '同步人', align: 'center', sort: true, width: '15%'}
+                    , {field: 'createdTime', title: '同步时间', align: 'center', sort: true, width: '20%'}
+                    , {
+                        field: 'expressNo', title: '操作', align: 'center'
+                        , templet: function (d) {
+                            // var listms = '<a class="layui-btn layui-btn-xs  layui-btn-warm" lay-event="listms">模板列表</a>';
+                            var decPlan = '<a class="layui-btn layui-btn-xs  layui-btn-normal" lay-event="decPlan">同步执行计划</a>';
+                            return decPlan;
+                        }
+
+                    }
+                ]]
+            });
+
+
+            //监听工具条
+            table.on('tool(data-table)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+                Info = obj.data; //获得当前行数据
+                var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+                var tr = obj.tr; //获得当前行 tr 的DOM对象
+                if (layEvent === 'decPlan') {
+                    //出现加载并遮罩
+                    var index = layer.load(1, {
+                        shade: [0.5, '#000'] //0.1透明度的背景
+                    });
+                    $.ajax({
+                        url: '/account_3/syncPlan.json',//同步设备执行计划
+                        dataType: 'json',
+                        type: 'post',
+                        data: JSON.stringify({'data': Info.mldm}),
+                        contentType: 'application/json',
+                        hasShade:index,
+                        mysuccess: function (data) {
+                            if (data.status == 200) {
+                                layer.msg("同步成功！", {time: 1500, icon: 1});
+                            }  else {
+                                layer.msg(data.msg, {time: 1500, icon: 2});
+                            }
+                        }
+                    });
+                }
+
+            });
+
+
+            form.on('submit(search)', function (data) {
+                var value = data.field;
+                //出现加载并遮罩
+
+                dataTable.reload({
+                    where: { //设定异步数据接口的额外参数，任意设
+                        "data": value
+                    }
+                })
+                return false;
+            })
+            window.syncSbLx = function syncSbLx() {
+                //出现加载并遮罩
+                var index = layer.load(1, {
+                    shade: [0.5, '#000'] //0.1透明度的背景
+                });
+                $.ajax({
+                    url: '/sbgl/syncSbLx.json',
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    hasShade:index,
+                    mysuccess: function (data) {
+                        layer.close(index);
+                        if (data.status == 200) {
+                            layer.msg(data.msg, {icon: 1, time: 1000, shade: 0.4}, function () {
+                                dataTable.reload();
+                            })
+                        } else {
+                            layer.alert(data.msg);
+                        }
+                    }
+                })
+            }
+
+
+        });
+
+    </script>
+
+</body>
+</html>

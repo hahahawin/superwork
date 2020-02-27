@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.superwork.apcosplatform.mapper.PMscontrolRecordMapper">
+  <resultMap id="BaseResultMap" type="com.superwork.apcosplatform.domain.PMscontrolRecord">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="ACCOUNT" jdbcType="VARCHAR" property="account" />
+    <result column="MS_NAME" jdbcType="VARCHAR" property="msName" />
+    <result column="CONTROL_ID" jdbcType="VARCHAR" property="controlId" />
+    <result column="CREATE_DATE" jdbcType="DATE" property="createDate" />
+    <result column="RESULT" jdbcType="VARCHAR" property="result" />
+    <result column="ABNORMAL_REASON" jdbcType="VARCHAR" property="abnormalReason" />
+    <result column="ATTR1" jdbcType="VARCHAR" property="attr1" />
+    <result column="ATTR2" jdbcType="VARCHAR" property="attr2" />
+    <result column="ATTR3" jdbcType="VARCHAR" property="attr3" />
+    <result column="USER_ACCOUNT" jdbcType="VARCHAR" property="controlName" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.superwork.apcosplatform.domain.PMscontrolRecord">
+    <result column="MS_ORIGINAL" jdbcType="CLOB" property="msOriginal" />
+    <result column="MSML_ORIGINAL" jdbcType="CLOB" property="msmlOriginal" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    ID, ACCOUNT, MS_NAME, CONTROL_ID, CREATE_DATE, RESULT, ABNORMAL_REASON, ATTR1, ATTR2, 
+    ATTR3
+  </sql>
+  <sql id="Blob_Column_List">
+    MS_ORIGINAL, MSML_ORIGINAL
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.superwork.apcosplatform.domain.PMscontrolRecordExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from P_MSCONTROL_RECORD
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.superwork.apcosplatform.domain.PMscontrolRecordExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from P_MSCONTROL_RECORD
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from P_MSCONTROL_RECORD
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from P_MSCONTROL_RECORD
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.superwork.apcosplatform.domain.PMscontrolRecordExample">
+    delete from P_MSCONTROL_RECORD
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.superwork.apcosplatform.domain.PMscontrolRecord">
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">
+      select P_MSCONTROL_RECORD_SEQ.NEXTVAL from dual
+    </selectKey>
+    insert into P_MSCONTROL_RECORD (ID, ACCOUNT, MS_NAME, 
+      CONTROL_ID, CREATE_DATE, RESULT, 
+      ABNORMAL_REASON, ATTR1, ATTR2, 
+      ATTR3, MS_ORIGINAL, MSML_ORIGINAL
+      )
+    values (#{id,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{msName,jdbcType=VARCHAR}, 
+      #{controlId,jdbcType=VARCHAR}, #{createDate,jdbcType=DATE}, #{result,jdbcType=VARCHAR}, 
+      #{abnormalReason,jdbcType=VARCHAR}, #{attr1,jdbcType=VARCHAR}, #{attr2,jdbcType=VARCHAR}, 
+      #{attr3,jdbcType=VARCHAR}, #{msOriginal,jdbcType=CLOB}, #{msmlOriginal,jdbcType=CLOB}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.superwork.apcosplatform.domain.PMscontrolRecord">
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">
+      select P_MSCONTROL_RECORD_SEQ.NEXTVAL from dual
+    </selectKey>
+    insert into P_MSCONTROL_RECORD
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      ID,
+      <if test="account != null">
+        ACCOUNT,
+      </if>
+      <if test="msName != null">
+        MS_NAME,
+      </if>
+      <if test="controlId != null">
+        CONTROL_ID,
+      </if>
+      <if test="createDate != null">
+        CREATE_DATE,
+      </if>
+      <if test="result != null">
+        RESULT,
+      </if>
+      <if test="abnormalReason != null">
+        ABNORMAL_REASON,
+      </if>
+      <if test="attr1 != null">
+        ATTR1,
+      </if>
+      <if test="attr2 != null">
+        ATTR2,
+      </if>
+      <if test="attr3 != null">
+        ATTR3,
+      </if>
+      <if test="msOriginal != null">
+        MS_ORIGINAL,
+      </if>
+      <if test="msmlOriginal != null">
+        MSML_ORIGINAL,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=VARCHAR},
+      <if test="account != null">
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="msName != null">
+        #{msName,jdbcType=VARCHAR},
+      </if>
+      <if test="controlId != null">
+        #{controlId,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=DATE},
+      </if>
+      <if test="result != null">
+        #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="abnormalReason != null">
+        #{abnormalReason,jdbcType=VARCHAR},
+      </if>
+      <if test="attr1 != null">
+        #{attr1,jdbcType=VARCHAR},
+      </if>
+      <if test="attr2 != null">
+        #{attr2,jdbcType=VARCHAR},
+      </if>
+      <if test="attr3 != null">
+        #{attr3,jdbcType=VARCHAR},
+      </if>
+      <if test="msOriginal != null">
+        #{msOriginal,jdbcType=CLOB},
+      </if>
+      <if test="msmlOriginal != null">
+        #{msmlOriginal,jdbcType=CLOB},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.superwork.apcosplatform.domain.PMscontrolRecordExample" resultType="java.lang.Long">
+    select count(*) from P_MSCONTROL_RECORD
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update P_MSCONTROL_RECORD
+    <set>
+      <if test="record.id != null">
+        ID = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.account != null">
+        ACCOUNT = #{record.account,jdbcType=VARCHAR},
+      </if>
+      <if test="record.msName != null">
+        MS_NAME = #{record.msName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.controlId != null">
+        CONTROL_ID = #{record.controlId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createDate != null">
+        CREATE_DATE = #{record.createDate,jdbcType=DATE},
+      </if>
+      <if test="record.result != null">
+        RESULT = #{record.result,jdbcType=VARCHAR},
+      </if>
+      <if test="record.abnormalReason != null">
+        ABNORMAL_REASON = #{record.abnormalReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attr1 != null">
+        ATTR1 = #{record.attr1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attr2 != null">
+        ATTR2 = #{record.attr2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attr3 != null">
+        ATTR3 = #{record.attr3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.msOriginal != null">
+        MS_ORIGINAL = #{record.msOriginal,jdbcType=CLOB},
+      </if>
+      <if test="record.msmlOriginal != null">
+        MSML_ORIGINAL = #{record.msmlOriginal,jdbcType=CLOB},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update P_MSCONTROL_RECORD
+    set ID = #{record.id,jdbcType=VARCHAR},
+      ACCOUNT = #{record.account,jdbcType=VARCHAR},
+      MS_NAME = #{record.msName,jdbcType=VARCHAR},
+      CONTROL_ID = #{record.controlId,jdbcType=VARCHAR},
+      CREATE_DATE = #{record.createDate,jdbcType=DATE},
+      RESULT = #{record.result,jdbcType=VARCHAR},
+      ABNORMAL_REASON = #{record.abnormalReason,jdbcType=VARCHAR},
+      ATTR1 = #{record.attr1,jdbcType=VARCHAR},
+      ATTR2 = #{record.attr2,jdbcType=VARCHAR},
+      ATTR3 = #{record.attr3,jdbcType=VARCHAR},
+      MS_ORIGINAL = #{record.msOriginal,jdbcType=CLOB},
+      MSML_ORIGINAL = #{record.msmlOriginal,jdbcType=CLOB}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update P_MSCONTROL_RECORD
+    set ID = #{record.id,jdbcType=VARCHAR},
+      ACCOUNT = #{record.account,jdbcType=VARCHAR},
+      MS_NAME = #{record.msName,jdbcType=VARCHAR},
+      CONTROL_ID = #{record.controlId,jdbcType=VARCHAR},
+      CREATE_DATE = #{record.createDate,jdbcType=DATE},
+      RESULT = #{record.result,jdbcType=VARCHAR},
+      ABNORMAL_REASON = #{record.abnormalReason,jdbcType=VARCHAR},
+      ATTR1 = #{record.attr1,jdbcType=VARCHAR},
+      ATTR2 = #{record.attr2,jdbcType=VARCHAR},
+      ATTR3 = #{record.attr3,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.superwork.apcosplatform.domain.PMscontrolRecord">
+    update P_MSCONTROL_RECORD
+    <set>
+      <if test="account != null">
+        ACCOUNT = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="msName != null">
+        MS_NAME = #{msName,jdbcType=VARCHAR},
+      </if>
+      <if test="controlId != null">
+        CONTROL_ID = #{controlId,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        CREATE_DATE = #{createDate,jdbcType=DATE},
+      </if>
+      <if test="result != null">
+        RESULT = #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="abnormalReason != null">
+        ABNORMAL_REASON = #{abnormalReason,jdbcType=VARCHAR},
+      </if>
+      <if test="attr1 != null">
+        ATTR1 = #{attr1,jdbcType=VARCHAR},
+      </if>
+      <if test="attr2 != null">
+        ATTR2 = #{attr2,jdbcType=VARCHAR},
+      </if>
+      <if test="attr3 != null">
+        ATTR3 = #{attr3,jdbcType=VARCHAR},
+      </if>
+      <if test="msOriginal != null">
+        MS_ORIGINAL = #{msOriginal,jdbcType=CLOB},
+      </if>
+      <if test="msmlOriginal != null">
+        MSML_ORIGINAL = #{msmlOriginal,jdbcType=CLOB},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.superwork.apcosplatform.domain.PMscontrolRecord">
+    update P_MSCONTROL_RECORD
+    set ACCOUNT = #{account,jdbcType=VARCHAR},
+      MS_NAME = #{msName,jdbcType=VARCHAR},
+      CONTROL_ID = #{controlId,jdbcType=VARCHAR},
+      CREATE_DATE = #{createDate,jdbcType=DATE},
+      RESULT = #{result,jdbcType=VARCHAR},
+      ABNORMAL_REASON = #{abnormalReason,jdbcType=VARCHAR},
+      ATTR1 = #{attr1,jdbcType=VARCHAR},
+      ATTR2 = #{attr2,jdbcType=VARCHAR},
+      ATTR3 = #{attr3,jdbcType=VARCHAR},
+      MS_ORIGINAL = #{msOriginal,jdbcType=CLOB},
+      MSML_ORIGINAL = #{msmlOriginal,jdbcType=CLOB}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.superwork.apcosplatform.domain.PMscontrolRecord">
+    update P_MSCONTROL_RECORD
+    set ACCOUNT = #{account,jdbcType=VARCHAR},
+      MS_NAME = #{msName,jdbcType=VARCHAR},
+      CONTROL_ID = #{controlId,jdbcType=VARCHAR},
+      CREATE_DATE = #{createDate,jdbcType=DATE},
+      RESULT = #{result,jdbcType=VARCHAR},
+      ABNORMAL_REASON = #{abnormalReason,jdbcType=VARCHAR},
+      ATTR1 = #{attr1,jdbcType=VARCHAR},
+      ATTR2 = #{attr2,jdbcType=VARCHAR},
+      ATTR3 = #{attr3,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <select id="listMsControl"  parameterType="com.superwork.apcosplatform.domain.PMscontrolRecord" resultMap="ResultMapWithBLOBs">
+
+    SELECT A.*,B.USER_ACCOUNT FROM P_MSCONTROL_RECORD A LEFT OUTER JOIN P_SYS_USER B ON A.CONTROL_ID = B.USER_ID
+      WHERE A.CONTROL_ID = #{controlId}
+      <if test="account != null and account != '' ">
+        AND A.ACCOUNT LIKE '%'||#{account}||'%'
+      </if>
+    <if test="msName != null and msName != '' ">
+      AND A.MS_NAME LIKE '%'||#{msName}||'%'
+    </if>
+    <if test="result != null and result != '' ">
+      AND A.RESULT = #{result}
+    </if>
+    ORDER BY A.CREATE_DATE DESC
+
+  </select>
+</mapper>

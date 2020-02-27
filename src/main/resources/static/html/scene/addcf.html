@@ -1,0 +1,130 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>图片热点问题</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link rel="stylesheet" href="../../css/font.css">
+    <link rel="stylesheet" href="../../css/xadmin.css">
+    <script src="../../js/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../../js/xadmin.js"></script>
+    <script type="text/javascript" src="../../js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../../js/myWrite.js"></script>
+    <style>
+        .img{position:relative;border:solid 1px #000;display:inline-block;margin:100px 100px}
+        .img .marker{position:absolute;width:100px;height:100px;}
+    </style>
+
+</head>
+<body style="margin: 0px auto">
+    <div class="layui-row">
+        <div class="layui-col-md12">
+            <div class="img" id="dv">
+                <img  id="LiuYiFeiImg" src="" style="margin:0 auto;width: 600px;height: 800px">
+            </div>
+        </div>
+    </div>
+
+<script type="text/javascript">
+
+    layui.use(['table', 'form', 'laytpl'], function () {
+
+        $("#LiuYiFeiImg").attr("src",parent.Info.img);
+
+    })
+
+    var ProportionHeightInImg; //鼠标所选位置相对于所选图片高度的比例
+    var ProportionWidthInImg;//鼠标所选位置相对于所选图片宽度的比例
+    function createMarker(obj,divName) {
+        var div = document.createElement('div');
+        var x= obj.x;
+        var y= obj.y;
+        var r= obj.r;
+        var name = obj.name;
+        div.className = 'marker';
+
+        $(div).on("click",function (e) {
+            e.stopPropagation();
+            var dom =  $(this);
+            var obj =JSON.parse($(dom).attr("data-id"));
+            layer.prompt({title: '输入范围半径',value:r},function(val, index){
+                $(dom).remove();
+                obj.r= val;
+                createMarker(obj,'dv');
+                layer.close(index);
+            });
+        })
+
+        $(div).on("mouseover",function (e) {
+            var obj =$(this).attr("data-id");
+              $(this).attr("title",obj)
+        })
+        // div.addEventListener('click',function (e) {
+        //     e.stopPropagation();
+        //    var dom =  $(this);
+        //    var obj =JSON.parse($(dom).attr("data-id"));
+        //     layer.prompt({title: '输入范围半径',value:r},function(val, index){
+        //        $(dom).remove();
+        //         obj.r= val;
+        //         createMarker(obj,'dv');
+        //         layer.close(index);
+        //     });
+        // })
+        // div.addEventListener('dblclick',function (e) {
+        //     e.stopPropagation();
+        //     var dom =  $(this);
+        //     var obj =JSON.parse($(dom).attr("data-id"));
+        //     alert(obj)
+        //
+        // })
+        var h = Math.sqrt(2)*r/2;
+        var x1 = 2*h;
+        x= x- h;
+        y= y-h;
+        let s = JSON.stringify(obj);
+       $(div).attr("data-id",s);
+        div.style.cssText = "left:"+x+"px;top:"+y+"px;border: 2px solid red;border-radius:50%;width:"+x1+"px;height:"+x1+"px;";
+        document.getElementById(divName).appendChild(div)
+    }
+
+    document.getElementById('dv').onclick = function (e) {
+        e = e || window.event;
+        var x = e.offsetX || e.layerX, y = e.offsetY || e.layerY;
+        //获取图片的高度和宽度
+        var myImg = document.querySelector("#LiuYiFeiImg");
+        var currWidth = myImg.clientWidth;
+        var currHeight = myImg.clientHeight;
+        var obj = {}
+        obj.x = x;
+        obj.y = y;
+        obj.currWidth = currWidth;
+        obj.currHeight = currHeight;
+        obj.seneId = parent.Info.id;
+
+        layer.prompt({title: '输入情景名字'},function(val, index){
+            obj.name = val;
+            layer.close(index);
+            layer.prompt({title: '输入范围半径'},function(val, index){
+                layer.close(index);
+                obj.r = val;
+                layer.prompt({title: '输入产品唯一标识'},function(val, index){
+                    obj.mac = val;
+                    createMarker(obj,'dv');
+                    layer.close(index);
+                });
+            });
+        });
+        ProportionWidthInImg=x/currWidth;//宽度比
+        ProportionHeightInImg=y/currHeight;//高度比
+
+    }
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

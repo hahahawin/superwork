@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.superwork.apcosplatform.mapper.PDepartmentMapper">
+  <resultMap id="BaseResultMap" type="com.superwork.apcosplatform.domain.PDepartment">
+    <id column="DEP_ID" jdbcType="VARCHAR" property="depId" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="SYS_TYPE" jdbcType="DECIMAL" property="sysType" />
+    <result column="CREATE_TIME" jdbcType="DATE" property="createTime" />
+    <result column="CREATE_USERID" jdbcType="VARCHAR" property="createUserid" />
+    <result column="EDIT_TIME" jdbcType="DATE" property="editTime" />
+    <result column="EDIT_USERID" jdbcType="VARCHAR" property="editUserid" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="COMPANY_ID" jdbcType="VARCHAR" property="companyId" />
+    <result column="CREATENAME" jdbcType="VARCHAR" property="createName" />
+    <result column="EDITENAME" jdbcType="VARCHAR" property="editName" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    DEP_ID, NAME, SYS_TYPE, CREATE_TIME, CREATE_USERID, EDIT_TIME, EDIT_USERID, REMARK,
+    COMPANY_ID
+  </sql>
+  <select id="selectByExample" parameterType="com.superwork.apcosplatform.domain.PDepartmentExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from P_DEPARTMENT
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from P_DEPARTMENT
+    where DEP_ID = #{depId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from P_DEPARTMENT
+    where DEP_ID = #{depId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.superwork.apcosplatform.domain.PDepartmentExample">
+    delete from P_DEPARTMENT
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.superwork.apcosplatform.domain.PDepartment">
+    <selectKey keyProperty="depId" order="BEFORE" resultType="java.lang.String">
+      select P_DEPARTMENT_SEQ.NEXTVAL from dual
+    </selectKey>
+    insert into P_DEPARTMENT (DEP_ID, NAME, SYS_TYPE,
+    CREATE_TIME, CREATE_USERID, EDIT_TIME,
+    EDIT_USERID, REMARK, COMPANY_ID
+    )
+    values (#{depId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{sysType,jdbcType=DECIMAL},
+    #{createTime,jdbcType=DATE}, #{createUserid,jdbcType=VARCHAR}, #{editTime,jdbcType=DATE},
+    #{editUserid,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{companyId,jdbcType=VARCHAR}
+    )
+  </insert>
+  <insert id="insertSelective" parameterType="com.superwork.apcosplatform.domain.PDepartment">
+    <selectKey keyProperty="depId" order="BEFORE" resultType="java.lang.String">
+      select P_DEPARTMENT_SEQ.NEXTVAL from dual
+    </selectKey>
+    insert into P_DEPARTMENT
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      DEP_ID,
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="sysType != null">
+        SYS_TYPE,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="createUserid != null">
+        CREATE_USERID,
+      </if>
+      <if test="editTime != null">
+        EDIT_TIME,
+      </if>
+      <if test="editUserid != null">
+        EDIT_USERID,
+      </if>
+      <if test="remark != null">
+        REMARK,
+      </if>
+      <if test="companyId != null">
+        COMPANY_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{depId,jdbcType=VARCHAR},
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sysType != null">
+        #{sysType,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=DATE},
+      </if>
+      <if test="createUserid != null">
+        #{createUserid,jdbcType=VARCHAR},
+      </if>
+      <if test="editTime != null">
+        #{editTime,jdbcType=DATE},
+      </if>
+      <if test="editUserid != null">
+        #{editUserid,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="companyId != null">
+        #{companyId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.superwork.apcosplatform.domain.PDepartmentExample" resultType="java.lang.Long">
+    select count(*) from P_DEPARTMENT
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update P_DEPARTMENT
+    <set>
+      <if test="record.depId != null">
+        DEP_ID = #{record.depId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null">
+        NAME = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sysType != null">
+        SYS_TYPE = #{record.sysType,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createTime != null">
+        CREATE_TIME = #{record.createTime,jdbcType=DATE},
+      </if>
+      <if test="record.createUserid != null">
+        CREATE_USERID = #{record.createUserid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.editTime != null">
+        EDIT_TIME = #{record.editTime,jdbcType=DATE},
+      </if>
+      <if test="record.editUserid != null">
+        EDIT_USERID = #{record.editUserid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null">
+        REMARK = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.companyId != null">
+        COMPANY_ID = #{record.companyId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update P_DEPARTMENT
+    set DEP_ID = #{record.depId,jdbcType=VARCHAR},
+    NAME = #{record.name,jdbcType=VARCHAR},
+    SYS_TYPE = #{record.sysType,jdbcType=DECIMAL},
+    CREATE_TIME = #{record.createTime,jdbcType=DATE},
+    CREATE_USERID = #{record.createUserid,jdbcType=VARCHAR},
+    EDIT_TIME = #{record.editTime,jdbcType=DATE},
+    EDIT_USERID = #{record.editUserid,jdbcType=VARCHAR},
+    REMARK = #{record.remark,jdbcType=VARCHAR},
+    COMPANY_ID = #{record.companyId,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.superwork.apcosplatform.domain.PDepartment">
+    update P_DEPARTMENT
+    <set>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sysType != null">
+        SYS_TYPE = #{sysType,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=DATE},
+      </if>
+      <if test="createUserid != null">
+        CREATE_USERID = #{createUserid,jdbcType=VARCHAR},
+      </if>
+      <if test="editTime != null">
+        EDIT_TIME = #{editTime,jdbcType=DATE},
+      </if>
+      <if test="editUserid != null">
+        EDIT_USERID = #{editUserid,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="companyId != null">
+        COMPANY_ID = #{companyId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where DEP_ID = #{depId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.superwork.apcosplatform.domain.PDepartment">
+    update P_DEPARTMENT
+    set NAME = #{name,jdbcType=VARCHAR},
+      SYS_TYPE = #{sysType,jdbcType=DECIMAL},
+      CREATE_TIME = #{createTime,jdbcType=DATE},
+      CREATE_USERID = #{createUserid,jdbcType=VARCHAR},
+      EDIT_TIME = #{editTime,jdbcType=DATE},
+      EDIT_USERID = #{editUserid,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      COMPANY_ID = #{companyId,jdbcType=VARCHAR}
+    where DEP_ID = #{depId,jdbcType=VARCHAR}
+  </update>
+  <select id="listDepartment" parameterType="com.superwork.apcosplatform.domain.PDepartment" resultMap="BaseResultMap">
+    SELECT A.*,B.USER_ACCOUNT CREATENAME,B.USER_ACCOUNT EDITNAME FROM P_DEPARTMENT A LEFT OUTER JOIN P_SYS_USER B
+    ON A.CREATE_USERID = B.USER_ID LEFT OUTER JOIN P_SYS_USER C
+    ON A.EDIT_USERID = C.USER_ID
+    where A.CREATE_USERID = #{createUserid}
+
+    <if test="name !=null and name !=''">
+      and A.NAME like '%'||#{name}||'%'
+    </if>
+    <if test="sysType !=null and sysType !=''">
+      and A.SYS_TYPE = #{sysType}
+    </if>
+
+    <if test="companyId != null and companyId != '' ">
+      OR A.COMPANY_ID = #{companyId}
+    </if>
+    ORDER BY A.CREATE_TIME DESC
+  </select>
+</mapper>

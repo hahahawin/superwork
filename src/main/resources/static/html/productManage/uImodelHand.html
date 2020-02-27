@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../css/font.css">
+    <link rel="stylesheet" href="../../css/xadmin.css">
+    <script src="../../js/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../../js/xadmin.js"></script>
+    <script type="text/javascript" src="../../js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../../js/myWrite.js"></script>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+</head>
+<body>
+
+<iframe id="Example2" class="card" title="Example2" frameborder="0" scrolling="yes" marginheight="0" marginwidth="0"
+        srcdoc='' style="width: 100%;height:800px "></iframe>
+
+
+<script type="text/javascript">
+
+    layui.use(['table', 'form', 'laytpl'], function () {
+        var layer = layui.layer;
+
+        $(function () {
+            $.ajax({
+                url: '/sbgl/selUimodle.json',//查询
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify({'data': parent.Info.deviceMac}),
+                mysuccess: function (data) {
+                    if (data.status == 200) {
+                        if (data.data) {
+                            document.getElementById("Example2").srcdoc = data.data;
+                            // show();
+                            showUI();
+                        } else {
+                            layer.msg("无控制模板，此功能暂无法开放！");
+                        }
+                    } else {
+                        layer.msg(data.msg, {icon: 1, time: 1000, shade: 0.4}, function () {
+
+                        });
+                    }
+                }
+
+            })
+        })
+        //UI控制设备
+        function showUI(){
+            $("#Example2").load(function() {
+                var obj ={
+                    "account":parent.Info.account,
+                    "productId":parent.Info.productCode,
+                    "serial_num":parent.Info.serialNum,
+                    // "url" : "http://public.apcos.com/device/sbkz",
+                    "url" : "http://113.204.9.70:8084/device/sbkz",
+                    // "url" : "http://127.0.0.1:8082/device/sbkz",
+                    "operation":"",
+                    "controlParams":""
+                }
+                $("#Example2")[0].contentWindow.getField('false',[],obj);
+            });
+        }
+
+
+    })
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" class="x-admin-sm">
+<head>
+    <meta charset="UTF-8">
+    <title>问题管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" href="../../css/font.css">
+    <link rel="stylesheet" href="../../css/xadmin.css">
+    <script src="../../js/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../../js/xadmin.js"></script>
+    <script type="text/javascript" src="../../js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../../js/myWrite.js"></script>
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        .layui-inline {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<div style="padding: 10px">
+    <div>
+        <form class="layui-form" action="">
+            <div class="layui-inline layui-show-xs-block">
+                <input type="text" name="title" id="title" placeholder="栏目名字"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-inline layui-show-xs-block">
+                <input type="text" name="proTitle" id="proTitle" placeholder="标题"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-inline layui-show-xs-block">
+                <input type="text" name="solution" id="solution" placeholder="解决方案"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-inline layui-show-xs-block">
+                <button class="layui-btn" lay-submit lay-filter="search"><i class="layui-icon">&#xe615;</i>
+                </button>
+                <button class="layui-btn "><i class="layui-icon layui-icon-fonts-clear"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+    <div>
+        <table class="layui-table" id="data-table" lay-filter="data-table"></table>
+    </div>
+</div>
+
+
+<script>
+    var Info;
+    layui.use(['table', 'form'], function () {
+        var table = layui.table;
+        var $ = layui.jquery;
+        var form = layui.form;
+        var dataTable = table.render({
+            title: 'APP列表',
+            elem: '#data-table',
+            height: 'full-18',
+            url: '/appVersion/listAppProblem.json', //数据接口
+            method: 'post',
+            contentType: 'application/json',
+            // size: 'sm',
+            response: {
+                countName: 'total',//规定数据总数的字段名称，默认：count
+                statusCode: 200, //规定成功的状态码，默认：0
+                statusName: 'status'
+            },
+            where: {},
+            page: true, //开启分页
+            limit: 20,
+            limits: [20, 30, 50, 100],
+            defaultToolbar: [],
+            done: function (res, curr, count) {
+                if (res.status == 401) {
+                    top.layer.alert(res.msg, {
+                        end: function () {
+                            top.location.href = '/';
+                        }
+                    })
+                }
+            },
+            cols: [[ //表头
+                {
+                    type: 'numbers', width: '5%',
+                    title: '序号'
+                }
+                , {field: 'problemDesc', title: '问题描述', align: 'center', sort: true}
+                , {field: 'occurrenceTime', title: '发生时间', align: 'center', sort: true}
+                , {field: 'createName', title: '上报者', align: 'center', sort: true}
+                , {field: 'createTime', title: '上报时间', align: 'center', sort: true}
+                , {field: 'replyContent', title: '回复内容', align: 'center', sort: true}
+                , {field: 'replyTime', title: '回复时间', align: 'center', sort: true}
+                , {field: 'status', title: '处理结果', align: 'center', sort: true,templet:function(d){
+                    if(d.status == 1){
+                        return "已解决";
+                    }else if(d.status == 2){
+                        return "未解决";
+                    }else{
+                        return "未处理";
+                    }
+                    }}
+                , {
+                    field: 'expressNo', title: '操作', align: 'center', width: 200
+                    , templet: function (d) {
+                        var hand = '<a class="layui-btn layui-btn-xs  layui-btn-warm" lay-event="hand">处理</a>';
+                        return hand;
+                    }
+
+                }
+            ]]
+        });
+
+        //监听工具条
+        table.on('tool(data-table)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+            Info = obj.data; //获得当前行数据
+            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            var tr = obj.tr; //获得当前行 tr 的DOM对象
+            if (layEvent === 'hand') { //处理
+                if(Info.status == 1){
+                    layer.alert("已处理，不要重复操作！")
+                    return ;
+                }
+                layer.open({
+                    type: 2,
+                    title: ['处理', 'font-size:18px;line-height:40px;height:40px'],
+                    shadeClose: false,
+                    shade: 0.4,
+                    area: ['60%', '90%'],
+                    // maxmin: true,
+                    content: 'handAppProblem.html',
+                });
+
+            }
+        });
+
+
+
+
+        window.reload = function reload() {
+            dataTable.reload();
+        }
+
+        form.on('submit(search)', function (data) {
+            var value = data.field;
+            //出现加载并遮罩
+            dataTable.reload({
+                where: { //设定异步数据接口的额外参数，任意设
+                    "data": value
+                }
+            })
+            return false;
+        })
+
+
+
+
+    });
+
+</script>
+
+</body>
+</html>

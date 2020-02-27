@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" class="x-admin-sm">
+<head>
+    <meta charset="UTF-8">
+    <title>用户列表</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" href="../../css/font.css">
+    <link rel="stylesheet" href="../../css/xadmin.css">
+    <script src="../../js/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../../js/xadmin.js"></script>
+    <script type="text/javascript" src="../../js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../../js/myWrite.js"></script>
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        .layui-inline {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<div style="padding: 10px">
+    <div>
+        <form class="layui-form" action="">
+            <div class="layui-inline layui-show-xs-block">
+                <input type="text" name="productCode" id="productCode" placeholder="请输入产品类型"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-inline layui-show-xs-block">
+                <input type="text" name="serialNum" id="serialNum" placeholder="请输入产品标识"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-inline layui-show-xs-block">
+                <input type="text" id="account" name="account" placeholder="请输入账号"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-inline layui-show-xs-block">
+                <button class="layui-btn" lay-submit lay-filter="search"><i class="layui-icon">&#xe615;</i>
+                </button>
+                <button  class="layui-btn" ><i class="layui-icon layui-icon-fonts-clear"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+    <div>
+        <table class="layui-table" id="data-table" lay-filter="data-table"></table>
+    </div>
+</div>
+<script>
+    layui.use(['table', 'form'], function () {
+        var table = layui.table;
+        var $ = layui.jquery;
+        var form = layui.form;
+        var dataTable = table.render({
+            title: '用户列表',
+            elem: '#data-table',
+            height: 'full-18',
+            url: '/reportmessage/listPReportmessage.json', //数据接口
+            method: 'post',
+            // toolbar: '#toolbarDemo',
+            contentType: 'application/json',
+            // size: 'sm',
+            response: {
+                countName: 'total',//规定数据总数的字段名称，默认：count
+                statusCode: 200, //规定成功的状态码，默认：0
+                statusName: 'status'
+            },
+            where: {},
+            page: true, //开启分页
+            limit: 20,
+            limits: [20, 30, 50, 100],
+            defaultToolbar: [],
+            done: function (res, curr, count) {
+                if (res.status == 401) {
+                    top.layer.alert(res.msg,{end:function () {
+                            top.location.href = '/';
+                        }})
+                }
+            },
+            cols: [[ //表头
+                {type: 'numbers', title: '序号'}
+                , {field: 'productCode', title: '产品类型', align: 'center', sort: true}
+                , {field: 'serialNum', title: '产品标识', align: 'center', sort: true}
+                , {field: 'account',  title: '所属BCCA账号', align: 'center', sort: true}
+                , {field: 'cmdId',  title: '上报指令ID', align: 'center', sort: true}
+                , {field: 'cmdName',  title: '上报指令名称', align: 'center', sort: true}
+                , {field: 'createdTime',  title: '上报时间', align: 'center', sort: true}
+                , {field: 'reportmessage',  title: '上报信息', align: 'center', sort: true}
+            ]]
+        });
+
+        form.on('submit(search)', function (data) {
+            var value = data.field;
+            //出现加载并遮罩
+            dataTable.reload({
+                where: { //设定异步数据接口的额外参数，任意设
+                    "data": value
+                }
+            })
+            return false;
+        })
+        window.reload = function () {
+            dataTable.reload();
+        }
+
+
+
+    });
+
+</script>
+
+</body>
+</html>

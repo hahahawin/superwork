@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.superwork.apcosplatform.mapper.PYktMsgngxMapper">
+  <resultMap id="BaseResultMap" type="com.superwork.apcosplatform.domain.PYktMsgngx">
+    <id column="MSGNGX_ID" jdbcType="VARCHAR" property="msgngxId" />
+    <result column="MSID" jdbcType="VARCHAR" property="msid" />
+    <result column="WHID" jdbcType="VARCHAR" property="whid" />
+    <result column="PRODUCT_ID" jdbcType="VARCHAR" property="productId" />
+    <result column="CODE" jdbcType="VARCHAR" property="code" />
+    <result column="PARAMS" jdbcType="VARCHAR" property="params" />
+    <result column="MEMO" jdbcType="VARCHAR" property="memo" />
+    <result column="MEMO1" jdbcType="VARCHAR" property="memo1" />
+    <result column="MEMO2" jdbcType="VARCHAR" property="memo2" />
+    <result column="MEMO3" jdbcType="VARCHAR" property="memo3" />
+    <result column="CREATOR_ID" jdbcType="VARCHAR" property="creatorId" />
+    <result column="CREATED_TIME" jdbcType="DATE" property="createdTime" />
+    <result column="EDITOR_ID" jdbcType="VARCHAR" property="editorId" />
+    <result column="EDITED_TIME" jdbcType="DATE" property="editedTime" />
+    <result column="BELONG_ORG_ID" jdbcType="VARCHAR" property="belongOrgId" />
+    <result column="PRODUCT_CODE" jdbcType="VARCHAR" property="productCode" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    MSGNGX_ID, MSID, WHID, PRODUCT_ID, CODE, PARAMS, MEMO, MEMO1, MEMO2, MEMO3, CREATOR_ID, 
+    CREATED_TIME, EDITOR_ID, EDITED_TIME, BELONG_ORG_ID, PRODUCT_CODE
+  </sql>
+  <select id="selectByExample" parameterType="com.superwork.apcosplatform.domain.PYktMsgngxExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from P_YKT_MSGNGX
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from P_YKT_MSGNGX
+    where MSGNGX_ID = #{msgngxId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from P_YKT_MSGNGX
+    where MSGNGX_ID = #{msgngxId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.superwork.apcosplatform.domain.PYktMsgngxExample">
+    delete from P_YKT_MSGNGX
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.superwork.apcosplatform.domain.PYktMsgngx">
+    <selectKey keyProperty="msgngxId" order="BEFORE" resultType="java.lang.String">
+      select P_YKT_MSGNGX_SEQ.NEXTVAL from dual
+    </selectKey>
+    insert into P_YKT_MSGNGX (MSGNGX_ID, MSID, WHID, 
+      PRODUCT_ID, CODE, PARAMS, 
+      MEMO, MEMO1, MEMO2, 
+      MEMO3, CREATOR_ID, CREATED_TIME, 
+      EDITOR_ID, EDITED_TIME, BELONG_ORG_ID, 
+      PRODUCT_CODE)
+    values (#{msgngxId,jdbcType=VARCHAR}, #{msid,jdbcType=VARCHAR}, #{whid,jdbcType=VARCHAR}, 
+      #{productId,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{params,jdbcType=VARCHAR}, 
+      #{memo,jdbcType=VARCHAR}, #{memo1,jdbcType=VARCHAR}, #{memo2,jdbcType=VARCHAR}, 
+      #{memo3,jdbcType=VARCHAR}, #{creatorId,jdbcType=VARCHAR}, #{createdTime,jdbcType=DATE}, 
+      #{editorId,jdbcType=VARCHAR}, #{editedTime,jdbcType=DATE}, #{belongOrgId,jdbcType=VARCHAR}, 
+      #{productCode,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.superwork.apcosplatform.domain.PYktMsgngx">
+    <selectKey keyProperty="msgngxId" order="BEFORE" resultType="java.lang.String">
+      select P_YKT_MSGNGX_SEQ.NEXTVAL from dual
+    </selectKey>
+    insert into P_YKT_MSGNGX
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      MSGNGX_ID,
+      <if test="msid != null">
+        MSID,
+      </if>
+      <if test="whid != null">
+        WHID,
+      </if>
+      <if test="productId != null">
+        PRODUCT_ID,
+      </if>
+      <if test="code != null">
+        CODE,
+      </if>
+      <if test="params != null">
+        PARAMS,
+      </if>
+      <if test="memo != null">
+        MEMO,
+      </if>
+      <if test="memo1 != null">
+        MEMO1,
+      </if>
+      <if test="memo2 != null">
+        MEMO2,
+      </if>
+      <if test="memo3 != null">
+        MEMO3,
+      </if>
+      <if test="creatorId != null">
+        CREATOR_ID,
+      </if>
+      <if test="createdTime != null">
+        CREATED_TIME,
+      </if>
+      <if test="editorId != null">
+        EDITOR_ID,
+      </if>
+      <if test="editedTime != null">
+        EDITED_TIME,
+      </if>
+      <if test="belongOrgId != null">
+        BELONG_ORG_ID,
+      </if>
+      <if test="productCode != null">
+        PRODUCT_CODE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{msgngxId,jdbcType=VARCHAR},
+      <if test="msid != null">
+        #{msid,jdbcType=VARCHAR},
+      </if>
+      <if test="whid != null">
+        #{whid,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null">
+        #{productId,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="params != null">
+        #{params,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null">
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="memo1 != null">
+        #{memo1,jdbcType=VARCHAR},
+      </if>
+      <if test="memo2 != null">
+        #{memo2,jdbcType=VARCHAR},
+      </if>
+      <if test="memo3 != null">
+        #{memo3,jdbcType=VARCHAR},
+      </if>
+      <if test="creatorId != null">
+        #{creatorId,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null">
+        #{createdTime,jdbcType=DATE},
+      </if>
+      <if test="editorId != null">
+        #{editorId,jdbcType=VARCHAR},
+      </if>
+      <if test="editedTime != null">
+        #{editedTime,jdbcType=DATE},
+      </if>
+      <if test="belongOrgId != null">
+        #{belongOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="productCode != null">
+        #{productCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.superwork.apcosplatform.domain.PYktMsgngxExample" resultType="java.lang.Long">
+    select count(*) from P_YKT_MSGNGX
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update P_YKT_MSGNGX
+    <set>
+      <if test="record.msgngxId != null">
+        MSGNGX_ID = #{record.msgngxId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.msid != null">
+        MSID = #{record.msid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.whid != null">
+        WHID = #{record.whid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productId != null">
+        PRODUCT_ID = #{record.productId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.code != null">
+        CODE = #{record.code,jdbcType=VARCHAR},
+      </if>
+      <if test="record.params != null">
+        PARAMS = #{record.params,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memo != null">
+        MEMO = #{record.memo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memo1 != null">
+        MEMO1 = #{record.memo1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memo2 != null">
+        MEMO2 = #{record.memo2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memo3 != null">
+        MEMO3 = #{record.memo3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creatorId != null">
+        CREATOR_ID = #{record.creatorId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdTime != null">
+        CREATED_TIME = #{record.createdTime,jdbcType=DATE},
+      </if>
+      <if test="record.editorId != null">
+        EDITOR_ID = #{record.editorId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.editedTime != null">
+        EDITED_TIME = #{record.editedTime,jdbcType=DATE},
+      </if>
+      <if test="record.belongOrgId != null">
+        BELONG_ORG_ID = #{record.belongOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productCode != null">
+        PRODUCT_CODE = #{record.productCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update P_YKT_MSGNGX
+    set MSGNGX_ID = #{record.msgngxId,jdbcType=VARCHAR},
+      MSID = #{record.msid,jdbcType=VARCHAR},
+      WHID = #{record.whid,jdbcType=VARCHAR},
+      PRODUCT_ID = #{record.productId,jdbcType=VARCHAR},
+      CODE = #{record.code,jdbcType=VARCHAR},
+      PARAMS = #{record.params,jdbcType=VARCHAR},
+      MEMO = #{record.memo,jdbcType=VARCHAR},
+      MEMO1 = #{record.memo1,jdbcType=VARCHAR},
+      MEMO2 = #{record.memo2,jdbcType=VARCHAR},
+      MEMO3 = #{record.memo3,jdbcType=VARCHAR},
+      CREATOR_ID = #{record.creatorId,jdbcType=VARCHAR},
+      CREATED_TIME = #{record.createdTime,jdbcType=DATE},
+      EDITOR_ID = #{record.editorId,jdbcType=VARCHAR},
+      EDITED_TIME = #{record.editedTime,jdbcType=DATE},
+      BELONG_ORG_ID = #{record.belongOrgId,jdbcType=VARCHAR},
+      PRODUCT_CODE = #{record.productCode,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.superwork.apcosplatform.domain.PYktMsgngx">
+    update P_YKT_MSGNGX
+    <set>
+      <if test="msid != null">
+        MSID = #{msid,jdbcType=VARCHAR},
+      </if>
+      <if test="whid != null">
+        WHID = #{whid,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null">
+        PRODUCT_ID = #{productId,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        CODE = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="params != null">
+        PARAMS = #{params,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null">
+        MEMO = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="memo1 != null">
+        MEMO1 = #{memo1,jdbcType=VARCHAR},
+      </if>
+      <if test="memo2 != null">
+        MEMO2 = #{memo2,jdbcType=VARCHAR},
+      </if>
+      <if test="memo3 != null">
+        MEMO3 = #{memo3,jdbcType=VARCHAR},
+      </if>
+      <if test="creatorId != null">
+        CREATOR_ID = #{creatorId,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null">
+        CREATED_TIME = #{createdTime,jdbcType=DATE},
+      </if>
+      <if test="editorId != null">
+        EDITOR_ID = #{editorId,jdbcType=VARCHAR},
+      </if>
+      <if test="editedTime != null">
+        EDITED_TIME = #{editedTime,jdbcType=DATE},
+      </if>
+      <if test="belongOrgId != null">
+        BELONG_ORG_ID = #{belongOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="productCode != null">
+        PRODUCT_CODE = #{productCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where MSGNGX_ID = #{msgngxId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.superwork.apcosplatform.domain.PYktMsgngx">
+    update P_YKT_MSGNGX
+    set MSID = #{msid,jdbcType=VARCHAR},
+      WHID = #{whid,jdbcType=VARCHAR},
+      PRODUCT_ID = #{productId,jdbcType=VARCHAR},
+      CODE = #{code,jdbcType=VARCHAR},
+      PARAMS = #{params,jdbcType=VARCHAR},
+      MEMO = #{memo,jdbcType=VARCHAR},
+      MEMO1 = #{memo1,jdbcType=VARCHAR},
+      MEMO2 = #{memo2,jdbcType=VARCHAR},
+      MEMO3 = #{memo3,jdbcType=VARCHAR},
+      CREATOR_ID = #{creatorId,jdbcType=VARCHAR},
+      CREATED_TIME = #{createdTime,jdbcType=DATE},
+      EDITOR_ID = #{editorId,jdbcType=VARCHAR},
+      EDITED_TIME = #{editedTime,jdbcType=DATE},
+      BELONG_ORG_ID = #{belongOrgId,jdbcType=VARCHAR},
+      PRODUCT_CODE = #{productCode,jdbcType=VARCHAR}
+    where MSGNGX_ID = #{msgngxId,jdbcType=VARCHAR}
+  </update>
+  <select id="listmlBymsId" resultMap="BaseResultMap">
+    select CODE,PARAMS,MEMO,WHID,PRODUCT_CODE,MEMO1 from P_YKT_MSGNGX where MSID = #{data}
+  </select>
+  <select id="getMlByMsName" resultMap="BaseResultMap">
+    SELECT
+      A.*
+    FROM P_YKT_MSGNGX A LEFT OUTER JOIN p_sbmogl B ON A.MSID = B.SBMOGL_ID WHERE B.SBMOGL_NAME = #{data}
+
+  </select>
+
+  <select id="listmlBymsId3d" resultType="map">
+    select CODE AS "code",PARAMS AS "params",MEMO AS "memo",WHID AS "whid",PRODUCT_CODE AS "product_code",MEMO1 AS "memo1" from P_YKT_MSGNGX where MSID = #{data}
+  </select>
+</mapper>

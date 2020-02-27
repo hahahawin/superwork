@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" class="x-admin-sm">
+<head>
+    <meta charset="UTF-8">
+    <title>新建场景</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" href="../../css/font.css">
+    <link rel="stylesheet" href="../../css/xadmin.css">
+    <script src="../../js/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../../js/xadmin.js"></script>
+    <script type="text/javascript" src="../../js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../../js/myWrite.js"></script>
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+
+<div id="dataCenterInfo" style="margin: 40px 20px">
+
+</div>
+
+<script type="text/html" id="dataCenterInfo_templet">
+    <div style="width: 90%">
+        <form class="layui-form" action="">
+            <div class="layui-form-item layui-hide">
+                <label class="layui-form-label">ID<span style="color: red">*</span></label>
+                <div class="layui-input-block">
+                    <input type="text" name="id" id="id" lay-verify="required" class="layui-input" value="{{ d.id || ''}}">
+                </div>
+            </div>
+
+            <div class="layui-form-item layui-hide">
+                <label class="layui-form-label">ID<span style="color: red">*</span></label>
+                <div class="layui-input-block">
+                    <input type="text" name="attr2" id="attr2" lay-verify="required" class="layui-input" value="{{ d.attr2 || ''}}">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">软件名字<span style="color: red">*</span></label>
+                <div class="layui-input-block">
+                    <input type="text" name="appName" id="appName" lay-verify="required|checkLength20" placeholder="最多输入20个字"
+                           autocomplete="off" class="layui-input" value="{{ d.appName || '' }}">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">版本号<span style="color: red">*</span></label>
+                <div class="layui-input-block">
+                    <input type="text" name="version" id="version" placeholder="最多输入20个字"
+                           autocomplete="off" class="layui-input" lay-verify="required|checkLength20" value="{{ d.version || '' }}">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">系统<span style="color: red">*</span></label>
+                <div class="layui-input-block">
+                    <input type="text" readonly lay-verify="required|checkLength20"
+                           autocomplete="off" class="layui-input" value="{{ d.status || '' }}">
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">备注说明<span style="color: red">*</span></label>
+                <div class="layui-input-block">
+                    <textarea name="remark" id="remark" placeholder="请输入内容(200)" lay-verify="required|checkLength200" class="layui-textarea">{{d.remark}}</textarea>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="formDemo">提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</script>
+
+
+<script>
+
+    layui.use(['jquery', 'layer', 'form','layedit','laytpl'], function () {
+        var form = layui.form;
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var layedit = layui.layedit;
+        var laytpl = layui.laytpl;
+
+        laytpl($('#dataCenterInfo_templet').html()).render(parent.Info, function (html) {
+            $("#dataCenterInfo").html(html);
+            form.render();
+        }, 'json');
+
+
+        layedit.set({
+            //开发者模式 --默认为false
+            devmode: true
+            //插入代码设置
+            , codeConfig: {
+                hide: true,  //是否显示编码语言选择框
+                default: 'javascript' //hide为true时的默认语言格式
+            }
+            , tool: [
+                'strong', 'italic', 'underline', 'del', 'addhr', '|', 'fontFomatt', 'colorpicker', 'face'
+                , '|', 'left', 'center', 'right', 'fullScreen']
+            , height: '90%'
+        });
+        var ieditor = layedit.build('remark');
+
+        // 自定义验证规则
+        form.verify({
+            checkLength20: function (data) {
+                if (data.length > 20) {
+                    return '长度超过20'
+                }
+            },
+            checkLength200: function (data) {
+                if (data.length > 200) {
+                    return '长度超过200'
+                }
+            }
+
+        });
+        //监听提交
+        form.on('submit(formDemo)', function (data) {
+            //出现加载并遮罩
+            var index = layer.load(1, {
+                shade: [0.5, '#000'] //0.1透明度的背景
+            });
+            var value = data.field;
+            delete value.file;
+            var remark =  layedit.getContent(ieditor);
+            var ieditorText = layedit.getText(ieditor);
+            if(ieditorText.length == 0 || ieditorText.length>200){
+                layer.alert("备注不能为空，并且不超过200字！")
+                return false;
+            }
+            value.remark = remark;
+            //向服务端发送指令
+            $.ajax({
+                url: '/appVersion/editApp.json',
+                dataType: 'json',
+                type: 'post',
+                data: JSON.stringify(value),
+                contentType: 'application/json',
+                hasShade:index,
+                mysuccess: function (result) {
+                    if (result.status == 200) {
+                        layer.msg("编辑成功！", {icon: 1, time: 1000, shade: 0.4}, function () {
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                            parent.reload();
+                        });
+                    }else {
+                        layer.msg(result.msg);
+                    }
+                }
+            });
+            return false;
+        })
+
+
+    })
+
+
+</script>
+
+</body>
+</html>
